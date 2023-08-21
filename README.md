@@ -27,3 +27,5 @@
 - axios
 
 - styled-components
+
+- redux-toolkit
