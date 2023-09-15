@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import Axios from '../app/jsonAxios';
+import jsonAxios from '../api/jsonAxios';
 
 const initialState = {
   value: [],
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
-  const response = await Axios.get('https://jsonplaceholder.typicode.com/users');
+  const response = await jsonAxios.get('https://jsonplaceholder.typicode.com/users');
   return response.data;
 });
 
