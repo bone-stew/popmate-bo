@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.orderListback {
+  background-color: white;
+  border-radius: 10px;
+  width: 60%;
+  margin-left: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+}
+
+.orderListTop{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.roundretangle {
+  width: 25%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px;
+  color: #8D94A0;
+  display: flex;
+  align-items: center;
+  border: 2px solid #F2F4F6;
+  padding-left: 1%;
+  margin-right: 10px;
+}
+
+.searchroundretangle{
+  width: 65%;
+  border-radius: 10px;
+  border: 2px solid #F2F4F6;
+}
+
