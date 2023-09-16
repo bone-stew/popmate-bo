@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
+import styles from '../order/OrderList.module.css';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Search from '@mui/icons-material/Search';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Table from '@mui/material/Table';
+import InputAdornment from '@mui/material/InputAdornment';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -17,10 +23,59 @@ function OrderList() {
     { name: 'Gingerbread', calories: 356, fat: 16.0, carbs: 49, protein: 3.9 , time:'14:00' },
   ];
 
+  const [searchText, setSearchText] = useState('');
+  
+  const handleSearch = () => {
+    console.log('검색 실행:', searchText);
+    setSearchText('');
+    const filteredData = rows.filter((row) => row.name.includes(searchText));
+    setFilteredRows(filteredData);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const onRefreshClick = () => {
+    setFilteredRows(rows);
+  };
+
+  const [filteredRows, setFilteredRows] = useState(rows);
+
   return (
     <div>
+      <div className={styles.orderListTop}>
+        <div className={styles.roundretangle}>
+          분류
+        </div>
+        <div className={styles.searchroundretangle}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <TextField 
+            id="orders" 
+            fullWidth
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            onKeyPress={handleKeyPress}
+            InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search />
+              </InputAdornment>
+            ),
+            }}label="Search.."  />
+            </Box>
+        </div>
+      <div className={styles.refresh}>
+      <RefreshIcon sx={{ color: 'action.active', mr: 1, my: 0.5 , fontSize: 28}} 
+                  className={styles.refresh}
+                  onClick={onRefreshClick}/>
+      </div>
+      </div>
+      <div>
       <TableContainer component={Paper}>
-        <Table sx={{ width: '100%' }} aria-label="simple table">
+        <Table sx={{ width: '100%' }}>
           <TableHead>
             <TableRow>
               <TableCell align="center">주문 번호</TableCell>
@@ -32,7 +87,7 @@ function OrderList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {filteredRows.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -48,6 +103,7 @@ function OrderList() {
           </TableBody>
         </Table>
       </TableContainer>
+      </div>
     </div>
   );
 }

@@ -14,7 +14,7 @@
 .orderListTop{
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  
 }
 
 .roundretangle {
@@ -22,6 +22,9 @@
   background-color: white;
   border-radius: 10px;
   padding: 5px;
+  margin-left: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   color: #8D94A0;
   display: flex;
   align-items: center;
@@ -31,8 +34,21 @@
 }
 
 .searchroundretangle{
-  width: 65%;
+  width: 68%;
+  margin-top: 15px;
+  margin-bottom: 15px;
   border-radius: 10px;
   border: 2px solid #F2F4F6;
+}
+
+
+.refresh{
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding-left: 2px;
 }
 
