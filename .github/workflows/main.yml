@@ -3,7 +3,7 @@ name: CI/CD popmate_bo to AWS S3
 on:
   push:
     branches:
-      - chore/cicd
+      - main
 
 jobs:
   deploy:
