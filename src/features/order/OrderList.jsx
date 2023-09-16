@@ -22,11 +22,12 @@ function OrderList() {
     { name: 'Cupcake', calories: 305, fat: 3.7, carbs: 67, protein: 4.3 , time:'13:00' },
     { name: 'Gingerbread', calories: 356, fat: 16.0, carbs: 49, protein: 3.9 , time:'14:00' },
   ];
-
-  const [searchText, setSearchText] = useState('');
   
+  // 여기서 rows를 Axios로 받아서 처리하면 된다.
+  const [searchText, setSearchText] = useState('');
+  const [filteredRows, setFilteredRows] = useState(rows);
+
   const handleSearch = () => {
-    console.log('검색 실행:', searchText);
     setSearchText('');
     const filteredData = rows.filter((row) => row.name.includes(searchText));
     setFilteredRows(filteredData);
@@ -42,7 +43,7 @@ function OrderList() {
     setFilteredRows(rows);
   };
 
-  const [filteredRows, setFilteredRows] = useState(rows);
+  
 
   return (
     <div>
