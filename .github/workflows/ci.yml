@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out current commit
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Set up NodeJS environment
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
