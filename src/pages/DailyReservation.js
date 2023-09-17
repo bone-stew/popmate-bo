@@ -11,13 +11,13 @@ import {
   TableBody,
   IconButton,
   TextField,
-  Button,
 } from '@mui/material';
 import {
   Edit as EditIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
+import StatusButton from '../components/StatusButton';
 
 const TableCellCenter = ({ children }) => <TableCell align="center">{children}</TableCell>;
 
@@ -116,23 +116,10 @@ const DailyReservation = () => {
                 <TableCellCenter>{item.totalCapacity}</TableCellCenter>
                 <TableCellCenter>{item.reservedCapacity}</TableCellCenter>
                 <TableCellCenter>
-                  {item.status === '진행완료' && (
-                    <Button variant="진행완료" style={{ backgroundColor: '#D2F3E8', color: '#00A76F' }}>
-                      진행완료
-                    </Button>
-                  )}
-                  {item.status === '입장 중' && (
-                    <Button variant="입장 중" style={{ backgroundColor: '#EAEBFF', color: '#1273E4' }}>
-                      입장 중
-                    </Button>
-                  )}
-                  {item.status === '진행취소' && (
-                    <Button variant="진행취소" style={{ backgroundColor: '#FFDDDD', color: '#FF6D6D' }}>
-                      진행취소
-                    </Button>
-                  )}
+                  {item.status === '진행완료' && <StatusButton status="진행완료" label="진행완료" />}
+                  {item.status === '입장 중' && <StatusButton status="입장 중" label="입장 중" />}
+                  {item.status === '진행취소' && <StatusButton status="진행취소" label="진행취소" />}
                 </TableCellCenter>
-
                 <TableCellCenter>
                   <IconButton>
                     <EditIcon />
