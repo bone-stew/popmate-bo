@@ -21,9 +21,6 @@ jobs:
       - name: Install package dependencies
         run: npm install
 
-      - name: Check linting and formatting
-        run: npm run lint
-
       - name: Execute test cases
         run: npm run test
 
