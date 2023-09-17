@@ -17,6 +17,7 @@ import {
 import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Box } from '@mui/system';
+import StatusButton from '../components/StatusButton';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -36,29 +37,34 @@ const ReservationMain = () => {
   // 예약 인원 데이터
   const reservationData = [
     {
-      time: '10:00 ~ 10:15',
+      visitStartTime: '10:00',
+      visitEndTime: '10:15',
       capacity: 20,
-      status: '진행 중',
+      status: '입장 중',
     },
     {
-      time: '10:15 ~ 10:30',
+      visitStartTime: '10:15',
+      visitEndTime: '10:30',
       capacity: 20,
-      status: '완료',
+      status: '예약완료',
     },
     {
-      time: '10:15 ~ 10:30',
+      visitStartTime: '10:30',
+      visitEndTime: '10:45',
       capacity: 20,
-      status: '완료',
+      status: '예약 중',
     },
     {
-      time: '10:15 ~ 10:30',
+      visitStartTime: '10:45',
+      visitEndTime: '11:00',
       capacity: 20,
-      status: '완료',
+      status: '예약 대기',
     },
     {
-      time: '10:15 ~ 10:30',
+      visitStartTime: '11:30',
+      visitEndTime: '11:45',
       capacity: 20,
-      status: '완료',
+      status: '예약 대기',
     },
   ];
 
@@ -68,31 +74,31 @@ const ReservationMain = () => {
       orderNumber: 'ORD12345',
       customerName: '홍길동',
       pickupTime: '10:15',
-      status: '접수 중',
+      status: '수령완료',
     },
     {
       orderNumber: 'ORD12346',
       customerName: '김철수',
       pickupTime: '10:30',
-      status: '완료',
+      status: '수령대기',
     },
     {
       orderNumber: 'ORD12346',
       customerName: '김철수',
       pickupTime: '10:30',
-      status: '완료',
+      status: '수령대기',
     },
     {
       orderNumber: 'ORD12346',
       customerName: '김철수',
       pickupTime: '10:30',
-      status: '완료',
+      status: '주문취소',
     },
     {
       orderNumber: 'ORD12346',
       customerName: '김철수',
       pickupTime: '10:30',
-      status: '완료',
+      status: '수령대기',
     },
   ];
 
@@ -187,15 +193,19 @@ const ReservationMain = () => {
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
                   <TableCellCenter>시간</TableCellCenter>
                   <TableCellCenter>예약 받을 인원 수</TableCellCenter>
-                  <TableCellCenter>예약 상태</TableCellCenter>
+                  <TableCellCenter>입장/예약 상태</TableCellCenter>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {reservationData.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCellCenter>{item.time}</TableCellCenter>
+                    <TableCellCenter>
+                      {item.visitStartTime} ~ {item.visitEndTime}
+                    </TableCellCenter>
                     <TableCellCenter>{item.capacity}</TableCellCenter>
-                    <TableCellCenter>{item.status}</TableCellCenter>
+                    <TableCellCenter>
+                      <StatusButton status={item.status} label={item.status} />
+                    </TableCellCenter>
                   </TableRow>
                 ))}
               </TableBody>
@@ -237,7 +247,9 @@ const ReservationMain = () => {
                     <TableCellCenter>{item.orderNumber}</TableCellCenter>
                     <TableCellCenter>{item.customerName}</TableCellCenter>
                     <TableCellCenter>{item.pickupTime}</TableCellCenter>
-                    <TableCellCenter>{item.status}</TableCellCenter>
+                    <TableCellCenter>
+                      <StatusButton status={item.status} label={item.status} />
+                    </TableCellCenter>
                   </TableRow>
                 ))}
               </TableBody>
