@@ -19,7 +19,11 @@ import {
 } from '@mui/icons-material';
 import StatusButton from '../components/StatusButton';
 
-const TableCellCenter = ({ children }) => <TableCell align="center">{children}</TableCell>;
+const TableCellCenter = ({ children }) => (
+  <TableCell align="center" style={{ height: '50px' }}>
+    {children}
+  </TableCell>
+);
 
 const DailyReservation = () => {
   const [selectedDate, setSelectedDate] = useState('');
@@ -35,29 +39,37 @@ const DailyReservation = () => {
   // TODO: 서버에서 받아온 데이터로 대체
   const data = [
     {
-      reservationTime: '09:30 ~ 09:45',
-      visitTime: '10:00 ~ 10 : 15',
+      reservationStartTime: '09:30',
+      reservationEndTime: '09:45',
+      visitStartTime: '10:00',
+      visitEndTime: '10:15',
       totalCapacity: 20,
       reservedCapacity: 15,
       status: '진행완료',
     },
     {
-      reservationTime: '09:45 ~ 10 : 00',
-      visitTime: '10:15 ~ 10:30',
+      reservationStartTime: '09:45',
+      reservationEndTime: '10:00',
+      visitStartTime: '10:15',
+      visitEndTime: '10:30',
       totalCapacity: 20,
       reservedCapacity: 12,
       status: '진행완료',
     },
     {
-      reservationTime: '10:00 ~ 10 : 15',
-      visitTime: '10:30 ~ 10:45',
+      reservationStartTime: '10:00',
+      reservationEndTime: '10:15',
+      visitStartTime: '10:30',
+      visitEndTime: '10:45',
       totalCapacity: 20,
       reservedCapacity: 18,
       status: '입장 중',
     },
     {
-      reservationTime: '10:15 ~ 10:30',
-      visitTime: '10:45 ~ 11:00',
+      reservationStartTime: '10:15',
+      reservationEndTime: '10:30',
+      visitStartTime: '10:45',
+      visitEndTime: '11:00',
       totalCapacity: 20,
       reservedCapacity: 10,
       status: '진행취소',
@@ -99,7 +111,7 @@ const DailyReservation = () => {
       <TableContainer component={Paper}>
         <Table align="center">
           <TableHead>
-            <TableRow>
+            <TableRow style={{ backgroundColor: '#F2F4F6' }}>
               <TableCellCenter>예약 시간</TableCellCenter>
               <TableCellCenter>입장 시간</TableCellCenter>
               <TableCellCenter>예약 받을 인원 수</TableCellCenter>
@@ -111,14 +123,16 @@ const DailyReservation = () => {
           <TableBody>
             {data.map((item, index) => (
               <TableRow key={index}>
-                <TableCellCenter>{item.reservationTime}</TableCellCenter>
-                <TableCellCenter>{item.visitTime}</TableCellCenter>
+                <TableCellCenter>
+                  {item.reservationStartTime} ~ {item.reservationEndTime}
+                </TableCellCenter>
+                <TableCellCenter>
+                  {item.visitStartTime} ~ {item.visitEndTime}
+                </TableCellCenter>
                 <TableCellCenter>{item.totalCapacity}</TableCellCenter>
                 <TableCellCenter>{item.reservedCapacity}</TableCellCenter>
                 <TableCellCenter>
-                  {item.status === '진행완료' && <StatusButton status="진행완료" label="진행완료" />}
-                  {item.status === '입장 중' && <StatusButton status="입장 중" label="입장 중" />}
-                  {item.status === '진행취소' && <StatusButton status="진행취소" label="진행취소" />}
+                  <StatusButton status={item.status} label={item.status} />
                 </TableCellCenter>
                 <TableCellCenter>
                   <IconButton>
