@@ -1,3 +1,30 @@
 .container {
-  border: red 1px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 10%;
+  /* border: 1px black solid; */
+}
+
+.table {
+  border: 1px solid rgba(224, 224, 224, 1);
+  margin: 5rem;
+}
+
+.timeContainer {
+  display: 'flex';
+  alignitems: 'center';
+}
+
+.timeSpan {
+  margin: '0 8px';
+}
+
+.reservationContainer {
+  margin: 0 25%;
+}
+
+.customButton:focus {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important; /* Optional: Remove the focus outline if desired */
 }
