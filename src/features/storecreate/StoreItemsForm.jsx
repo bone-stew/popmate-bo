@@ -1,5 +1,5 @@
 import { TextField, Box, TableContainer, Paper, Table, TableCell, TableHead, TableRow } from '@mui/material';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
+import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -176,7 +176,7 @@ function StoreItemsForm() {
           </Button>
         </div>
         <div>
-          <a href="">팝업스토어 상품 판매 기능을 이용하지 않으시겠어요?</a>
+          <a href="/">팝업스토어 상품 판매 기능을 이용하지 않으시겠어요?</a>
         </div>
       </div>
     </div>

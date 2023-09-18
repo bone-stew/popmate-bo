@@ -2,7 +2,7 @@ import { TextField, Paper, Stack, Box } from '@mui/material';
 
 import Button from '@mui/material/Button';
 import styles from './StoreCreate.module.css';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
+import FormControl from '@mui/material/FormControl';
 
 function StoreReservationForm({ onUserChoice, sales }) {
   console.log(sales);
@@ -101,7 +101,7 @@ function StoreReservationForm({ onUserChoice, sales }) {
           </Button>
         </div>
 
-        <a href="">팝업스토어 예약 가능을 이용하지 않으시겠어요?</a>
+        <a href="/">팝업스토어 예약 가능을 이용하지 않으시겠어요?</a>
       </Paper>
     </div>
   );

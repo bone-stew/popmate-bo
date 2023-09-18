@@ -1,21 +1,9 @@
-import {
-  Stack,
-  InputAdornment,
-  Table,
-  TableContainer,
-  TableBody,
-  TableCell,
-  TableHead,
-  TextField,
-  TableRow,
-  Paper,
-} from '@mui/material';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
+import { InputAdornment, Table, TableContainer, TableCell, TextField, TableRow, Paper } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { DatePicker, TimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Radio from '@mui/material/Radio';
@@ -25,7 +13,6 @@ import Button from '@mui/material/Button';
 import styles from './StoreCreate.module.css';
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import ImageIcon from '@mui/icons-material/Image';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 function StoreInfoForm({ onUserChoice }) {
