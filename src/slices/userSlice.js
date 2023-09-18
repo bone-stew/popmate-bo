@@ -2,7 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import jsonAxios from '../api/jsonAxios';
 
 const initialState = {
-  value: [],
+  value: {
+    accessToken: '',
+    name: 'admin',
+  },
   loading: false,
   error: '',
 };
