@@ -5,3 +5,7 @@
 .title {
   font-weight: bold;
 }
+
+.padding {
+  padding-left: 16px;
+}

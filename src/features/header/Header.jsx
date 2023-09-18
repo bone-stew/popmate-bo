@@ -9,6 +9,16 @@ function Header() {
   const breadcrumbNameMap = {
     '/overview': 'Overview',
     '/overview/list': 'list',
+    '/overview/banner': 'banner',
+    '/store': 'store',
+    '/store/3': '이걸 어케 받아온담',
+    '/store/write': 'write',
+  };
+  const titleNameMap = {
+    banner: '메인 배너 등록',
+    list: '팝업스토어 목록',
+    3: '이걸 어케 받아온담',
+    write: '팝업스토어 등록',
   };
   return (
     <div className={styles.container}>
@@ -17,11 +27,8 @@ function Header() {
         <Avatar />
       </div>
       <div>
-        <span className={styles.title}>팝업스토어 목록</span>
+        <span className={styles.title}>{titleNameMap[pathnames[pathnames.length - 1]]}</span>
         <Breadcrumbs className={styles.breadcrumbs} aria-label="breadcrumb">
-          <Link underline="hover" color="inherit" href="/">
-            Home
-          </Link>
           {pathnames.map((value, index) => {
             const last = index === pathnames.length - 1;
             const to = `/${pathnames.slice(0, index + 1).join('/')}`;

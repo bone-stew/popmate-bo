@@ -8,6 +8,11 @@ import { store } from './app/store';
 import Error from './pages/Error';
 import PopupList from './pages/PopupList';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import MainBanner from './pages/MainBanner';
+import Order from './pages/Order';
+import ReservationMain from './pages/ReservationMain';
+import StoreCreate from './pages/StoreCreate';
+import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +24,27 @@ const router = createBrowserRouter([
         path: '/overview/list',
         element: <PopupList />,
       },
+      {
+        path: '/overview/banner',
+        element: <MainBanner />,
+      },
+      {
+        path: '/store/:storeId/order',
+        element: <Order />,
+      },
+      {
+        path: '/store/:storeId/',
+        element: <ReservationMain />,
+      },
+      {
+        path: '/store/write',
+        element: <StoreCreate />,
+      },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]);
 
