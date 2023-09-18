@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Container,
   Typography,
   Card,
   CardContent,
@@ -11,12 +10,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Avatar,
   Divider,
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Box } from '@mui/system';
 import StatusButton from '../components/StatusButton';
 
 const TableCellCenter = ({ children }) => (
@@ -103,29 +100,7 @@ const ReservationMain = () => {
   ];
 
   return (
-    <Container>
-      <Box my={5}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ textAlign: 'left', marginTop: '100px', marginBottom: '50px' }}>
-                <Typography variant="h4" gutterBottom>
-                  팝업스토어 제목
-                </Typography>
-                <Typography variant="h7" gutterBottom>
-                  OVERVIEW / POPUP STORE / 빵빵이의 생일 파티
-                </Typography>
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={4}>
-            <Box display="flex" alignItems="center" justifyContent="flex-end">
-              <Avatar alt="프로필 사진" src="/path/to/profile.jpg" style={{ marginRight: '8px' }} />
-              <Typography variant="subtitle1">사용자 이름</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+    <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '80px' }}>
         {/* 왼쪽 상단: "이 시각 예약 현황" */}
         <div style={{ minWidth: '300px' }}>
@@ -141,7 +116,7 @@ const ReservationMain = () => {
         </div>
 
         {/* 오른쪽 상단: 카드 레이아웃 */}
-        <Grid container spacing={2} style={{ textAlign: 'center' }}>
+        <Grid container style={{ textAlign: 'center' }}>
           <Grid container justifyContent="flex-end">
             <Grid item xs={10}>
               <Card style={{ height: '100px' }}>
@@ -257,7 +232,7 @@ const ReservationMain = () => {
           </TableContainer>
         </div>
       </div>
-    </Container>
+    </>
   );
 };
 

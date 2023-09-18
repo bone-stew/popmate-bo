@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Container,
-  Typography,
   Paper,
   Table,
   TableHead,
@@ -9,10 +7,8 @@ import {
   TableCell,
   TableBody,
   IconButton,
-  Box,
-  Grid,
-  Avatar,
   TableContainer,
+  TextField,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -81,43 +77,29 @@ const DailyReservation = () => {
   ];
 
   return (
-    <Container>
-      <Box my={3}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ textAlign: 'left', marginTop: '80px' }}>
-                <Typography variant="h4" gutterBottom>
-                  팝업스토어 제목
-                </Typography>
-                <Typography variant="h5" gutterBottom>
-                  일일 예약 내역
-                </Typography>
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={4}>
-            <Box display="flex" alignItems="center" justifyContent="flex-end">
-              <Avatar alt="프로필 사진" src="/path/to/profile.jpg" style={{ marginRight: '8px' }} />
-              <Typography variant="subtitle1">사용자 이름</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <div>
-        <IconButton onClick={handlePrevDate}>
-          <ChevronLeftIcon />
-        </IconButton>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker />
-        </LocalizationProvider>
-        <IconButton onClick={handleNextDate}>
-          <ChevronRightIcon />
-        </IconButton>
-      </div>
+    <>
       <TableContainer component={Paper}>
-        <Table align="center">
+        <Table align="center" style={{ border: '' }}>
           <TableHead>
+            <TableRow>
+              <TableCell colSpan={6}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <IconButton onClick={handlePrevDate}>
+                    <ChevronLeftIcon />
+                  </IconButton>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      value={selectedDate}
+                      onChange={(newDate) => setSelectedDate(newDate)}
+                      renderInput={(props) => <TextField {...props} variant="standard" />}
+                    />
+                  </LocalizationProvider>
+                  <IconButton onClick={handleNextDate}>
+                    <ChevronRightIcon />
+                  </IconButton>
+                </div>
+              </TableCell>
+            </TableRow>
             <TableRow style={{ backgroundColor: '#F2F4F6' }}>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>예약 시간</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>입장 시간</TableCellCenter>
@@ -151,7 +133,7 @@ const DailyReservation = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Container>
+    </>
   );
 };
 
