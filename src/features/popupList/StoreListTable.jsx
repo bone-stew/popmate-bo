@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styles from './PopupList.module.css';
 import {
   InputAdornment,
   MenuItem,
@@ -26,7 +25,7 @@ function StoreListTable() {
   ];
 
   const [stores, _stores] = useState([]);
-  const [query, _query] = useState('');
+  const [, _query] = useState('');
 
   const handleChange = (e) => {
     _query(e.target.value);
