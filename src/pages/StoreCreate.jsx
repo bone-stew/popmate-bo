@@ -4,11 +4,11 @@ import StoreCreateHeader from '../features/storecreate/StoreCreateHeader';
 import StoreInfoForm from '../features/storecreate/StoreInfoForm';
 import StoreReservationForm from '../features/storecreate/StoreReservationForm';
 import StoreItemsForm from '../features/storecreate/StoreItemsForm';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info'); // Start with 'info'
-  const [reservation, setReservation] = useState(''); // Track reservation choice
+  const [, setReservation] = useState(''); // Track reservation choice
   const [sales, setSales] = useState(''); // Track sales choice
 
   const handleUserChoice = (reservationText, salesText) => {
