@@ -1,23 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  IconButton,
-  TableContainer,
-  TextField,
-} from '@mui/material';
-import {
-  Edit as EditIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-} from '@mui/icons-material';
+import { Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, TableContainer } from '@mui/material';
+import { Edit as EditIcon } from '@mui/icons-material';
 import StatusButton from '../components/StatusButton';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import DatePickerComponent from '../components/CustomDatePicker';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '50px' }}>
@@ -26,16 +11,6 @@ const TableCellCenter = ({ children }) => (
 );
 
 const DailyReservation = () => {
-  const [selectedDate, setSelectedDate] = useState('');
-
-  const handlePrevDate = () => {
-    // TODO: 이전 날짜 로직
-  };
-
-  const handleNextDate = () => {
-    // TODO: 다음 날짜 로직
-  };
-
   // TODO: 서버에서 받아온 데이터로 대체
   const data = [
     {
@@ -84,19 +59,7 @@ const DailyReservation = () => {
             <TableRow>
               <TableCell colSpan={6}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <IconButton onClick={handlePrevDate}>
-                    <ChevronLeftIcon />
-                  </IconButton>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={selectedDate}
-                      onChange={(newDate) => setSelectedDate(newDate)}
-                      renderInput={(props) => <TextField {...props} variant="standard" />}
-                    />
-                  </LocalizationProvider>
-                  <IconButton onClick={handleNextDate}>
-                    <ChevronRightIcon />
-                  </IconButton>
+                  <DatePickerComponent />
                 </div>
               </TableCell>
             </TableRow>
