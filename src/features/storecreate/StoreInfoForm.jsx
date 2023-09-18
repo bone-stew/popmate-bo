@@ -24,6 +24,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 import styles from './StoreCreate.module.css';
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
+import ImageIcon from '@mui/icons-material/Image';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 function StoreInfoForm({ onUserChoice }) {
   const [openDate, setOpenDate] = useState(dayjs('2022-04-17'));
@@ -34,6 +37,18 @@ function StoreInfoForm({ onUserChoice }) {
   const [priceRadio, setPriceRadio] = useState('무료');
   const [reservationSystem, setReservationSystem] = useState('yesReservation');
   const [salesSystem, setSalesSystem] = useState('yesSales');
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   const handleDepartmentChange = (event) => {
     setDepartment(event.target.value);
@@ -171,21 +186,28 @@ function StoreInfoForm({ onUserChoice }) {
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                <span style={{ color: 'red' }}> (*)</span>스토어 이미지
+                스토어 이미지<span style={{ color: 'red' }}> (*)</span>
               </TableCell>
               <TableCell className={styles.table}>
-                <Paper></Paper>
-                <input type="file" />
+                <Paper>
+                  <Button
+                    component="label"
+                    variant="contained"
+                    startIcon={<AddRoundedIcon />}
+                    className={styles.customButton}
+                  >
+                    <VisuallyHiddenInput type="file" />
+                  </Button>
+                </Paper>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                <span style={{ color: 'red' }}> (*)</span>상세 설명
+                상세 설명<span style={{ color: 'red' }}> (*)</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
                   <TextField placeholder="상세 설명을 입력해주세요" multiline rows={7} maxRows={7} />
-                  {/* <MyFormHelperText /> */}
                 </FormControl>
               </TableCell>
             </TableRow>

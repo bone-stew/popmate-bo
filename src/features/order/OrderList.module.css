@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.orderListback {
+  background-color: white;
+  border-radius: 10px;
+  width: 60%;
+  margin-left: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+}
+
+.orderListTop{
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.roundretangle {
+  width: 25%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin-left: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #8D94A0;
+  display: flex;
+  align-items: center;
+  border: 2px solid #F2F4F6;
+  padding-left: 1%;
+  margin-right: 10px;
+}
+
+.searchroundretangle{
+  width: 68%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 2px solid #F2F4F6;
+}
+
+
+.refresh{
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding-left: 2px;
+}
+
