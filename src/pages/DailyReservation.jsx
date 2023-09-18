@@ -1,5 +1,16 @@
 import React from 'react';
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, TableContainer } from '@mui/material';
+import {
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  IconButton,
+  TableContainer,
+  Switch,
+  FormControlLabel,
+} from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import StatusButton from '../components/StatusButton';
 import DatePickerComponent from '../components/CustomDatePicker';
@@ -11,6 +22,17 @@ const TableCellCenter = ({ children }) => (
 );
 
 const DailyReservation = () => {
+  const [state, setState] = React.useState({
+    completed: true,
+  });
+
+  const handleChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      completed: !prevState.completed,
+    }));
+  };
+
   // TODO: 서버에서 받아온 데이터로 대체
   const data = [
     {
@@ -54,11 +76,18 @@ const DailyReservation = () => {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table align="center" style={{ border: '' }}>
+        <Table align="center">
           <TableHead>
             <TableRow>
               <TableCell colSpan={6}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                  <div>
+                    <FormControlLabel
+                      control={<Switch checked={state.completed} onChange={handleChange} name="completed" />}
+                      label="진행완료 여부"
+                      labelPlacement="start"
+                    />
+                  </div>
                   <DatePickerComponent />
                 </div>
               </TableCell>
@@ -69,7 +98,7 @@ const DailyReservation = () => {
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>예약 받을 인원 수</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>예약 인원 수</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>상태</TableCellCenter>
-              <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>상태</TableCellCenter>
+              <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>수정여부</TableCellCenter>
             </TableRow>
           </TableHead>
           <TableBody>
