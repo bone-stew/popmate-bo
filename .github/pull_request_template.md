@@ -7,7 +7,7 @@ ex) Resolve: #123
 
 -
 
-<!-- ✅ 변경 사항을 자세히 알려주세요. (why -> what -> how) -->
+<!-- ✅ 변경 사항을 자세히 알려주세요. -->
 
 ## Change Details
 
