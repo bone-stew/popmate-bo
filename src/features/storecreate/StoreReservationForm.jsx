@@ -5,12 +5,12 @@ import styles from './StoreCreate.module.css';
 import FormControl from '@mui/material/FormControl';
 import { useState } from 'react';
 
-function StoreReservationForm({ onUserChoice, sales, addReservation }) {
-  console.log(sales);
+function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReservation }) {
   const [reservationInterval, setReservationInterval] = useState(0);
   const [maxCapacity, setMaxCapacity] = useState(0);
   const [intervalCapacity, setIntervalCapacity] = useState(15);
   const [teamSizeLimit, setTeamSizeLimit] = useState(5);
+
   const handleReservationChange = (event) => {
     setReservationInterval(event.target.value);
   };
@@ -28,13 +28,18 @@ function StoreReservationForm({ onUserChoice, sales, addReservation }) {
   };
 
   const handleNextButtonClick = () => {
-    if (sales === 'yesSales') {
-      const reservationData = [reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit];
-      addReservation(reservationData);
-    } else {
-      // send to server
-    }
+    console.log(reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit);
+    // if (sales === 'yesSales') {
+    const reservationData = [reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit];
+    addReservation(reservationData);
+    // } else {
+    // send to server
+    // }
     onUserChoice();
+  };
+
+  const handleCancelReservation = () => {
+    cancelReservation('noReservation');
   };
 
   return (
@@ -46,7 +51,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation }) {
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
               <TextField
-                onClick={handleReservationChange}
+                onChange={handleReservationChange}
                 id="outlined-number"
                 type="number"
                 InputLabelProps={{
@@ -67,7 +72,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation }) {
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
               <TextField
-                onClick={handleMaxCapacityChange}
+                onChange={handleMaxCapacityChange}
                 id="outlined-number"
                 type="number"
                 InputLabelProps={{
@@ -88,7 +93,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation }) {
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
               <TextField
-                onClick={handleIntervalCapacityChange}
+                onChange={handleIntervalCapacityChange}
                 id="outlined-number"
                 type="number"
                 InputLabelProps={{
@@ -109,7 +114,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation }) {
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
               <TextField
-                onClick={handleTeamSizeLimitChange}
+                onChange={handleTeamSizeLimitChange}
                 id="outlined-number"
                 type="number"
                 InputLabelProps={{
@@ -131,9 +136,12 @@ function StoreReservationForm({ onUserChoice, sales, addReservation }) {
           </Button>
         </div>
 
-        <a style={{ textDecoration: 'none', textAlign: 'center', display: 'block', marginTop: '1rem' }} href="/">
+        <span
+          style={{ textDecoration: 'none', textAlign: 'center', display: 'block', marginTop: '1rem' }}
+          onClick={handleCancelReservation}
+        >
           팝업스토어 예약 가능을 이용하지 않으시겠어요?
-        </a>
+        </span>
       </Paper>
     </div>
   );

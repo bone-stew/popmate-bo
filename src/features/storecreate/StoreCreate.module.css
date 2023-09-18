@@ -29,8 +29,17 @@
   right: 0;
   background: none;
   border: none;
-  color: red;
+  color: black;
   cursor: pointer;
+}
+
+.storeRepresent {
+  border: 5px solid green;
+  border-radius: 10px;
+}
+
+.image {
+  border-radius: 10px;
 }
 
 /* .storeImgContainer {

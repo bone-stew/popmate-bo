@@ -11,7 +11,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 
-function StoreItemsForm() {
+function StoreItemsForm({ addSales, cancelSales }) {
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -87,7 +87,7 @@ function StoreItemsForm() {
   };
 
   const handleItemAdd = (event) => {
-    console.log(itemName, itemPrice, itemTotal, orderLimit, userImage);
+    // console.log(itemName, itemPrice, itemTotal, orderLimit, userImage);
     if (
       itemName === '' ||
       itemPrice === '' ||
@@ -162,6 +162,14 @@ function StoreItemsForm() {
     setIsEditing(false);
     setEditingItemIndex(-1);
     clearForm();
+  };
+
+  const handleSubmit = () => {
+    addSales(itemsList);
+  };
+
+  const handleCancelSales = () => {
+    cancelSales('noReservation');
   };
 
   return (
@@ -270,7 +278,9 @@ function StoreItemsForm() {
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  {userImage && <img style={{ maxWidth: '200px' }} src={userImage} alt={`store item`} />}
+                  {userImage && (
+                    <img style={{ maxWidth: '200px', borderRadius: '10px' }} src={userImage} alt={`store item`} />
+                  )}
                   <Button
                     component="label"
                     variant="contained"
@@ -345,7 +355,9 @@ function StoreItemsForm() {
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      {userImage && <img style={{ maxWidth: '100px' }} src={userImage} alt={`store item`} />}
+                      {userImage && (
+                        <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={userImage} alt={`store item`} />
+                      )}
                       <Button
                         component="label"
                         variant="contained"
@@ -359,7 +371,9 @@ function StoreItemsForm() {
                       </Button>
                     </div>
                   ) : (
-                    item.image && <img style={{ maxWidth: '100px' }} src={item.image} alt={`store item`} />
+                    item.image && (
+                      <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={item.image} alt={`store item`} />
+                    )
                   )}
                 </TableCell>
                 <TableCell>
@@ -390,14 +404,14 @@ function StoreItemsForm() {
       </div>
       <div style={{ textAlign: 'center', margin: '5rem 0' }}>
         <div>
-          <Button type="submit" variant="contained" sx={{ borderRadius: 28 }}>
+          <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
             팝업스토어 등록
           </Button>
         </div>
         <div style={{ marginTop: '1rem' }}>
-          <a style={{ textDecoration: 'none' }} href="/">
+          <span style={{ textDecoration: 'none' }} onClick={handleCancelSales}>
             팝업스토어 상품 판매 기능을 이용하지 않으시겠어요?
-          </a>
+          </span>
         </div>
       </div>
     </div>
