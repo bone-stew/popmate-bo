@@ -1,0 +1,146 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 6%;
+  height: 100vh;
+}
+
+.mainbanner {
+  background-color: white;
+  border-radius: 10px;
+  width: 80%;
+  height: 70%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+}
+
+
+.mainbannertop{
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 2%;
+  margin-left: 4%;
+  height: 85%;
+  width: 90%;
+}
+
+.imageContainer {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 1%;
+  margin-left: 2%;
+  width: 30%;
+  height: 47%; /* 이미지 비율 유지하면서 높이 조절 */
+}
+
+.image{
+  width: 100%;
+  height: 100%;
+}
+
+
+.imgdeletebuttton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+
+.mainbannerbottom {
+  margin-top: 1%;
+  margin-left: 4%;
+  color: #C1BCC0;
+}
+
+
+.bottom{
+  background-color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 2%;
+  flex-direction: row;
+  width: 80%;
+  height: 7%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+}
+
+.bottomfirst{
+  width: 9%;
+  display: flex;
+  align-items: center;
+  padding-left: 1%;
+}
+
+.red{
+  color: #FF6A6A;
+  margin-right: 10px;
+}
+
+.selectpopupstore{
+  display: flex;
+  align-items: center;
+  width: 35%;
+}
+
+.bottomsecond{
+  display: flex;
+  width: 9%;
+  align-items: center;
+  padding-left: 2%;
+}
+
+.bottomsecondImg{
+  display: flex;
+  margin-left: 1%;
+  height: 100%;
+  align-items: center;
+  width: 35%;
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  border: 1px solid #C1BCC0;
+  border-radius: 4px;
+  height: 85%;
+  width: 100%;
+}
+
+.customFileInput {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 420px;
+  height: 100%;
+  margin-left: 4%;
+}
+
+
+.fileInput {
+  display: none;
+}
+
+.bottomImgtxt{
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+
+.bottombuttton{
+  width: 6%;
+  margin-left: 1%;
+  height: 83%;
+}
+
+.bottombuttton1{
+  background-color: black;
+  height: 100%;
+}
+
+.bottombuttton1:hover {
+  background-color: #C1BCC0; /* 마우스를 가져갔을 때 배경색을 변경 */
+}
