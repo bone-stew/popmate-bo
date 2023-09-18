@@ -11,6 +11,7 @@ import {
   TableCell,
   TableBody,
   Divider,
+  IconButton,
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -191,7 +192,9 @@ const ReservationMain = () => {
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={3} align="right">
-                    <HelpIcon fontSize="small" />
+                    <IconButton aria-label="더보기" size="small" edge="end">
+                      <HelpIcon fontSize="small" />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
@@ -237,7 +240,9 @@ const ReservationMain = () => {
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={4} align="right">
-                    <FilterListIcon fontSize="small" />
+                    <IconButton aria-label="더보기" size="small" edge="end">
+                      <FilterListIcon fontSize="small" />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
