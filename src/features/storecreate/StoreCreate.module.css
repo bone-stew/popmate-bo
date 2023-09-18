@@ -20,11 +20,27 @@
 }
 
 .reservationContainer {
-  margin: 0 25%;
+  margin: 0 20%;
 }
 
-.customButton:focus {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  outline: none !important; /* Optional: Remove the focus outline if desired */
+.imgDeleteButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
 }
+
+/* .storeImgContainer {
+  display: 'flex';
+  flex-wrap: 'wrap';
+  justify-content: 'space-around';
+  overflow: 'hidden';
+  background-color: red;
+}
+
+.imageList {
+  flex-wrap: nowrap;
+} */
