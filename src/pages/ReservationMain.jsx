@@ -64,7 +64,6 @@ const ReservationMain = () => {
     JsonAxios.get(apiUrl)
       .then((response) => {
         _todayOrders(response.data.data);
-        console.log('currentReservation : ' + currentReservation);
       })
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
