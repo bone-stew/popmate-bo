@@ -22,6 +22,7 @@ const TableCellCenter = ({ children }) => (
 );
 
 const DailyReservation = () => {
+  // const [dailyReservationData, _dailyReservationData] = useState([]);
   const [state, setState] = React.useState({
     completed: true,
   });
