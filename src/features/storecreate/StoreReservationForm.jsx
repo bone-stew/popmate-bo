@@ -28,13 +28,13 @@ function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReser
   };
 
   const handleNextButtonClick = () => {
-    console.log(reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit);
-    // if (sales === 'yesSales') {
-    const reservationData = [reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit];
+    if (reservationInterval === 0 || maxCapacity === 0 || intervalCapacity === 0 || teamSizeLimit === 0) {
+      alert('모든 입력 필드를 작성해주세요');
+      return;
+    }
+
+    const reservationData = { reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit };
     addReservation(reservationData);
-    // } else {
-    // send to server
-    // }
     onUserChoice();
   };
 

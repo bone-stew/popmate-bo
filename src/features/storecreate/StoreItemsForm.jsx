@@ -29,14 +29,17 @@ function StoreItemsForm({ addSales, cancelSales }) {
   const [itemTotal, setItemTotal] = useState('재고량을 입려해주세요');
   const [orderLimit, setOrderLimit] = useState('주문가능 수량을 입려해주세요');
   const [userImage, setUserImage] = useState(null);
+  const [userImageFile, setUserImageFile] = useState('');
   const [itemsList, setItemsList] = useState([]);
+  const [itemFileList, setItemFileList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
   const [editItemName, setEditItemName] = useState('');
   const [editItemPrice, setEditItemPrice] = useState(0);
   const [editItemTotal, setEditItemTotal] = useState(0);
   const [editOrderLimit, setEditOrderLimit] = useState(0);
-  const [editImage, setEditOrderImage] = useState(null);
+  const [editImage, setEditImage] = useState(null);
+  const [editImageFile, setEditImageFile] = useState('');
 
   const [editingItemIndex, setEditingItemIndex] = useState(-1);
 
@@ -59,6 +62,7 @@ function StoreItemsForm({ addSales, cancelSales }) {
   const handleImageUpload = (event) => {
     const selectedImage = event.target.files[0];
     if (selectedImage) {
+      setUserImageFile(selectedImage);
       setUserImage(URL.createObjectURL(selectedImage));
     }
   };
@@ -82,12 +86,12 @@ function StoreItemsForm({ addSales, cancelSales }) {
   const handleEditImageUpload = (event) => {
     const selectedImage = event.target.files[0];
     if (selectedImage) {
-      setEditOrderImage(URL.createObjectURL(selectedImage));
+      setEditImageFile(selectedImage);
+      setEditImage(URL.createObjectURL(selectedImage));
     }
   };
 
   const handleItemAdd = (event) => {
-    // console.log(itemName, itemPrice, itemTotal, orderLimit, userImage);
     if (
       itemName === '' ||
       itemPrice === '' ||
@@ -108,8 +112,15 @@ function StoreItemsForm({ addSales, cancelSales }) {
       orderLimit: orderLimit,
       image: userImage,
     };
+    const newItemImageWithFile = {
+      name: itemName,
+      amount: itemPrice,
+      stock: itemTotal,
+      orderLimit: orderLimit,
+      imgUrl: userImageFile,
+    };
     setItemsList([...itemsList, newItem]);
-
+    setItemFileList([...itemFileList, newItemImageWithFile]);
     clearForm();
   };
 
@@ -119,12 +130,16 @@ function StoreItemsForm({ addSales, cancelSales }) {
     setItemTotal('재고량을 입려해주세요');
     setOrderLimit('주문가능 수량을 입려해주세요');
     setUserImage(null);
+    setUserImageFile(null);
   };
 
   const handleDeleteItem = (index) => {
     const updatedItemsList = [...itemsList];
+    const updatedImageFilesList = [...itemFileList];
     updatedItemsList.splice(index, 1);
+    updatedImageFilesList.splice(index, 1);
     setItemsList(updatedItemsList);
+    setItemFileList(updatedImageFilesList);
   };
 
   const handleEditItem = (index) => {
@@ -149,6 +164,7 @@ function StoreItemsForm({ addSales, cancelSales }) {
 
   const handleSaveEdit = () => {
     const updatedItemsList = [...itemsList];
+    const updatedItemsFileList = [...itemFileList];
     updatedItemsList[editingItemIndex] = {
       name: editItemName,
       price: editItemPrice,
@@ -156,16 +172,22 @@ function StoreItemsForm({ addSales, cancelSales }) {
       orderLimit: editOrderLimit,
       image: editImage,
     };
-    console.log(editingItemIndex);
-    console.log(updatedItemsList);
+    updatedItemsFileList[editingItemIndex] = {
+      name: editItemName,
+      amount: editItemPrice,
+      stock: editItemTotal,
+      orderLimit: editOrderLimit,
+      imgUrl: editImageFile,
+    };
     setItemsList(updatedItemsList);
+    setItemFileList(updatedItemsFileList);
     setIsEditing(false);
     setEditingItemIndex(-1);
     clearForm();
   };
 
   const handleSubmit = () => {
-    addSales(itemsList);
+    addSales(itemFileList);
   };
 
   const handleCancelSales = () => {
@@ -290,7 +312,7 @@ function StoreItemsForm({ addSales, cancelSales }) {
                     }}
                   >
                     이미지 첨부하기
-                    <VisuallyHiddenInput type="file" onChange={handleImageUpload} />
+                    <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageUpload} />
                   </Button>
                 </div>
               </TableCell>

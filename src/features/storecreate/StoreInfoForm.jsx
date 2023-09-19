@@ -21,7 +21,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 import styles from './StoreCreate.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ImageList from '@mui/material/ImageList';
@@ -32,9 +32,9 @@ function StoreInfoForm({ onUserChoice, addStore }) {
   const today = dayjs();
   const [title, setStoreTitle] = useState('');
   const [openDate, setOpenDate] = useState(today);
-  const [closeDate, setCloseDate] = useState(today);
+  const [closeDate, setCloseDate] = useState(today.add(1, 'day'));
   const [openTime, setOpenTime] = useState(today);
-  const [closeTime, setCloseTime] = useState(today);
+  const [closeTime, setCloseTime] = useState(today.add(5, 'hour'));
   const [department, setDepartment] = useState('');
   const [priceRadio, setPriceRadio] = useState('무료');
   const [entryFee, setEntryFee] = useState('');
@@ -44,6 +44,7 @@ function StoreInfoForm({ onUserChoice, addStore }) {
   const [eventDescription, setEventDescription] = useState('');
   const [reservationEnabled, setReservationEnabled] = useState(false);
   const [storeImages, setStoreImages] = useState([]);
+  const [storeImageFiles, setStoreImageFiles] = useState([]);
   const [website, setWebsite] = useState('');
   const [instagram, setInstagram] = useState('');
   const [youtube, setYoutube] = useState('');
@@ -136,35 +137,38 @@ function StoreInfoForm({ onUserChoice, addStore }) {
         alert('스토어 이미지는 최대 6개만 업로드 할 수 있습니다.');
         return;
       }
+      setStoreImageFiles([...storeImageFiles, selectedImage]);
       setStoreImages([...storeImages, URL.createObjectURL(selectedImage)]);
     }
   };
 
   const handleRemoveImage = (indexToRemove) => {
     const updatedImageUrls = storeImages.filter((_, index) => index !== indexToRemove);
+    const updatedImageFiles = storeImageFiles.filter((_, index) => index !== indexToRemove);
     setStoreImages(updatedImageUrls);
+    setStoreImageFiles(updatedImageFiles);
   };
 
   const handleNextButtonClick = () => {
-    // if (
-    //   title === '' ||
-    //   openDate === '' ||
-    //   closeDate === '' ||
-    //   openTime === '' ||
-    //   closeTime === '' ||
-    //   department === '' ||
-    //   priceRadio === '' ||
-    //   (priceRadio === '유료' && entryFee === '') ||
-    //   organizer === '' ||
-    //   placeDetail === '' ||
-    //   description === '' ||
-    //   (reservationSystem === 'yesReservation' && storeImages.length === 0)
-    // ) {
-    //   alert('필수 항목을 기입해주세요');
-    //   return;
-    // }
+    if (
+      title === '' ||
+      openDate === '' ||
+      closeDate === '' ||
+      openTime === '' ||
+      closeTime === '' ||
+      department === '' ||
+      priceRadio === '' ||
+      (priceRadio === '유료' && entryFee === '') ||
+      organizer === '' ||
+      placeDetail === '' ||
+      description === '' ||
+      (reservationSystem === 'yesReservation' && storeImages.length === 0)
+    ) {
+      alert('필수 항목을 기입해주세요');
+      return;
+    }
     onUserChoice(reservationSystem, salesSystem);
-    const storeData = [
+    const storeData = {
       title,
       openDate,
       closeDate,
@@ -177,13 +181,14 @@ function StoreInfoForm({ onUserChoice, addStore }) {
       placeDetail,
       description,
       eventDescription,
+      reservationEnabled,
       reservationSystem,
-      storeImages,
+      storeImageFiles,
       website,
       instagram,
       youtube,
       salesSystem,
-    ];
+    };
     addStore(storeData);
   };
 
@@ -255,22 +260,22 @@ function StoreInfoForm({ onUserChoice, addStore }) {
                     <MenuItem value="">
                       <em>지점 선택 없음</em>
                     </MenuItem>
-                    <MenuItem value={'더현대서울'}>더현대 서울</MenuItem>
-                    <MenuItem value={'압구정본점'}>압구정본점</MenuItem>
-                    <MenuItem value={'무역센터점'}>무역센터점</MenuItem>
-                    <MenuItem value={'천호점'}>천호점</MenuItem>
-                    <MenuItem value={'신촌점'}>신촌점</MenuItem>
-                    <MenuItem value={'미아점'}>미아점</MenuItem>
-                    <MenuItem value={'목동점'}>목동점</MenuItem>
-                    <MenuItem value={'중동점'}>중동점</MenuItem>
-                    <MenuItem value={'판교점'}>판교점</MenuItem>
-                    <MenuItem value={'킨텍스점'}>킨텍스점</MenuItem>
-                    <MenuItem value={'디큐브시티'}>디큐브시티</MenuItem>
-                    <MenuItem value={'부산점'}>부산점</MenuItem>
-                    <MenuItem value={'더현대대구'}>더현대 대구</MenuItem>
-                    <MenuItem value={'울산점'}>울산점</MenuItem>
-                    <MenuItem value={'울산동구점'}>울산동구점</MenuItem>
-                    <MenuItem value={'충청점'}>충청점</MenuItem>
+                    <MenuItem value={'1'}>더현대 서울</MenuItem>
+                    <MenuItem value={'2'}>압구정본점</MenuItem>
+                    <MenuItem value={'3'}>무역센터점</MenuItem>
+                    <MenuItem value={'4'}>천호점</MenuItem>
+                    <MenuItem value={'5'}>신촌점</MenuItem>
+                    <MenuItem value={'6'}>미아점</MenuItem>
+                    <MenuItem value={'7'}>목동점</MenuItem>
+                    <MenuItem value={'8'}>중동점</MenuItem>
+                    <MenuItem value={'9'}>판교점</MenuItem>
+                    <MenuItem value={'10'}>킨텍스점</MenuItem>
+                    <MenuItem value={'11'}>디큐브시티</MenuItem>
+                    <MenuItem value={'12'}>부산점</MenuItem>
+                    <MenuItem value={'13'}>더현대 대구</MenuItem>
+                    <MenuItem value={'14'}>울산점</MenuItem>
+                    <MenuItem value={'15'}>울산동구점</MenuItem>
+                    <MenuItem value={'16'}>충청점</MenuItem>
                   </Select>
                 </FormControl>
               </TableCell>
@@ -350,7 +355,7 @@ function StoreInfoForm({ onUserChoice, addStore }) {
                       }}
                     >
                       <AddRoundedIcon />
-                      <VisuallyHiddenInput type="file" onChange={handleImageUpload} />
+                      <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageUpload} />
                     </IconButton>
                     <ImageList
                       sx={{
