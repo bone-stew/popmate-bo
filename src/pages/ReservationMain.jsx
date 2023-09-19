@@ -43,7 +43,7 @@ const ReservationMain = () => {
     entryGuestCount: 6,
   });
   const [todayReservations, _todayReservations] = useState([]);
-  // const [sortOrder, setSortOrder] = useState('default');
+  const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
   const [todayOrders, _todayOrders] = useState([]);
 
   useEffect(() => {
@@ -59,7 +59,8 @@ const ReservationMain = () => {
   }, []);
 
   useEffect(() => {
-    const apiUrl = 'popup-stores/1/orders/today?sort=pickupTime';
+    const apiUrl = `popup-stores/1/orders/today?sort=${sortOrderOption}`;
+
     JsonAxios.get(apiUrl)
       .then((response) => {
         _todayOrders(response.data.data);
@@ -68,7 +69,11 @@ const ReservationMain = () => {
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
       });
-  }, []);
+  }, [sortOrderOption]);
+
+  const handleSortClick = (option) => {
+    _sortOrderOption(option);
+  };
 
   return (
     <>
@@ -128,8 +133,8 @@ const ReservationMain = () => {
             style={{
               boxShadow: '0px 2px 4px 2px rgba(0, 0, 0, 0.1) , 0px -2px 4px -2px rgba(0, 0, 0, 0.1)',
               borderRadius: '15px',
-              maxHeight: '500px', // 원하는 최대 높이로 조정
-              overflowY: 'auto', // 세로 스크롤을 추가하기 위한 설정
+              maxHeight: '500px',
+              overflowY: 'auto',
             }}
           >
             <Table>
@@ -176,17 +181,43 @@ const ReservationMain = () => {
             style={{
               boxShadow: '0px 2px 4px 2px rgba(0, 0, 0, 0.1) , 0px -2px 4px -2px rgba(0, 0, 0, 0.1)',
               borderRadius: '15px',
-              maxHeight: '500px', // 원하는 최대 높이로 조정
-              overflowY: 'auto', // 세로 스크롤을 추가하기 위한 설정
+              maxHeight: '500px',
+              overflowY: 'auto',
             }}
           >
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={4} align="right">
-                    <IconButton aria-label="더보기" size="small" edge="end">
-                      <FilterListIcon fontSize="small" />
-                    </IconButton>
+                    {sortOrderOption === 'pickupTime' ? (
+                      <div>
+                        픽업시간 순
+                        <IconButton
+                          aria-label="더보기"
+                          size="small"
+                          edge="end"
+                          onClick={() =>
+                            handleSortClick(sortOrderOption === 'pickupTime' ? 'orderStatus' : 'pickupTime')
+                          }
+                        >
+                          <FilterListIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
+                        주문상태 순
+                        <IconButton
+                          aria-label="더보기"
+                          size="small"
+                          edge="end"
+                          onClick={() =>
+                            handleSortClick(sortOrderOption === 'pickupTime' ? 'orderStatus' : 'pickupTime')
+                          }
+                        >
+                          <FilterListIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
