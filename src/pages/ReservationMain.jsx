@@ -18,7 +18,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import StatusButton from '../components/StatusButton';
 import MoreButton from '../components/MoreButton';
 import JsonAxios from '../api/jsonAxios';
-import { formatToLocalTime } from '../app/dateTimeUtils';
+import { addMinutesToLocalDateTime, formatToLocalTime, formatToLocalTimeFromLocalDateTime } from '../app/dateTimeUtils';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -42,43 +42,27 @@ const ReservationMain = () => {
     reservedGuestCount: 44,
     entryGuestCount: 6,
   });
-  const [todayReservations, _todayReservation] = useState([]);
+  const [todayReservations, _todayReservations] = useState([]);
   // const [sortOrder, setSortOrder] = useState('default');
-
-  // 주문 목록 데이터
-  const orderData = [
-    {
-      orderNumber: 'ORD12345',
-      customerName: '홍길동',
-      pickupTime: '10:15',
-      status: '수령완료',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '주문취소',
-    },
-  ];
+  const [todayOrders, _todayOrders] = useState([]);
 
   useEffect(() => {
-    const apiUrl = 'popup-stores/2/reservations/today';
+    const apiUrl = 'popup-stores/1/reservations/today';
     JsonAxios.get(apiUrl)
       .then((response) => {
         _currentReservation(response.data.data);
-        _todayReservation(response.data.data.upComingReservations);
+        _todayReservations(response.data.data.upComingReservations);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const apiUrl = 'popup-stores/1/orders/today?sort=pickupTime';
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _todayOrders(response.data.data);
         console.log('currentReservation : ' + currentReservation);
       })
       .catch((error) => {
@@ -213,13 +197,15 @@ const ReservationMain = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orderData.map((item, index) => (
+                {todayOrders.map((item, index) => (
                   <TableRow key={index}>
                     <TableCellCenter>{item.orderNumber}</TableCellCenter>
-                    <TableCellCenter>{item.customerName}</TableCellCenter>
-                    <TableCellCenter>{item.pickupTime}</TableCellCenter>
+                    <TableCellCenter>{item.userName}</TableCellCenter>
                     <TableCellCenter>
-                      <StatusButton status={item.status} label={item.status} />
+                      {formatToLocalTimeFromLocalDateTime(addMinutesToLocalDateTime(item.pickupTime, 10))}
+                    </TableCellCenter>
+                    <TableCellCenter>
+                      <StatusButton status={item.orderStatus} label={item.orderStatus} />
                     </TableCellCenter>
                   </TableRow>
                 ))}

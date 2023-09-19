@@ -21,4 +21,18 @@ function formatToLocalTime(localDateTimeString) {
   return `${hour}:${minute}`;
 }
 
-export { formatToLocalTime };
+// LocalDateTime 문자열에 분을 더하는 함수
+function addMinutesToLocalDateTime(localDateTimeString, minutesToAdd) {
+  const date = parseLocalDateTime(localDateTimeString);
+  date.setMinutes(date.getMinutes() + minutesToAdd);
+  return date;
+}
+
+// LocalDateTime을 HH:mm 형식의 문자열로 변환하는 함수
+function formatToLocalTimeFromLocalDateTime(localDateTime) {
+  const hour = getHour(localDateTime);
+  const minute = getMinute(localDateTime);
+  return `${hour}:${minute}`;
+}
+
+export { formatToLocalTime, addMinutesToLocalDateTime, formatToLocalTimeFromLocalDateTime };
