@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Card,
@@ -17,6 +17,8 @@ import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import StatusButton from '../components/StatusButton';
 import MoreButton from '../components/MoreButton';
+import JsonAxios from '../api/jsonAxios';
+import { formatToLocalTime } from '../app/dateTimeUtils';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -32,53 +34,16 @@ const cardStyle = {
 };
 
 const ReservationMain = () => {
-  // 예약 현황 데이터
-  const reservationStatus = {
-    currentVisitStartTime: '10:00',
-    currentVisitEndTime: '10:15',
-    entering: 44,
-    waiting: 6,
-  };
-
-  // 예약 인원 데이터
-  const reservationData = [
-    {
-      visitStartTime: '10:00',
-      visitEndTime: '10:15',
-      capacity: 20,
-      status: '입장 중',
-    },
-    {
-      visitStartTime: '10:15',
-      visitEndTime: '10:30',
-      capacity: 20,
-      status: '예약완료',
-    },
-    {
-      visitStartTime: '10:30',
-      visitEndTime: '10:45',
-      capacity: 20,
-      status: '예약 중',
-    },
-    {
-      visitStartTime: '10:45',
-      visitEndTime: '11:00',
-      capacity: 20,
-      status: '예약 대기',
-    },
-    {
-      visitStartTime: '11:30',
-      visitEndTime: '11:45',
-      capacity: 20,
-      status: '예약 대기',
-    },
-    {
-      visitStartTime: '11:30',
-      visitEndTime: '11:45',
-      capacity: 20,
-      status: '예약 대기',
-    },
-  ];
+  const [currentReservation, _currentReservation] = useState({
+    popupStoreId: 0,
+    popupStoreName: '트렌디 패션 팝업',
+    currentReservationStartTime: '10:00',
+    currentReservationEndTime: '10:15',
+    reservedGuestCount: 44,
+    entryGuestCount: 6,
+  });
+  const [todayReservations, _todayReservation] = useState([]);
+  // const [sortOrder, setSortOrder] = useState('default');
 
   // 주문 목록 데이터
   const orderData = [
@@ -106,25 +71,20 @@ const ReservationMain = () => {
       pickupTime: '10:30',
       status: '주문취소',
     },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
   ];
+
+  useEffect(() => {
+    const apiUrl = 'popup-stores/2/reservations/today';
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _currentReservation(response.data.data);
+        _todayReservation(response.data.data.upComingReservations);
+        console.log('currentReservation : ' + currentReservation);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, []);
 
   return (
     <>
@@ -133,13 +93,13 @@ const ReservationMain = () => {
         <div style={{ minWidth: '300px', marginTop: '10px' }}>
           <Typography variant="h7">이 시각</Typography>
           <Typography variant="h4" style={{ marginBottom: '10px', marginTop: '10px' }}>
-            {reservationStatus.currentVisitStartTime} ~ {reservationStatus.currentVisitEndTime}
+            {formatToLocalTime(currentReservation.currentReservationStartTime)} ~{' '}
+            {formatToLocalTime(currentReservation.currentReservationEndTime)}
           </Typography>
           <Typography variant="h7" gutterBottom>
             예약 현황이예요
           </Typography>
         </div>
-
         {/* 오른쪽 상단: 카드 레이아웃 */}
         <Grid container style={{ textAlign: 'center' }}>
           <Grid container justifyContent="flex-end">
@@ -151,7 +111,7 @@ const ReservationMain = () => {
                       이 시각 입장할 인원 수
                     </Typography>
                     <Typography variant="h4" style={{ marginTop: '10px' }}>
-                      {reservationStatus.entering}
+                      {currentReservation.reservedGuestCount}
                     </Typography>
                   </div>
                   <Divider orientation="vertical" flexItem />
@@ -160,7 +120,7 @@ const ReservationMain = () => {
                       대기 중인 인원 수
                     </Typography>
                     <Typography variant="h4" style={{ marginTop: '10px' }}>
-                      {reservationStatus.waiting}
+                      {currentReservation.entryGuestCount}
                     </Typography>
                   </div>
                 </CardContent>
@@ -204,12 +164,12 @@ const ReservationMain = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {reservationData.map((item, index) => (
+                {todayReservations.map((item, index) => (
                   <TableRow key={index}>
                     <TableCellCenter>
-                      {item.visitStartTime} ~ {item.visitEndTime}
+                      {formatToLocalTime(item.visitStartTime)} ~ {formatToLocalTime(item.visitEndTime)}
                     </TableCellCenter>
-                    <TableCellCenter>{item.capacity}</TableCellCenter>
+                    <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                     <TableCellCenter>
                       <StatusButton status={item.status} label={item.status} />
                     </TableCellCenter>
