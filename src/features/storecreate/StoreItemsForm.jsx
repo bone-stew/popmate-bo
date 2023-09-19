@@ -9,9 +9,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import styles from './StoreCreate.module.css';
 import ImageIcon from '@mui/icons-material/Image';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function StoreItemsForm({ addSales, cancelSales }) {
+function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -42,6 +42,30 @@ function StoreItemsForm({ addSales, cancelSales }) {
   const [editImageFile, setEditImageFile] = useState('');
 
   const [editingItemIndex, setEditingItemIndex] = useState(-1);
+
+  useEffect(() => {
+    const transformedItems = viewInfo.popupStoreItemResponse.map((item) => {
+      const transformedItem = {};
+      for (const key in item) {
+        if (Object.hasOwnProperty.call(item, key)) {
+          if (key === 'amount') {
+            transformedItem.price = item[key];
+          }
+          if (key === 'stock') {
+            transformedItem.total = item[key];
+          }
+          if (key === 'imgUrl') {
+            transformedItem.image = item[key];
+          } else {
+            transformedItem[key] = item[key];
+          }
+        }
+      }
+      return transformedItem;
+    });
+    console.log(transformedItems);
+    setItemsList(transformedItems);
+  }, [viewInfo]);
 
   const handleItemNameChange = (event) => {
     setItemName(event.target.value);

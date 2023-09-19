@@ -5,7 +5,8 @@ import { selectUser } from './slices/userSlice';
 // import { Outlet } from 'react-router-dom';
 import Sidebar from './features/sideBar/Sidebar';
 import Header from './features/header/Header';
-import StoreCreate from './pages/StoreCreate';
+// import StoreCreate from './pages/StoreCreate';
+import StoreView from './pages/StoreView';
 function App() {
   const currUser = useSelector(selectUser);
   const isLoggedIn = currUser.value == null;
@@ -18,7 +19,7 @@ function App() {
       <Sidebar drawerWidth={drawerWidth} />
       <div className={styles.content}>
         <Header />
-        <StoreCreate />
+        <StoreView popupStoreId={95} />
       </div>
     </div>
   );

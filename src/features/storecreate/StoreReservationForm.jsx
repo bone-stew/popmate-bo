@@ -3,13 +3,22 @@ import { TextField, Paper, Stack, Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import styles from './StoreCreate.module.css';
 import FormControl from '@mui/material/FormControl';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReservation }) {
-  const [reservationInterval, setReservationInterval] = useState(0);
+function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, cancelReservation }) {
+  const [reservationInterval, setReservationInterval] = useState('');
   const [maxCapacity, setMaxCapacity] = useState(0);
   const [intervalCapacity, setIntervalCapacity] = useState(15);
   const [teamSizeLimit, setTeamSizeLimit] = useState(5);
+  useEffect(() => {
+    console.log(viewInfo);
+    if (viewInfo !== null) {
+      setReservationInterval(viewInfo.reservationInterval);
+      setMaxCapacity(viewInfo.maxCapacity);
+      setIntervalCapacity(viewInfo.intervalCapacity);
+      setTeamSizeLimit(viewInfo.teamSizeLimit);
+    }
+  }, [viewInfo]);
 
   const handleReservationChange = (event) => {
     setReservationInterval(event.target.value);
@@ -54,6 +63,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReser
                 onChange={handleReservationChange}
                 id="outlined-number"
                 type="number"
+                value={reservationInterval}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -75,6 +85,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReser
                 onChange={handleMaxCapacityChange}
                 id="outlined-number"
                 type="number"
+                value={maxCapacity}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -96,6 +107,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReser
                 onChange={handleIntervalCapacityChange}
                 id="outlined-number"
                 type="number"
+                value={intervalCapacity}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -117,6 +129,7 @@ function StoreReservationForm({ onUserChoice, sales, addReservation, cancelReser
                 onChange={handleTeamSizeLimitChange}
                 id="outlined-number"
                 type="number"
+                value={teamSizeLimit}
                 InputLabelProps={{
                   shrink: true,
                 }}

@@ -5,7 +5,6 @@ import StoreReservationForm from '../features/storecreate/StoreReservationForm';
 import StoreItemsForm from '../features/storecreate/StoreItemsForm';
 import { useState, useCallback } from 'react';
 import StoreCreateComplete from '../features/storecreate/StoreCreateComplete';
-// import Axios from '../api/multipartAxios';
 import axios from 'axios';
 
 function StoreCreate() {

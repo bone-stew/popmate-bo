@@ -28,7 +28,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
 
-function StoreInfoForm({ onUserChoice, addStore }) {
+function StoreInfoForm({ viewInfo, onUserChoice, addStore }) {
   const today = dayjs();
   const [title, setStoreTitle] = useState('');
   const [openDate, setOpenDate] = useState(today);
@@ -50,6 +50,44 @@ function StoreInfoForm({ onUserChoice, addStore }) {
   const [youtube, setYoutube] = useState('');
   const [reservationSystem, setReservationSystem] = useState('yesReservation');
   const [salesSystem, setSalesSystem] = useState('yesSales');
+
+  useEffect(() => {
+    console.log(viewInfo);
+    if (viewInfo !== null) {
+      setStoreTitle(viewInfo.title);
+      setOpenDate(viewInfo.setOpenDate);
+      setCloseDate(viewInfo.setCloseDate);
+      setOpenTime(viewInfo.openTime);
+      setCloseTime(viewInfo.closeTime);
+      setDepartment(viewInfo.department.departmentId);
+      setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
+      setEntryFee(viewInfo.setEntryFee);
+      setOrganizer(viewInfo.organizer);
+      let imgUrls = viewInfo.popupStoreImgResponse.map((item) => item.imgUrl);
+      imgUrls = [viewInfo.bannerImgUrl, ...imgUrls];
+      setStoreImages(imgUrls);
+      setDescription(viewInfo.description);
+      setEventDescription(viewInfo.eventDescription !== null ? viewInfo.eventDescription : '');
+      setReservationEnabled(viewInfo.reservationEnabled);
+      setReservationSystem(viewInfo.reservationEnabled === true ? 'yesReservation' : 'noReservation');
+      setSalesSystem(viewInfo.popupStoreItemResponse.length === 0 ? 'noSales' : 'yesSales');
+      if (viewInfo.popupStoreSnsResponse.length > 0) {
+        viewInfo.popupStoreSnsResponse.forEach((item) => {
+          if (item.platform === 'Website') {
+            setWebsite(item.url);
+          } else if (item.platform === 'YouTube') {
+            setYoutube(item.url);
+          } else if (item.platform === 'Instagram') {
+            setInstagram(item.url);
+          }
+        });
+      }
+    }
+  }, [viewInfo]);
+
+  useEffect(() => {
+    console.log(title);
+  }, [title]);
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
