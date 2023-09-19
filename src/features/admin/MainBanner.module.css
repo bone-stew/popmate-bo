@@ -1,79 +1,41 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin-left: 6%;
   height: 100vh;
 }
-
-.mainbanner {
-  background-color: white;
-  border-radius: 10px;
-  width: 80%;
-  height: 70%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
-}
-
-
-.mainbannertop{
-  border: 1px solid black;
-  border-radius: 4px;
-  margin-top: 2%;
-  margin-left: 4%;
-  height: 85%;
-  width: 90%;
-}
-
-.imageContainer {
-  position: relative;
-  display: inline-block;
-  margin-right: 10px;
-  margin-top: 1%;
-  margin-left: 2%;
-  width: 30%;
-  height: 47%; /* 이미지 비율 유지하면서 높이 조절 */
-}
-
-.image{
-  width: 100%;
-  height: 100%;
-}
-
-
-.imgdeletebuttton {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: none;
-  border: none;
-  color: red;
-  cursor: pointer;
-}
-
-
-.mainbannerbottom {
-  margin-top: 1%;
-  margin-left: 4%;
-  color: #C1BCC0;
-}
-
 
 .bottom{
   background-color: white;
   display: flex;
   align-items: center;
   border-radius: 10px;
-  margin-top: 2%;
   flex-direction: row;
-  width: 80%;
+  margin-bottom: 2%;
+  width: 100%;
   height: 7%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
 }
 
 .bottomfirst{
-  width: 9%;
+  width: 45%;
+  height: 100%;
   display: flex;
   align-items: center;
-  padding-left: 1%;
+  padding-left: 3%;
+}
+
+.bottomfirsttitle{
+  width: 23%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.bottomfirstcontent{
+  width: 70%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .red{
@@ -81,17 +43,18 @@
   margin-right: 10px;
 }
 
-.selectpopupstore{
-  display: flex;
-  align-items: center;
-  width: 35%;
-}
-
 .bottomsecond{
   display: flex;
-  width: 9%;
+  width: 45%;
+  height: 100%;
   align-items: center;
-  padding-left: 2%;
+}
+
+.bottomsecondtitle{
+  width: 25%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .bottomsecondImg{
@@ -99,7 +62,7 @@
   margin-left: 1%;
   height: 100%;
   align-items: center;
-  width: 35%;
+  width: 70%;
 }
 
 .labelContainer {
@@ -107,7 +70,7 @@
   align-items: center;
   border: 1px solid #C1BCC0;
   border-radius: 4px;
-  height: 85%;
+  height: 84%;
   width: 100%;
 }
 
@@ -133,7 +96,8 @@
 .bottombuttton{
   width: 6%;
   margin-left: 1%;
-  height: 83%;
+  height: 55%;
+  margin-right: 1%;
 }
 
 .bottombuttton1{
@@ -144,3 +108,91 @@
 .bottombuttton1:hover {
   background-color: #C1BCC0; /* 마우스를 가져갔을 때 배경색을 변경 */
 }
+
+
+.mainbanner{
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+  height: 78%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+}
+
+.imageContainer {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: 1%;
+  border-radius: 20px;
+  margin-left: 2%;
+  width: 30%;
+  height: 47%; /* 이미지 비율 유지하면서 높이 조절 */
+}
+
+.image{
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  height: 75%;
+  background-color: #FF6A6A;
+}
+
+.imgdeletebuttton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.imagebottom{
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  width: 100%;
+  height: 24%;
+  display: flex;
+  flex-direction: row;
+}
+
+.imagebottomfirst{
+  width: 30%;
+  border-bottom-left-radius: 20px;
+  display: flex;
+}
+
+.imagebottomfirstimage{
+  margin-left: 20%;
+  margin-top: 10%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FF6A6A;
+}
+
+.imagebottomfirstimage img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.imagebottomsecond{
+  display: flex;
+  flex-direction: column;
+}
+
+.imagebottomtitle{
+  font-weight: bold;
+  margin-bottom: 2%;
+}
+
+.imagebottomtext{
+  color: #8D94A0;
+  font-size: 11px;
+  margin-bottom: 1%;
+}
+
