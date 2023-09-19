@@ -1,7 +1,8 @@
 import React from 'react';
+import StoreListTable from '../features/popupList/StoreListTable';
 
 function PopupList() {
-  return <div>PopupList</div>;
+  return <StoreListTable />;
 }
 
 export default PopupList;

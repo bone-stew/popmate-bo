@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Container,
   Typography,
   Card,
   CardContent,
@@ -11,13 +10,15 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Avatar,
   Divider,
+  IconButton,
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Box } from '@mui/system';
 import StatusButton from '../components/StatusButton';
+import MoreButton from '../components/MoreButton';
+import JsonAxios from '../api/jsonAxios';
+import { addMinutesToLocalDateTime, formatToLocalTime, formatToLocalTimeFromLocalDateTime } from '../app/dateTimeUtils';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -25,141 +26,90 @@ const TableCellCenter = ({ children }) => (
   </TableCell>
 );
 
+const cardStyle = {
+  boxShadow:
+    '0px 2px 4px 2px rgba(0, 0, 0, 0.05) , 0px -2px 4px -2px rgba(0, 0, 0, 0.05), 0px 0px 10px 5px rgba(0, 0, 0, 0.05)',
+  height: '120px',
+  borderRadius: '10px',
+};
+
 const ReservationMain = () => {
-  // 예약 현황 데이터
-  const reservationStatus = {
-    currentVisitStartTime: '10:00',
-    currentVisitEndTime: '10:15',
-    entering: 44,
-    waiting: 6,
+  const [currentReservation, _currentReservation] = useState({
+    popupStoreId: 0,
+    popupStoreName: '트렌디 패션 팝업',
+    currentReservationStartTime: '10:00',
+    currentReservationEndTime: '10:15',
+    reservedGuestCount: 44,
+    entryGuestCount: 6,
+  });
+  const [todayReservations, _todayReservations] = useState([]);
+  const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
+  const [todayOrders, _todayOrders] = useState([]);
+
+  useEffect(() => {
+    const apiUrl = 'popup-stores/1/reservations/today';
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _currentReservation(response.data.data);
+        _todayReservations(response.data.data.upComingReservations);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const apiUrl = `popup-stores/1/orders/today?sort=${sortOrderOption}`;
+
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _todayOrders(response.data.data);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, [sortOrderOption]);
+
+  const handleSortClick = (option) => {
+    _sortOrderOption(option);
   };
 
-  // 예약 인원 데이터
-  const reservationData = [
-    {
-      visitStartTime: '10:00',
-      visitEndTime: '10:15',
-      capacity: 20,
-      status: '입장 중',
-    },
-    {
-      visitStartTime: '10:15',
-      visitEndTime: '10:30',
-      capacity: 20,
-      status: '예약완료',
-    },
-    {
-      visitStartTime: '10:30',
-      visitEndTime: '10:45',
-      capacity: 20,
-      status: '예약 중',
-    },
-    {
-      visitStartTime: '10:45',
-      visitEndTime: '11:00',
-      capacity: 20,
-      status: '예약 대기',
-    },
-    {
-      visitStartTime: '11:30',
-      visitEndTime: '11:45',
-      capacity: 20,
-      status: '예약 대기',
-    },
-  ];
-
-  // 주문 목록 데이터
-  const orderData = [
-    {
-      orderNumber: 'ORD12345',
-      customerName: '홍길동',
-      pickupTime: '10:15',
-      status: '수령완료',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '주문취소',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-  ];
-
   return (
-    <Container>
-      <Box my={5}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ textAlign: 'left', marginTop: '100px', marginBottom: '50px' }}>
-                <Typography variant="h4" gutterBottom>
-                  팝업스토어 제목
-                </Typography>
-                <Typography variant="h7" gutterBottom>
-                  OVERVIEW / POPUP STORE / 빵빵이의 생일 파티
-                </Typography>
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={4}>
-            <Box display="flex" alignItems="center" justifyContent="flex-end">
-              <Avatar alt="프로필 사진" src="/path/to/profile.jpg" style={{ marginRight: '8px' }} />
-              <Typography variant="subtitle1">사용자 이름</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '80px' }}>
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '60px' }}>
         {/* 왼쪽 상단: "이 시각 예약 현황" */}
-        <div style={{ minWidth: '300px' }}>
-          <Typography variant="h7" gutterBottom>
-            이 시각
-          </Typography>
-          <Typography variant="h4" gutterBottom>
-            {reservationStatus.currentVisitStartTime} ~ {reservationStatus.currentVisitEndTime}
+        <div style={{ minWidth: '300px', marginTop: '10px' }}>
+          <Typography variant="h7">이 시각</Typography>
+          <Typography variant="h4" style={{ marginBottom: '10px', marginTop: '10px' }}>
+            {formatToLocalTime(currentReservation.currentReservationStartTime)} ~{' '}
+            {formatToLocalTime(currentReservation.currentReservationEndTime)}
           </Typography>
           <Typography variant="h7" gutterBottom>
             예약 현황이예요
           </Typography>
         </div>
-
         {/* 오른쪽 상단: 카드 레이아웃 */}
-        <Grid container spacing={2} style={{ textAlign: 'center' }}>
+        <Grid container style={{ textAlign: 'center' }}>
           <Grid container justifyContent="flex-end">
             <Grid item xs={10}>
-              <Card style={{ height: '100px' }}>
-                <CardContent
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}
-                >
+              <Card style={cardStyle}>
+                <CardContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '75%' }}>
                   <div style={{ flex: '1' }}>
                     <Typography variant="h7" gutterBottom>
                       이 시각 입장할 인원 수
                     </Typography>
-                    <Typography variant="h4">{reservationStatus.entering}</Typography>
+                    <Typography variant="h4" style={{ marginTop: '10px' }}>
+                      {currentReservation.reservedGuestCount}
+                    </Typography>
                   </div>
                   <Divider orientation="vertical" flexItem />
                   <div style={{ flex: '1' }}>
                     <Typography variant="h7" gutterBottom>
                       대기 중인 인원 수
                     </Typography>
-                    <Typography variant="h4">{reservationStatus.waiting}</Typography>
+                    <Typography variant="h4" style={{ marginTop: '10px' }}>
+                      {currentReservation.entryGuestCount}
+                    </Typography>
                   </div>
                 </CardContent>
               </Card>
@@ -172,22 +122,27 @@ const ReservationMain = () => {
       <div style={{ display: 'flex' }}>
         {/* 왼쪽 요소 */}
         <div style={{ flex: 1, marginRight: '50px' }}>
-          <Typography variant="h6" gutterBottom style={{ marginBottom: '20px' }}>
-            이 시각 이후 예약 인원을 관리하세요
-          </Typography>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+              이 시각 이후 예약 인원을 관리하세요
+            </Typography>
+            <MoreButton />
+          </div>
           <TableContainer
             style={{
               boxShadow: '0px 2px 4px 2px rgba(0, 0, 0, 0.1) , 0px -2px 4px -2px rgba(0, 0, 0, 0.1)',
               borderRadius: '15px',
+              maxHeight: '500px',
+              overflowY: 'auto',
             }}
           >
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell align="right">
-                    <HelpIcon fontSize="small" />
+                  <TableCell colSpan={3} align="right">
+                    <IconButton aria-label="더보기" size="small" edge="end">
+                      <HelpIcon fontSize="small" />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
@@ -197,12 +152,12 @@ const ReservationMain = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {reservationData.map((item, index) => (
+                {todayReservations.map((item, index) => (
                   <TableRow key={index}>
                     <TableCellCenter>
-                      {item.visitStartTime} ~ {item.visitEndTime}
+                      {formatToLocalTime(item.visitStartTime)} ~ {formatToLocalTime(item.visitEndTime)}
                     </TableCellCenter>
-                    <TableCellCenter>{item.capacity}</TableCellCenter>
+                    <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                     <TableCellCenter>
                       <StatusButton status={item.status} label={item.status} />
                     </TableCellCenter>
@@ -215,23 +170,53 @@ const ReservationMain = () => {
 
         {/* 하단 오른쪽: 주문 목록 확인 */}
         <div style={{ flex: 1 }}>
-          <Typography variant="h6" gutterBottom style={{ marginBottom: '20px' }}>
-            오늘의 주문 목록을 확인하세요
-          </Typography>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+              오늘의 주문 목록을 확인하세요
+            </Typography>
+            <MoreButton />
+          </div>
           <TableContainer
             style={{
               boxShadow: '0px 2px 4px 2px rgba(0, 0, 0, 0.1) , 0px -2px 4px -2px rgba(0, 0, 0, 0.1)',
               borderRadius: '15px',
+              maxHeight: '500px',
+              overflowY: 'auto',
             }}
           >
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell align="right">
-                    <FilterListIcon fontSize="small" />
+                  <TableCell colSpan={4} align="right">
+                    {sortOrderOption === 'pickupTime' ? (
+                      <div>
+                        픽업시간 순
+                        <IconButton
+                          aria-label="더보기"
+                          size="small"
+                          edge="end"
+                          onClick={() =>
+                            handleSortClick(sortOrderOption === 'pickupTime' ? 'orderStatus' : 'pickupTime')
+                          }
+                        >
+                          <FilterListIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
+                        주문상태 순
+                        <IconButton
+                          aria-label="더보기"
+                          size="small"
+                          edge="end"
+                          onClick={() =>
+                            handleSortClick(sortOrderOption === 'pickupTime' ? 'orderStatus' : 'pickupTime')
+                          }
+                        >
+                          <FilterListIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
@@ -242,13 +227,15 @@ const ReservationMain = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orderData.map((item, index) => (
+                {todayOrders.map((item, index) => (
                   <TableRow key={index}>
                     <TableCellCenter>{item.orderNumber}</TableCellCenter>
-                    <TableCellCenter>{item.customerName}</TableCellCenter>
-                    <TableCellCenter>{item.pickupTime}</TableCellCenter>
+                    <TableCellCenter>{item.userName}</TableCellCenter>
                     <TableCellCenter>
-                      <StatusButton status={item.status} label={item.status} />
+                      {formatToLocalTimeFromLocalDateTime(addMinutesToLocalDateTime(item.pickupTime, 10))}
+                    </TableCellCenter>
+                    <TableCellCenter>
+                      <StatusButton status={item.orderStatus} label={item.orderStatus} />
                     </TableCellCenter>
                   </TableRow>
                 ))}
@@ -257,7 +244,7 @@ const ReservationMain = () => {
           </TableContainer>
         </div>
       </div>
-    </Container>
+    </>
   );
 };
 

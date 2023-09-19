@@ -12,7 +12,7 @@ const statusStyles = {
     backgroundColor: '#EAEBFF',
     color: '#1273E4',
   },
-  예약완료: {
+  '예약 완료': {
     backgroundColor: '#EAEBFF',
     color: '#1273E4',
   },
