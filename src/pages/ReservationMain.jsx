@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Card,
@@ -17,6 +17,8 @@ import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import StatusButton from '../components/StatusButton';
 import MoreButton from '../components/MoreButton';
+import JsonAxios from '../api/jsonAxios';
+import { addMinutesToLocalDateTime, formatToLocalTime, formatToLocalTimeFromLocalDateTime } from '../app/dateTimeUtils';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -32,99 +34,45 @@ const cardStyle = {
 };
 
 const ReservationMain = () => {
-  // 예약 현황 데이터
-  const reservationStatus = {
-    currentVisitStartTime: '10:00',
-    currentVisitEndTime: '10:15',
-    entering: 44,
-    waiting: 6,
+  const [currentReservation, _currentReservation] = useState({
+    popupStoreId: 0,
+    popupStoreName: '트렌디 패션 팝업',
+    currentReservationStartTime: '10:00',
+    currentReservationEndTime: '10:15',
+    reservedGuestCount: 44,
+    entryGuestCount: 6,
+  });
+  const [todayReservations, _todayReservations] = useState([]);
+  const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
+  const [todayOrders, _todayOrders] = useState([]);
+
+  useEffect(() => {
+    const apiUrl = 'popup-stores/1/reservations/today';
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _currentReservation(response.data.data);
+        _todayReservations(response.data.data.upComingReservations);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const apiUrl = `popup-stores/1/orders/today?sort=${sortOrderOption}`;
+
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _todayOrders(response.data.data);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, [sortOrderOption]);
+
+  const handleSortClick = (option) => {
+    _sortOrderOption(option);
   };
-
-  // 예약 인원 데이터
-  const reservationData = [
-    {
-      visitStartTime: '10:00',
-      visitEndTime: '10:15',
-      capacity: 20,
-      status: '입장 중',
-    },
-    {
-      visitStartTime: '10:15',
-      visitEndTime: '10:30',
-      capacity: 20,
-      status: '예약완료',
-    },
-    {
-      visitStartTime: '10:30',
-      visitEndTime: '10:45',
-      capacity: 20,
-      status: '예약 중',
-    },
-    {
-      visitStartTime: '10:45',
-      visitEndTime: '11:00',
-      capacity: 20,
-      status: '예약 대기',
-    },
-    {
-      visitStartTime: '11:30',
-      visitEndTime: '11:45',
-      capacity: 20,
-      status: '예약 대기',
-    },
-    {
-      visitStartTime: '11:30',
-      visitEndTime: '11:45',
-      capacity: 20,
-      status: '예약 대기',
-    },
-  ];
-
-  // 주문 목록 데이터
-  const orderData = [
-    {
-      orderNumber: 'ORD12345',
-      customerName: '홍길동',
-      pickupTime: '10:15',
-      status: '수령완료',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '주문취소',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-    {
-      orderNumber: 'ORD12346',
-      customerName: '김철수',
-      pickupTime: '10:30',
-      status: '수령대기',
-    },
-  ];
 
   return (
     <>
@@ -133,13 +81,13 @@ const ReservationMain = () => {
         <div style={{ minWidth: '300px', marginTop: '10px' }}>
           <Typography variant="h7">이 시각</Typography>
           <Typography variant="h4" style={{ marginBottom: '10px', marginTop: '10px' }}>
-            {reservationStatus.currentVisitStartTime} ~ {reservationStatus.currentVisitEndTime}
+            {formatToLocalTime(currentReservation.currentReservationStartTime)} ~{' '}
+            {formatToLocalTime(currentReservation.currentReservationEndTime)}
           </Typography>
           <Typography variant="h7" gutterBottom>
             예약 현황이예요
           </Typography>
         </div>
-
         {/* 오른쪽 상단: 카드 레이아웃 */}
         <Grid container style={{ textAlign: 'center' }}>
           <Grid container justifyContent="flex-end">
@@ -151,7 +99,7 @@ const ReservationMain = () => {
                       이 시각 입장할 인원 수
                     </Typography>
                     <Typography variant="h4" style={{ marginTop: '10px' }}>
-                      {reservationStatus.entering}
+                      {currentReservation.reservedGuestCount}
                     </Typography>
                   </div>
                   <Divider orientation="vertical" flexItem />
@@ -160,7 +108,7 @@ const ReservationMain = () => {
                       대기 중인 인원 수
                     </Typography>
                     <Typography variant="h4" style={{ marginTop: '10px' }}>
-                      {reservationStatus.waiting}
+                      {currentReservation.entryGuestCount}
                     </Typography>
                   </div>
                 </CardContent>
@@ -184,8 +132,8 @@ const ReservationMain = () => {
             style={{
               boxShadow: '0px 2px 4px 2px rgba(0, 0, 0, 0.1) , 0px -2px 4px -2px rgba(0, 0, 0, 0.1)',
               borderRadius: '15px',
-              maxHeight: '500px', // 원하는 최대 높이로 조정
-              overflowY: 'auto', // 세로 스크롤을 추가하기 위한 설정
+              maxHeight: '500px',
+              overflowY: 'auto',
             }}
           >
             <Table>
@@ -204,12 +152,12 @@ const ReservationMain = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {reservationData.map((item, index) => (
+                {todayReservations.map((item, index) => (
                   <TableRow key={index}>
                     <TableCellCenter>
-                      {item.visitStartTime} ~ {item.visitEndTime}
+                      {formatToLocalTime(item.visitStartTime)} ~ {formatToLocalTime(item.visitEndTime)}
                     </TableCellCenter>
-                    <TableCellCenter>{item.capacity}</TableCellCenter>
+                    <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                     <TableCellCenter>
                       <StatusButton status={item.status} label={item.status} />
                     </TableCellCenter>
@@ -232,17 +180,43 @@ const ReservationMain = () => {
             style={{
               boxShadow: '0px 2px 4px 2px rgba(0, 0, 0, 0.1) , 0px -2px 4px -2px rgba(0, 0, 0, 0.1)',
               borderRadius: '15px',
-              maxHeight: '500px', // 원하는 최대 높이로 조정
-              overflowY: 'auto', // 세로 스크롤을 추가하기 위한 설정
+              maxHeight: '500px',
+              overflowY: 'auto',
             }}
           >
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={4} align="right">
-                    <IconButton aria-label="더보기" size="small" edge="end">
-                      <FilterListIcon fontSize="small" />
-                    </IconButton>
+                    {sortOrderOption === 'pickupTime' ? (
+                      <div>
+                        픽업시간 순
+                        <IconButton
+                          aria-label="더보기"
+                          size="small"
+                          edge="end"
+                          onClick={() =>
+                            handleSortClick(sortOrderOption === 'pickupTime' ? 'orderStatus' : 'pickupTime')
+                          }
+                        >
+                          <FilterListIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
+                        주문상태 순
+                        <IconButton
+                          aria-label="더보기"
+                          size="small"
+                          edge="end"
+                          onClick={() =>
+                            handleSortClick(sortOrderOption === 'pickupTime' ? 'orderStatus' : 'pickupTime')
+                          }
+                        >
+                          <FilterListIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
@@ -253,13 +227,15 @@ const ReservationMain = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orderData.map((item, index) => (
+                {todayOrders.map((item, index) => (
                   <TableRow key={index}>
                     <TableCellCenter>{item.orderNumber}</TableCellCenter>
-                    <TableCellCenter>{item.customerName}</TableCellCenter>
-                    <TableCellCenter>{item.pickupTime}</TableCellCenter>
+                    <TableCellCenter>{item.userName}</TableCellCenter>
                     <TableCellCenter>
-                      <StatusButton status={item.status} label={item.status} />
+                      {formatToLocalTimeFromLocalDateTime(addMinutesToLocalDateTime(item.pickupTime, 10))}
+                    </TableCellCenter>
+                    <TableCellCenter>
+                      <StatusButton status={item.orderStatus} label={item.orderStatus} />
                     </TableCellCenter>
                   </TableRow>
                 ))}
