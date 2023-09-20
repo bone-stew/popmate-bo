@@ -1,18 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import jsonAxios from '../api/jsonAxios';
+import JsonAxios from '../api/jsonAxios';
 
 const initialState = {
-  value: {
-    accessToken: '',
-    name: 'admin',
-    role: 'manager',
-  },
+  value: null,
   loading: false,
   error: '',
 };
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
-  const response = await jsonAxios.get('https://jsonplaceholder.typicode.com/users');
+  const response = await JsonAxios.get('/oauth/me');
   return response.data;
 });
 
@@ -21,7 +17,8 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, action) => {
-      state.value = null;
+      sessionStorage.removeItem('accessToken');
+      window.location.replace('/');
     },
   },
   extraReducers: (builder) => {
@@ -30,8 +27,12 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
+        state.value = { name: action.payload.data.nickname, role: action.payload.data.authorities[0].authority };
         state.loading = false;
-        state.value = action.payload;
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.value = null;
+        state.loading = false;
       });
   },
 });

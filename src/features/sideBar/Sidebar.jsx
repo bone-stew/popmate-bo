@@ -11,7 +11,6 @@ function Sidebar({ drawerWidth }) {
   const currUser = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // useEffect({}, []);
   const adminMenu = [
     { icon: <ImageOutlined className={styles.whiteFont} />, title: '배너 관리', to: 'overview/banner' },
     { icon: <ManageSearch className={styles.whiteFont} />, title: '팝업 스토어 관리', to: 'overview/list' },
@@ -37,7 +36,7 @@ function Sidebar({ drawerWidth }) {
           Popmate
         </Typography>
       </Toolbar>
-      {currUser.value.role === 'manager' && (
+      {currUser.value.role === 'ROLE_MANAGER' && (
         <>
           <Typography className={`${styles.whiteFont} ${styles.padding}`}>Overview</Typography>
           <List>
