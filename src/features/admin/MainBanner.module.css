@@ -135,7 +135,6 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   height: 75%;
-  background-color: #FF6A6A;
 }
 
 .imgdeletebuttton {
@@ -171,7 +170,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FF6A6A;
 }
 
 .imagebottomfirstimage img {
