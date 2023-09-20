@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -14,6 +14,8 @@ import {
 import { Edit as EditIcon } from '@mui/icons-material';
 import StatusButton from '../components/StatusButton';
 import DatePickerComponent from '../components/CustomDatePicker';
+import JsonAxios from '../api/jsonAxios';
+import { formatToLocalTime } from '../app/dateTimeUtils';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '50px' }}>
@@ -22,10 +24,22 @@ const TableCellCenter = ({ children }) => (
 );
 
 const DailyReservation = () => {
-  // const [dailyReservationData, _dailyReservationData] = useState([]);
+  const [dailyReservationData, _dailyReservationData] = useState([]);
   const [state, setState] = React.useState({
     completed: true,
   });
+  const [selectedDate, _selectedDate] = useState('2023-09-22');
+
+  useEffect(() => {
+    const apiUrl = `popup-stores/1/reservations?date=${selectedDate}`;
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _dailyReservationData(response.data.data);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  }, [selectedDate]);
 
   const handleChange = (event) => {
     setState((prevState) => ({
@@ -33,46 +47,6 @@ const DailyReservation = () => {
       completed: !prevState.completed,
     }));
   };
-
-  // TODO: 서버에서 받아온 데이터로 대체
-  const data = [
-    {
-      reservationStartTime: '09:30',
-      reservationEndTime: '09:45',
-      visitStartTime: '10:00',
-      visitEndTime: '10:15',
-      totalCapacity: 20,
-      reservedCapacity: 15,
-      status: '진행완료',
-    },
-    {
-      reservationStartTime: '09:45',
-      reservationEndTime: '10:00',
-      visitStartTime: '10:15',
-      visitEndTime: '10:30',
-      totalCapacity: 20,
-      reservedCapacity: 12,
-      status: '진행완료',
-    },
-    {
-      reservationStartTime: '10:00',
-      reservationEndTime: '10:15',
-      visitStartTime: '10:30',
-      visitEndTime: '10:45',
-      totalCapacity: 20,
-      reservedCapacity: 18,
-      status: '입장 중',
-    },
-    {
-      reservationStartTime: '10:15',
-      reservationEndTime: '10:30',
-      visitStartTime: '10:45',
-      visitEndTime: '11:00',
-      totalCapacity: 20,
-      reservedCapacity: 10,
-      status: '진행취소',
-    },
-  ];
 
   return (
     <>
@@ -89,7 +63,7 @@ const DailyReservation = () => {
                       labelPlacement="start"
                     />
                   </div>
-                  <DatePickerComponent />
+                  <DatePickerComponent selectedDate={selectedDate} onDateChange={_selectedDate} />
                 </div>
               </TableCell>
             </TableRow>
@@ -103,16 +77,16 @@ const DailyReservation = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item, index) => (
+            {dailyReservationData.map((item, index) => (
               <TableRow key={index}>
                 <TableCellCenter>
-                  {item.reservationStartTime} ~ {item.reservationEndTime}
+                  {formatToLocalTime(item.startTime)} ~ {formatToLocalTime(item.endTime)}
                 </TableCellCenter>
                 <TableCellCenter>
-                  {item.visitStartTime} ~ {item.visitEndTime}
+                  {formatToLocalTime(item.visitStartTime)} ~ {formatToLocalTime(item.visitEndTime)}
                 </TableCellCenter>
-                <TableCellCenter>{item.totalCapacity}</TableCellCenter>
-                <TableCellCenter>{item.reservedCapacity}</TableCellCenter>
+                <TableCellCenter>{item.guestLimit}</TableCellCenter>
+                <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                 <TableCellCenter>
                   <StatusButton status={item.status} label={item.status} />
                 </TableCellCenter>
