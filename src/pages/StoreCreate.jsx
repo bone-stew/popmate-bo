@@ -116,6 +116,8 @@ function StoreCreate() {
       axios
         .post('http://localhost:8080/api/v1/popup-stores/new', formData, {
           headers: {
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYW5nY2hvNjE3QGdtYWlsLmNvbSIsInVzZXJJZCI6NCwidXNlck5hbWUiOiLsobDsg4Hsm5AiLCJpYXQiOjE2OTQ0MTIyMjUsImV4cCI6MTY5NzAwMzU4N30.lvNMG3HRmODWotnAwyiBAXiBd8VEbR7Hs0H2Xjyj_wk',
             'content-type': 'multipart/form-data',
           },
         })

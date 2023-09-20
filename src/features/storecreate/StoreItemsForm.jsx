@@ -44,28 +44,14 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
   const [editingItemIndex, setEditingItemIndex] = useState(-1);
 
   useEffect(() => {
-    const transformedItems = viewInfo.popupStoreItemResponse.map((item) => {
-      const transformedItem = {};
-      for (const key in item) {
-        if (Object.hasOwnProperty.call(item, key)) {
-          if (key === 'amount') {
-            transformedItem.price = item[key];
-          }
-          if (key === 'stock') {
-            transformedItem.total = item[key];
-          }
-          if (key === 'imgUrl') {
-            transformedItem.image = item[key];
-          } else {
-            transformedItem[key] = item[key];
-          }
-        }
-      }
-      return transformedItem;
-    });
-    console.log(transformedItems);
-    setItemsList(transformedItems);
+    console.log(viewInfo.popupStoreItemResponse);
+    setItemsList(viewInfo.popupStoreItemResponse);
+    setItemFileList(JSON.parse(JSON.stringify(viewInfo.popupStoreItemResponse)));
   }, [viewInfo]);
+
+  StoreItemsForm.getData = () => {
+    return { itemsList, itemFileList };
+  };
 
   const handleItemNameChange = (event) => {
     setItemName(event.target.value);
@@ -131,10 +117,10 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
     }
     const newItem = {
       name: itemName,
-      price: itemPrice,
-      total: itemTotal,
+      amount: itemPrice,
+      stock: itemTotal,
       orderLimit: orderLimit,
-      image: userImage,
+      imgUrl: userImage,
     };
     const newItemImageWithFile = {
       name: itemName,
@@ -143,6 +129,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
       orderLimit: orderLimit,
       imgUrl: userImageFile,
     };
+
     setItemsList([...itemsList, newItem]);
     setItemFileList([...itemFileList, newItemImageWithFile]);
     clearForm();
@@ -175,8 +162,8 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
     setEditingItemIndex(index);
 
     setEditItemName(itemsList[index].name);
-    setEditItemPrice(itemsList[index].price);
-    setEditItemTotal(itemsList[index].total);
+    setEditItemPrice(itemsList[index].amount);
+    setEditItemTotal(itemsList[index].stock);
     setEditOrderLimit(itemsList[index].orderLimit);
     setIsEditing(true);
   };
@@ -191,10 +178,10 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
     const updatedItemsFileList = [...itemFileList];
     updatedItemsList[editingItemIndex] = {
       name: editItemName,
-      price: editItemPrice,
-      total: editItemTotal,
+      amount: editItemPrice,
+      stock: editItemTotal,
       orderLimit: editOrderLimit,
-      image: editImage,
+      imgUrl: editImage,
     };
     updatedItemsFileList[editingItemIndex] = {
       name: editItemName,
@@ -381,14 +368,14 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                   {editingItemIndex === index ? (
                     <TextField value={editItemPrice} onChange={handleEditItemPriceChange} />
                   ) : (
-                    item.price
+                    item.amount
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editItemTotal} onChange={handleEditTotalChange} />
                   ) : (
-                    item.total
+                    item.stock
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
@@ -417,8 +404,8 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                       </Button>
                     </div>
                   ) : (
-                    item.image && (
-                      <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={item.image} alt={`store item`} />
+                    item.imgUrl && (
+                      <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
                     )
                   )}
                 </TableCell>
@@ -448,18 +435,21 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
           </Table>
         </TableContainer>
       </div>
-      <div style={{ textAlign: 'center', margin: '5rem 0' }}>
-        <div>
-          <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
-            팝업스토어 등록
-          </Button>
+
+      {viewInfo === null && (
+        <div style={{ textAlign: 'center', margin: '5rem 0' }}>
+          <div>
+            <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
+              팝업스토어 등록
+            </Button>
+          </div>
+          <div style={{ marginTop: '1rem' }}>
+            <span style={{ textDecoration: 'none' }} onClick={handleCancelSales}>
+              팝업스토어 상품 판매 기능을 이용하지 않으시겠어요?
+            </span>
+          </div>
         </div>
-        <div style={{ marginTop: '1rem' }}>
-          <span style={{ textDecoration: 'none' }} onClick={handleCancelSales}>
-            팝업스토어 상품 판매 기능을 이용하지 않으시겠어요?
-          </span>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

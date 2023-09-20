@@ -28,7 +28,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
 
-function StoreInfoForm({ viewInfo, onUserChoice, addStore }) {
+function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange }) {
   const today = dayjs();
   const [title, setStoreTitle] = useState('');
   const [openDate, setOpenDate] = useState(today);
@@ -52,12 +52,12 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore }) {
   const [salesSystem, setSalesSystem] = useState('yesSales');
 
   useEffect(() => {
-    console.log(viewInfo);
     if (viewInfo !== null) {
       setStoreTitle(viewInfo.title);
       setOpenDate(viewInfo.setOpenDate);
       setCloseDate(viewInfo.setCloseDate);
       setOpenTime(viewInfo.openTime);
+      setPlaceDetail(viewInfo.placeDetail);
       setCloseTime(viewInfo.closeTime);
       setDepartment(viewInfo.department.departmentId);
       setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
@@ -85,9 +85,36 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore }) {
     }
   }, [viewInfo]);
 
+  StoreInfoForm.getData = () => {
+    const storeData = {
+      title,
+      openDate,
+      closeDate,
+      openTime,
+      closeTime,
+      department,
+      priceRadio,
+      entryFee,
+      organizer,
+      placeDetail,
+      description,
+      eventDescription,
+      reservationEnabled,
+      reservationSystem,
+      storeImageFiles,
+      website,
+      instagram,
+      youtube,
+      salesSystem,
+      storeImages,
+    };
+    return storeData;
+  };
+
   useEffect(() => {
-    console.log(title);
-  }, [title]);
+    notifyReservationChange(reservationSystem);
+    notifySalesChange(salesSystem);
+  }, [reservationSystem, salesSystem]);
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -162,10 +189,12 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore }) {
     } else {
       setReservationEnabled(false);
     }
+    // notifyReservationChange(reservationSystem);
   };
 
   const handleSalesChange = (event) => {
     setSalesSystem(event.target.value);
+    // notifySalesChange(salesSystem);
   };
 
   const handleImageUpload = (event) => {
@@ -502,11 +531,13 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore }) {
             <FormControlLabel value="noSales" control={<Radio />} label="아니요" />
           </RadioGroup>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '5rem' }}>
-          <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
-            {salesSystem === 'yesSales' || reservationSystem === 'yesReservation' ? '다음보기' : '팝업스토어 등록'}
-          </Button>
-        </div>
+        {viewInfo === null && (
+          <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+            <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
+              {salesSystem === 'yesSales' || reservationSystem === 'yesReservation' ? '다음보기' : '팝업스토어 등록'}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

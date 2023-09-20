@@ -20,6 +20,11 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
     }
   }, [viewInfo]);
 
+  StoreReservationForm.getData = () => {
+    const reservationData = { reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit };
+    return reservationData;
+  };
+
   const handleReservationChange = (event) => {
     setReservationInterval(event.target.value);
   };
@@ -143,18 +148,22 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
             <Box ml={1}>명</Box>
           </Stack>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '5rem' }}>
-          <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
-            {sales === 'yesSales' ? '다음보기' : '팝업스토어 등록'}
-          </Button>
-        </div>
 
-        <span
-          style={{ textDecoration: 'none', textAlign: 'center', display: 'block', marginTop: '1rem' }}
-          onClick={handleCancelReservation}
-        >
-          팝업스토어 예약 가능을 이용하지 않으시겠어요?
-        </span>
+        {viewInfo === null && (
+          <div>
+            <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+              <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
+                {sales === 'yesSales' ? '다음보기' : '팝업스토어 등록'}
+              </Button>
+            </div>
+            <span
+              style={{ textDecoration: 'none', textAlign: 'center', display: 'block', marginTop: '1rem' }}
+              onClick={handleCancelReservation}
+            >
+              팝업스토어 예약 가능을 이용하지 않으시겠어요?
+            </span>{' '}
+          </div>
+        )}
       </Paper>
     </div>
   );
