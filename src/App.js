@@ -1,18 +1,29 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './App.module.css';
-import { selectUser } from './slices/userSlice';
-import { Navigate, Outlet } from 'react-router-dom';
+import { fetchUser, selectUser } from './slices/userSlice';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './features/sideBar/Sidebar';
 import Header from './features/header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
-  const currUser = useSelector(selectUser);
   const drawerWidth = 240;
-
+  const currUser = useSelector(selectUser);
   const [pageTitle, _pageTitle] = useState();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchUser()).then((action) => {
+      console.log(action);
+      if (action.payload == null) {
+        navigate('/login');
+      }
+    });
+  }, [dispatch, navigate]);
+
   return currUser.value == null ? (
-    <Navigate to="/login" replace={true} />
+    <div></div>
   ) : (
     <div style={{ display: 'flex' }}>
       <Sidebar _pageTitle={_pageTitle} drawerWidth={drawerWidth} />
