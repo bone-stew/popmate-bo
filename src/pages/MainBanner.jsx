@@ -92,12 +92,11 @@ function MainBanner() {
         //   console.log(pair[0], pair[1]);
         // }
         multipartJsonAxios.post('http://localhost:8080/api/v1/admin/banners/new',formData).then((res) => {
-            console.log('왔어요');
             setSelectedFile(null);
             setFileName('이미지 첨부하기');
             setTitle('');
             setPopupStoreId(0);
-            console.log(res.data.data);
+            console.log(title);
             const bannerInfo = res.data.data;
             const newBanner = {
               bannerId : bannerInfo.bannerId,
