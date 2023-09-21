@@ -1,5 +1,5 @@
 import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Sidebar.module.css';
 import { AddCircleOutline, Addchart, ImageOutlined, Logout, ManageSearch, Storefront } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { logout } from '../../slices/userSlice';
 import { selectUser } from '../../slices/userSlice';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import JsonAxios from '../../api/jsonAxios';
 function Sidebar({ drawerWidth }) {
   const currUser = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -16,7 +17,13 @@ function Sidebar({ drawerWidth }) {
     { icon: <ManageSearch className={styles.whiteFont} />, title: '팝업 스토어 관리', to: 'overview/list' },
     { icon: <Addchart className={styles.whiteFont} />, title: '통계' },
   ];
-  const tempStoreList = [{ title: '빵빵이의 생일파티', to: '/store/3' }];
+  const [storeList, _storeList] = useState([]);
+  useEffect(() => {
+    JsonAxios.get('popup-stores/me').then((res) => {
+      console.log(res);
+      _storeList(res.data.data);
+    });
+  }, []);
   return (
     <Drawer
       sx={{
@@ -57,21 +64,23 @@ function Sidebar({ drawerWidth }) {
       )}
       <Typography className={`${styles.whiteFont} ${styles.padding}`}>
         Store
-        <IconButton
-          sx={{ verticalAlign: 'middle', color: '#ffffff' }}
-          onClick={() => {
-            navigate('/store/write', { replace: true });
-          }}
-        >
-          <AddCircleOutline />
-        </IconButton>
+        {currUser.value.role === 'ROLE_MANAGER' && (
+          <IconButton
+            sx={{ verticalAlign: 'middle', color: '#ffffff' }}
+            onClick={() => {
+              navigate('/store/write', { replace: true });
+            }}
+          >
+            <AddCircleOutline />
+          </IconButton>
+        )}
       </Typography>
       <List>
-        {tempStoreList.map((value, index) => (
+        {storeList.map((value, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton
               onClick={() => {
-                navigate(value.to);
+                navigate(`/store/${value.popupStoreId}`);
               }}
             >
               <Storefront className={styles.whiteFont} />
