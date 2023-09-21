@@ -47,8 +47,9 @@ const ReservationMain = () => {
     reservedGuestCount: 44,
     entryGuestCount: 6,
   });
-  
+
   const navigate = useNavigate();
+  console.log(_popupStoreId);
 
   useEffect(() => {
     const apiUrl = `popup-stores/${popupStoreId}/reservations/today`;
@@ -60,7 +61,7 @@ const ReservationMain = () => {
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
       });
-  }, []);
+  }, [popupStoreId]);
 
   useEffect(() => {
     const apiUrl = `popup-stores/1/orders/today?sort=${sortOrderOption}`;
