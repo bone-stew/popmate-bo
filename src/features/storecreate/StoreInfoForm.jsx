@@ -438,6 +438,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                           sx={{
                             marginRight: index === 0 ? '20px' : '0',
                             maxWidth: 150,
+                            maxHeight: 150,
                           }}
                           key={index}
                         >

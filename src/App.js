@@ -20,7 +20,7 @@ function App() {
       <Sidebar _pageTitle={_pageTitle} drawerWidth={drawerWidth} />
       <div className={styles.content}>
         <Header />
-        <StoreView popupStoreId={95} />
+        <StoreView popupStoreId={77} />
       </div>
     </div>
   );
