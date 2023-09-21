@@ -5,20 +5,37 @@ import styles from './StoreCreate.module.css';
 import FormControl from '@mui/material/FormControl';
 import { useState, useEffect } from 'react';
 
-function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, cancelReservation }) {
-  const [reservationInterval, setReservationInterval] = useState('');
+function StoreReservationForm({
+  viewInfo,
+  onUserChoice,
+  sales,
+  addReservation,
+  cancelReservation,
+  isUsingReservation,
+}) {
+  const [reservationInterval, setReservationInterval] = useState(0);
   const [maxCapacity, setMaxCapacity] = useState(0);
   const [intervalCapacity, setIntervalCapacity] = useState(15);
   const [teamSizeLimit, setTeamSizeLimit] = useState(5);
+  const [disableInput, setDisableInput] = useState(isUsingReservation);
   useEffect(() => {
-    console.log(viewInfo);
-    if (viewInfo !== null) {
+    if (Object.keys(viewInfo).length !== 0) {
       setReservationInterval(viewInfo.reservationInterval);
       setMaxCapacity(viewInfo.maxCapacity);
       setIntervalCapacity(viewInfo.intervalCapacity);
       setTeamSizeLimit(viewInfo.teamSizeLimit);
     }
   }, [viewInfo]);
+
+  useEffect(() => {
+    if (Object.keys(viewInfo).length !== 0) {
+      if (isUsingReservation) {
+        setDisableInput(false);
+      } else {
+        setDisableInput(true);
+      }
+    }
+  }, [isUsingReservation, viewInfo]);
 
   StoreReservationForm.getData = () => {
     const reservationData = { reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit };
@@ -57,10 +74,12 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
   };
 
   return (
-    <div className={styles.reservationContainer}>
-      <h2>팝업스토어 예약정보를 적어주세요</h2>
+    <div className={disableInput ? styles.reservationContainerDisabled : styles.reservationContainer}>
+      {Object.keys(viewInfo).length !== 0 && <div style={{ marginTop: '5rem' }}></div>}
+
+      <h2 style={{ textAlign: 'center', marginBottom: '3em' }}>팝업스토어 예약정보를 적어주세요</h2>
       <Paper sx={{ padding: 5 }}>
-        <div>
+        <div className={disableInput && styles.disabled}>
           <p>예약받을 시간의 간격을 설정해주세요</p>
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
@@ -77,12 +96,13 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
                     min: 0,
                   },
                 }}
+                disabled={disableInput}
               />
             </FormControl>
             <Box ml={1}>분</Box>
           </Stack>
         </div>
-        <div>
+        <div className={disableInput && styles.disabled}>
           <p>매장에 몇 명까지 수용 가능한가요?</p>
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
@@ -91,6 +111,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
                 id="outlined-number"
                 type="number"
                 value={maxCapacity}
+                disabled={disableInput}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -104,7 +125,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
             <Box ml={1}>명</Box>
           </Stack>
         </div>
-        <div>
+        <div className={disableInput && styles.disabled}>
           <p>예약 시간대별로 받을 예약 인원은 몇 명명인가요?</p>
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
@@ -113,6 +134,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
                 id="outlined-number"
                 type="number"
                 value={intervalCapacity}
+                disabled={disableInput}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -126,7 +148,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
             <Box ml={1}>명</Box>
           </Stack>
         </div>
-        <div>
+        <div className={disableInput && styles.disabled}>
           <p>한 팀당 예약받을 수 있는 최대 인원은 몇 명인가요?</p>
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
@@ -135,6 +157,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
                 id="outlined-number"
                 type="number"
                 value={teamSizeLimit}
+                disabled={disableInput}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -149,7 +172,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
           </Stack>
         </div>
 
-        {viewInfo === null && (
+        {Object.keys(viewInfo).length === 0 && (
           <div>
             <div style={{ textAlign: 'center', marginTop: '5rem' }}>
               <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
@@ -165,6 +188,7 @@ function StoreReservationForm({ viewInfo, onUserChoice, sales, addReservation, c
           </div>
         )}
       </Paper>
+      {Object.keys(viewInfo).length !== 0 && <div style={{ marginBottom: '5rem' }}></div>}
     </div>
   );
 }

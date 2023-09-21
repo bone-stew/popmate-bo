@@ -5,6 +5,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './features/sideBar/Sidebar';
 import Header from './features/header/Header';
 import { useEffect, useState } from 'react';
+import StoreCreate from './pages/StoreCreate';
+import StoreView from './pages/StoreView';
 
 function App() {
   const drawerWidth = 240;
@@ -28,12 +30,13 @@ function App() {
     <div style={{ display: 'flex' }}>
       <Sidebar _pageTitle={_pageTitle} drawerWidth={drawerWidth} />
       <div className={styles.content}>
-        <Header />
-        <StoreView popupStoreId={77} />
+        <Header pageTitle={pageTitle} />
+        <Outlet />
+        {/* <StoreCreate /> */}
+        <StoreView popupStoreId={112} />
       </div>
     </div>
   );
-  // );
 }
 
 export default App;

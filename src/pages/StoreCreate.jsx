@@ -5,7 +5,7 @@ import StoreReservationForm from '../features/storecreate/StoreReservationForm';
 import StoreItemsForm from '../features/storecreate/StoreItemsForm';
 import { useState, useCallback } from 'react';
 import StoreCreateComplete from '../features/storecreate/StoreCreateComplete';
-import axios from 'axios';
+import MultipartAxios from '../api/multipartAxios';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -86,7 +86,7 @@ function StoreCreate() {
     }
     setStoreRequest(popupStoreRequest);
     setStoreItemImageList(itemImageList);
-    setStoreImageList(storeInfo.storeImageFiles);
+    setStoreImageList(storeInfo.storeImageFilesData);
     setReadySend(true);
   }, [storeInfo, reservationInfo, salesInfo]);
 
@@ -113,14 +113,7 @@ function StoreCreate() {
     });
 
     if (readySend === true) {
-      axios
-        .post('http://localhost:8080/api/v1/popup-stores/new', formData, {
-          headers: {
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYW5nY2hvNjE3QGdtYWlsLmNvbSIsInVzZXJJZCI6NCwidXNlck5hbWUiOiLsobDsg4Hsm5AiLCJpYXQiOjE2OTQ0MTIyMjUsImV4cCI6MTY5NzAwMzU4N30.lvNMG3HRmODWotnAwyiBAXiBd8VEbR7Hs0H2Xjyj_wk',
-            'content-type': 'multipart/form-data',
-          },
-        })
+      MultipartAxios.post('popup-stores/new', formData)
         .then((response) => {
           console.log(response.data);
           setCurrentForm('complete');
@@ -133,6 +126,7 @@ function StoreCreate() {
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
+      console.log('HERE');
       createStoreDetailRequest();
     }
   }, [storeStatus, reservationStatus, salesStatus, createStoreDetailRequest]);
@@ -157,6 +151,7 @@ function StoreCreate() {
   };
 
   const addStoreInfo = (submittedStoreInfo) => {
+    console.log('SUBMITTED INFO:', submittedStoreInfo);
     setStoreInfo(submittedStoreInfo);
     setStoreStatus(true);
     if (reservation === 'noReservation' && sales === 'noSales') {
@@ -197,19 +192,44 @@ function StoreCreate() {
     setCurrentForm('complete');
   };
 
+  const handleSalesChange = () => {
+    return;
+  };
+
+  const handleReservationChange = () => {
+    return;
+  };
+
   return (
     <div>
       <div className={styles.container}>
-        {currentForm === 'info' && <StoreInfoForm onUserChoice={handleUserChoice} addStore={addStoreInfo} />}
+        {currentForm === 'info' && (
+          <StoreInfoForm
+            viewInfo={{}}
+            onUserChoice={handleUserChoice}
+            addStore={addStoreInfo}
+            notifyReservationChange={handleReservationChange}
+            notifySalesChange={handleSalesChange}
+          />
+        )}
         {currentForm === 'reservation' && (
           <StoreReservationForm
+            viewInfo={{}}
             onUserChoice={reservationFormSubmitted}
             sales={sales}
             addReservation={addReservationInfo}
             cancelReservation={handleCancelReservation}
+            isUsingReservation={reservationStatus}
           />
         )}
-        {currentForm === 'items' && <StoreItemsForm addSales={addSalesInfo} cancelSales={handleCancelSales} />}
+        {currentForm === 'items' && (
+          <StoreItemsForm
+            viewInfo={{}}
+            addSales={addSalesInfo}
+            cancelSales={handleCancelSales}
+            isUsingSales={salesStatus}
+          />
+        )}
         {currentForm === 'complete' && <StoreCreateComplete />}
       </div>
     </div>

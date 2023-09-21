@@ -2,7 +2,13 @@
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 10%;
-  /* border: 1px black solid; */
+}
+
+.containerDisabled {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 10%;
+  color: #dddddd;
 }
 
 .table {
@@ -23,10 +29,19 @@
   margin: 0 20%;
 }
 
+.reservationContainerDisabled {
+  margin: 0 20%;
+  color: #dddddd;
+}
+
+.disabled {
+  color: #dddddd;
+}
+
 .imgDeleteButton {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0.2em;
+  right: 0.2em;
   background: none;
   border: none;
   color: black;
@@ -34,22 +49,26 @@
 }
 
 .storeRepresent {
-  border: 5px solid green;
+  border: 5px solid rgb(127, 215, 127);
   border-radius: 10px;
+  size: 150px;
 }
 
 .image {
   border-radius: 10px;
+  size: 150px;
 }
 
-/* .storeImgContainer {
-  display: 'flex';
-  flex-wrap: 'wrap';
-  justify-content: 'space-around';
-  overflow: 'hidden';
-  background-color: red;
+.redSpan {
+  color: red;
 }
 
-.imageList {
-  flex-wrap: nowrap;
-} */
+.shaded {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}

@@ -26,7 +26,8 @@ import { styled } from '@mui/material/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
+import ImageIcon from '@mui/icons-material/Image';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange }) {
   const today = dayjs();
@@ -50,9 +51,11 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [youtube, setYoutube] = useState('');
   const [reservationSystem, setReservationSystem] = useState('yesReservation');
   const [salesSystem, setSalesSystem] = useState('yesSales');
+  const [bannerImage, setBannerImage] = useState(null);
+  const [bannerImageFile, setBannerImageFile] = useState(null);
 
   useEffect(() => {
-    if (viewInfo !== null) {
+    if (Object.keys(viewInfo).length !== 0) {
       setStoreTitle(viewInfo.title);
       setOpenDate(viewInfo.setOpenDate);
       setCloseDate(viewInfo.setCloseDate);
@@ -64,7 +67,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setEntryFee(viewInfo.setEntryFee);
       setOrganizer(viewInfo.organizer);
       let imgUrls = viewInfo.popupStoreImgResponse.map((item) => item.imgUrl);
-      imgUrls = [viewInfo.bannerImgUrl, ...imgUrls];
+      // imgUrls = [viewInfo.bannerImgUrl, ...imgUrls];
+      setBannerImage(viewInfo.bannerImgUrl);
       setStoreImages(imgUrls);
       setDescription(viewInfo.description);
       setEventDescription(viewInfo.eventDescription !== null ? viewInfo.eventDescription : '');
@@ -86,6 +90,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   }, [viewInfo]);
 
   StoreInfoForm.getData = () => {
+    const storeImagesData = [bannerImage, ...storeImages];
+    const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
     const storeData = {
       title,
       openDate,
@@ -101,12 +107,12 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       eventDescription,
       reservationEnabled,
       reservationSystem,
-      storeImageFiles,
+      storeImageFilesData,
       website,
       instagram,
       youtube,
       salesSystem,
-      storeImages,
+      storeImagesData,
     };
     return storeData;
   };
@@ -114,7 +120,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   useEffect(() => {
     notifyReservationChange(reservationSystem);
     notifySalesChange(salesSystem);
-  }, [reservationSystem, salesSystem]);
+  }, [reservationSystem, salesSystem, notifyReservationChange, notifySalesChange]);
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -197,6 +203,14 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
     // notifySalesChange(salesSystem);
   };
 
+  const handleBannerImageUpload = (event) => {
+    const selectedImage = event.target.files[0];
+    if (selectedImage) {
+      setBannerImage(URL.createObjectURL(selectedImage));
+      setBannerImageFile(selectedImage);
+    }
+  };
+
   const handleImageUpload = (event) => {
     const selectedImage = event.target.files[0];
     if (selectedImage) {
@@ -229,12 +243,15 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       organizer === '' ||
       placeDetail === '' ||
       description === '' ||
-      (reservationSystem === 'yesReservation' && storeImages.length === 0)
+      (reservationSystem === 'yesReservation' && storeImages.length === 0) ||
+      bannerImage === null
     ) {
       alert('필수 항목을 기입해주세요');
       return;
     }
     onUserChoice(reservationSystem, salesSystem);
+    const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
+
     const storeData = {
       title,
       openDate,
@@ -250,7 +267,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       eventDescription,
       reservationEnabled,
       reservationSystem,
-      storeImageFiles,
+      storeImageFilesData,
       website,
       instagram,
       youtube,
@@ -400,6 +417,35 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
+                대표 이미지<span style={{ color: 'red' }}> (*)</span>
+              </TableCell>
+              <TableCell className={styles.table}>
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    {bannerImage && (
+                      <img
+                        style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '10px' }}
+                        src={bannerImage}
+                        alt={`store item`}
+                      />
+                    )}
+                    <Button
+                      component="label"
+                      variant="contained"
+                      startIcon={<ImageIcon />}
+                      sx={{
+                        marginTop: '1em',
+                      }}
+                    >
+                      이미지 첨부하기
+                      <VisuallyHiddenInput type="file" onChange={handleBannerImageUpload} />
+                    </Button>
+                  </div>
+                </div>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className={styles.table}>
                 스토어 이미지<span style={{ color: 'red' }}> (*)</span>
               </TableCell>
               <TableCell className={styles.table}>
@@ -442,12 +488,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                           }}
                           key={index}
                         >
-                          <img
-                            className={index === 0 ? styles.storeRepresent : styles.image}
-                            src={userImage}
-                            alt={`store ${index}`}
-                          />
-                          <HighlightOffSharpIcon
+                          <img className={styles.image} src={userImage} alt={`store ${index}`} />
+                          <CancelIcon
                             width="25px"
                             className={styles.imgDeleteButton}
                             onClick={() => handleRemoveImage(index)}
@@ -532,7 +574,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             <FormControlLabel value="noSales" control={<Radio />} label="아니요" />
           </RadioGroup>
         </div>
-        {viewInfo === null && (
+        {Object.keys(viewInfo).length === 0 && (
           <div style={{ textAlign: 'center', marginTop: '5rem' }}>
             <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
               {salesSystem === 'yesSales' || reservationSystem === 'yesReservation' ? '다음보기' : '팝업스토어 등록'}

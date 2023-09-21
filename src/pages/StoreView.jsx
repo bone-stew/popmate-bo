@@ -13,11 +13,8 @@ function StoreView({ popupStoreId }) {
   const [isUsingSales, setIsUsingSales] = useState();
 
   useEffect(() => {
-    // setViewInfo();
-
     MultipartAxios.get(`popup-stores/${popupStoreId}/edit`)
       .then((response) => {
-        console.log('VIEWINFO', response.data.data);
         setStoreData(response.data.data);
         setIsUsingReservation(response.data.data.reservationEnabled);
         setIsUsingSales(response.data.data.popupStoreItemResponse.length !== 0);
@@ -46,7 +43,7 @@ function StoreView({ popupStoreId }) {
 
   const handleEditStore = async () => {
     const storeInfo = StoreInfoForm.getData();
-    const newStoreImages = storeInfo.storeImageFiles;
+    const newStoreImages = storeInfo.storeImageFilesData;
 
     var storeTemp = {
       popupStore: {
@@ -77,7 +74,7 @@ function StoreView({ popupStoreId }) {
         formData.append('storeImageFiles', image);
       });
     } else {
-      storeTemp.storeImageList = storeInfo.storeImages;
+      storeTemp.storeImageList = storeInfo.storeImagesData;
     }
 
     const snsPlatforms = ['website', 'youtube', 'instagram'];
@@ -124,12 +121,12 @@ function StoreView({ popupStoreId }) {
     MultipartAxios.post(`popup-stores/${popupStoreId}/images`, formData)
       .then((response) => {
         const responseObj = response.data;
-        var storeImagesWithoutLocalImages = storeInfo.storeImages.filter((image) => !image.startsWith('blob:'));
+        var storeImagesWithoutLocalImages = storeInfo.storeImagesData.filter((image) => !image.startsWith('blob:'));
         var updatedStoreImageList = storeImagesWithoutLocalImages.concat(responseObj.data.popupStoreImageList);
         if (responseObj.data.popupStoreImageList !== null) {
           storeTemp.storeImageList = updatedStoreImageList;
         } else {
-          storeTemp.storeImageList = storeInfo.storeImages;
+          storeTemp.storeImageList = storeInfo.storeImagesData;
         }
         if (responseObj.data.popupStoreItemImageList !== null) {
           var updatedStoreItemImageList = responseObj.data.popupStoreItemImageList;
@@ -152,12 +149,6 @@ function StoreView({ popupStoreId }) {
       });
   };
 
-  // useEffect(() => {
-  //   console.log('newStore', newStore);
-  //   console.log('storeImageList', storeImageList);
-  //   console.log('storeItemImageList', storeItemImageList);
-  // }, [newStore]);
-
   if (!isLoading) {
     return (
       <div>
@@ -168,8 +159,8 @@ function StoreView({ popupStoreId }) {
             notifySalesChange={handleSalesChange}
           />
         )}
-        {isUsingReservation && <StoreReservationForm viewInfo={storeData} />}
-        {isUsingSales && <StoreItemsForm viewInfo={storeData} />}
+        <StoreReservationForm viewInfo={storeData} isUsingReservation={isUsingReservation} />
+        <StoreItemsForm viewInfo={storeData} isUsingSales={isUsingSales} />
         <div style={{ textAlign: 'center', margin: '5rem 0' }}>
           <div>
             <Button type="submit" onClick={handleEditStore} variant="contained" sx={{ borderRadius: 28 }}>

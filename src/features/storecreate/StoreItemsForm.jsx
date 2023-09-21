@@ -11,7 +11,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 
-function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
+function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -42,12 +42,24 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
   const [editImageFile, setEditImageFile] = useState('');
 
   const [editingItemIndex, setEditingItemIndex] = useState(-1);
+  const [disableInput, setDisableInput] = useState(isUsingSales);
 
   useEffect(() => {
-    console.log(viewInfo.popupStoreItemResponse);
-    setItemsList(viewInfo.popupStoreItemResponse);
-    setItemFileList(JSON.parse(JSON.stringify(viewInfo.popupStoreItemResponse)));
+    if (Object.keys(viewInfo).length !== 0) {
+      setItemsList(viewInfo.popupStoreItemResponse);
+      setItemFileList(JSON.parse(JSON.stringify(viewInfo.popupStoreItemResponse)));
+    }
   }, [viewInfo]);
+
+  useEffect(() => {
+    if (Object.keys(viewInfo).length !== 0) {
+      if (isUsingSales) {
+        setDisableInput(false);
+      } else {
+        setDisableInput(true);
+      }
+    }
+  }, [isUsingSales, viewInfo]);
 
   StoreItemsForm.getData = () => {
     return { itemsList, itemFileList };
@@ -158,7 +170,6 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
       alert('현재 수정 하고 있는 아이템을 저장해주세요');
       return;
     }
-    // setEditingItem(itemsList[index]);
     setEditingItemIndex(index);
 
     setEditItemName(itemsList[index].name);
@@ -206,14 +217,16 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
   };
 
   return (
-    <div className="styles.container">
-      <h3 style={{ textAlign: 'center', marginBottom: '3em' }}>판매하실 상품들을 입력해주세요</h3>
+    <div className={disableInput ? styles.containerDisabled : styles.container}>
+      <h2 style={{ textAlign: 'center', marginBottom: '3em' }}>판매하실 상품들을 입력해주세요</h2>
       <Paper variant="outlined" sx={{ padding: '2rem' }} square={false} elevation={1}>
         <TableContainer>
           <Table variant={'outlined'}>
             <TableRow>
               <TableCell className={styles.table}>
-                상품명<span style={{ color: 'red' }}> (*)</span>
+                <div className={disableInput && styles.disabled}>
+                  상품명<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
+                </div>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
@@ -222,13 +235,16 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                     value={itemName}
                     onChange={handleItemNameChange}
                     placeholder="상품명을 입력해주세요"
+                    disabled={disableInput}
                   />
                 </FormControl>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                상품가격<span style={{ color: 'red' }}> (*)</span>
+                <div className={disableInput && styles.disabled}>
+                  상품가격<span style={{ color: 'red' }}> (*)</span>
+                </div>
               </TableCell>
               <TableCell className={styles.table}>
                 <Stack direction="row" alignItems="center">
@@ -247,15 +263,20 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                           min: 0,
                         },
                       }}
+                      disabled={disableInput}
                     />
                   </FormControl>
-                  <Box ml={1}>원</Box>
+                  <div className={disableInput && styles.disabled}>
+                    <Box ml={1}>원</Box>
+                  </div>
                 </Stack>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                재고<span style={{ color: 'red' }}> (*)</span>
+                <div className={disableInput && styles.disabled}>
+                  재고<span style={{ color: 'red' }}> (*)</span>
+                </div>
               </TableCell>
               <TableCell className={styles.table}>
                 <Stack direction="row" alignItems="center">
@@ -274,6 +295,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                           min: 0,
                         },
                       }}
+                      disabled={disableInput}
                     />
                   </FormControl>
                 </Stack>
@@ -281,7 +303,9 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                주문가능 수량<span style={{ color: 'red' }}> (*)</span>
+                <div className={disableInput && styles.disabled}>
+                  주문가능 수량<span style={{ color: 'red' }}> (*)</span>
+                </div>
               </TableCell>
               <TableCell className={styles.table}>
                 <Stack direction="row" alignItems="center">
@@ -300,6 +324,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                           min: 0,
                         },
                       }}
+                      disabled={disableInput}
                     />
                   </FormControl>
                 </Stack>
@@ -307,7 +332,9 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                상품 이미지<span style={{ color: 'red' }}> (*)</span>
+                <div className={disableInput && styles.disabled}>
+                  상품 이미지<span style={{ color: 'red' }}> (*)</span>
+                </div>
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -321,6 +348,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                     sx={{
                       marginTop: '1em',
                     }}
+                    disabled={disableInput}
                   >
                     이미지 첨부하기
                     <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageUpload} />
@@ -336,22 +364,33 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
             type="button"
             variant="contained"
             onClick={handleItemAdd}
+            disabled={disableInput}
           >
             상품 추가하기
           </Button>
         </div>
       </Paper>
       <div>
-        <h4 style={{ marginTop: '4rem' }}>추가된 상품 목록</h4>
+        <h4 style={{ marginTop: '4rem', textAlign: 'center' }}>추가된 상품 목록</h4>
         <TableContainer component={Paper}>
           <Table>
             <TableHead sx={{ backgroundColor: '#F8F9FA' }}>
               <TableRow>
-                <TableCell className={styles.table}>상품명</TableCell>
-                <TableCell className={styles.table}>상품 가격</TableCell>
-                <TableCell className={styles.table}>재고</TableCell>
-                <TableCell className={styles.table}>주문 가능수량(1인제한)</TableCell>
-                <TableCell className={styles.table}>상품 이미지</TableCell>
+                <TableCell className={styles.table}>
+                  <div className={disableInput && styles.disabled}>상품명</div>
+                </TableCell>
+                <TableCell className={styles.table}>
+                  <div className={disableInput && styles.disabled}>상품 가격</div>
+                </TableCell>
+                <TableCell className={styles.table}>
+                  <div className={disableInput && styles.disabled}>재고</div>
+                </TableCell>
+                <TableCell className={styles.table}>
+                  <div className={disableInput && styles.disabled}>주문 가능수량(1인제한)</div>
+                </TableCell>
+                <TableCell className={styles.table}>
+                  <div className={disableInput && styles.disabled}>상품 이미지</div>
+                </TableCell>
                 <TableCell className={styles.table}></TableCell>
               </TableRow>
             </TableHead>
@@ -361,28 +400,28 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                   {editingItemIndex === index ? (
                     <TextField value={editItemName} onChange={handleEditItemNameChange} />
                   ) : (
-                    item.name
+                    <div className={disableInput && styles.disabled}>{item.name}</div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editItemPrice} onChange={handleEditItemPriceChange} />
                   ) : (
-                    item.amount
+                    <div className={disableInput && styles.disabled}>{item.amount}</div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editItemTotal} onChange={handleEditTotalChange} />
                   ) : (
-                    item.stock
+                    <div className={disableInput && styles.disabled}>{item.stock}</div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editOrderLimit} onChange={handleEditOrderLimitChange} />
                   ) : (
-                    item.orderLimit
+                    <div className={disableInput && styles.disabled}>{item.orderLimit}</div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
@@ -404,9 +443,11 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                       </Button>
                     </div>
                   ) : (
-                    item.imgUrl && (
-                      <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
-                    )
+                    <div className={disableInput ? `${styles.disabled} ${styles.shaded}` : styles.disabled}>
+                      {item.imgUrl && (
+                        <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
+                      )}
+                    </div>
                   )}
                 </TableCell>
                 <TableCell>
@@ -421,10 +462,10 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
                     </Stack>
                   ) : (
                     <Stack direction="row" spacing={1}>
-                      <IconButton aria-label="delete" onClick={() => handleDeleteItem(index)}>
+                      <IconButton disabled={disableInput} aria-label="delete" onClick={() => handleDeleteItem(index)}>
                         <DeleteIcon />
                       </IconButton>
-                      <IconButton aria-label="edit" onClick={() => handleEditItem(index)}>
+                      <IconButton disabled={disableInput} aria-label="edit" onClick={() => handleEditItem(index)}>
                         <EditIcon />
                       </IconButton>
                     </Stack>
@@ -436,7 +477,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales }) {
         </TableContainer>
       </div>
 
-      {viewInfo === null && (
+      {Object.keys(viewInfo).length === 0 && (
         <div style={{ textAlign: 'center', margin: '5rem 0' }}>
           <div>
             <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
