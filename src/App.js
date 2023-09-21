@@ -5,8 +5,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './features/sideBar/Sidebar';
 import Header from './features/header/Header';
 import { useEffect, useState } from 'react';
-import StoreCreate from './pages/StoreCreate';
-import StoreView from './pages/StoreView';
 
 function App() {
   const drawerWidth = 240;
@@ -32,8 +30,6 @@ function App() {
       <div className={styles.content}>
         <Header pageTitle={pageTitle} />
         <Outlet />
-        {/* <StoreCreate /> */}
-        <StoreView popupStoreId={112} />
       </div>
     </div>
   );
