@@ -81,9 +81,18 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
     setOrderLimit(event.target.value);
   };
 
+  const checkFileSize = (fileSize) => {
+    const maxSize = 1024 * 1024; // 1MB (adjust as needed)
+    if (fileSize > maxSize) {
+      alert('파일 크기는 최대 1MB입니다');
+      return false;
+    }
+    return true;
+  };
+
   const handleImageUpload = (event) => {
     const selectedImage = event.target.files[0];
-    if (selectedImage) {
+    if (selectedImage && checkFileSize(selectedImage.size)) {
       setUserImageFile(selectedImage);
       setUserImage(URL.createObjectURL(selectedImage));
     }
@@ -107,7 +116,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
 
   const handleEditImageUpload = (event) => {
     const selectedImage = event.target.files[0];
-    if (selectedImage) {
+    if (selectedImage && checkFileSize(selectedImage.size)) {
       setEditImageFile(selectedImage);
       setEditImage(URL.createObjectURL(selectedImage));
     }

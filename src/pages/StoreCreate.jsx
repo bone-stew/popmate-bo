@@ -6,6 +6,7 @@ import StoreItemsForm from '../features/storecreate/StoreItemsForm';
 import { useState, useCallback } from 'react';
 import StoreCreateComplete from '../features/storecreate/StoreCreateComplete';
 import MultipartAxios from '../api/multipartAxios';
+import { useNavigate } from 'react-router-dom';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -21,6 +22,7 @@ function StoreCreate() {
   const [storeImageList, setStoreImageList] = useState([]);
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
+  const navigate = useNavigate();
 
   const handleUserChoice = (reservationText, salesText) => {
     setReservation(reservationText);
@@ -30,9 +32,9 @@ function StoreCreate() {
   const createStoreDetailRequest = useCallback(() => {
     const popupStoreRequest = {
       popupStore: {
-        user: {
-          userId: 122,
-        },
+        // user: {
+        //   userId: 122,
+        // },
         department: {
           departmentId: storeInfo.department,
         },
@@ -117,6 +119,7 @@ function StoreCreate() {
         .then((response) => {
           console.log(response.data);
           setCurrentForm('complete');
+          navigate('/overview/list');
         })
         .catch((error) => {
           console.error(error);

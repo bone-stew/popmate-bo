@@ -6,14 +6,20 @@ import { useState } from 'react';
 import MultipartAxios from '../api/multipartAxios';
 import JsonAxios from '../api/jsonAxios';
 import Button from '@mui/material/Button';
-function StoreView({ popupStoreId }) {
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+function StoreView() {
   const [storeData, setStoreData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [isUsingReservation, setIsUsingReservation] = useState();
   const [isUsingSales, setIsUsingSales] = useState();
+  const navigate = useNavigate();
+
+  const { storeId } = useParams();
 
   useEffect(() => {
-    MultipartAxios.get(`popup-stores/${popupStoreId}/edit`)
+    MultipartAxios.get(`popup-stores/${storeId}/edit`)
       .then((response) => {
         setStoreData(response.data.data);
         setIsUsingReservation(response.data.data.reservationEnabled);
@@ -23,7 +29,7 @@ function StoreView({ popupStoreId }) {
       .catch((error) => {
         console.error(error);
       });
-  }, [popupStoreId]);
+  }, [1]);
 
   const handleReservationChange = (reservationText) => {
     if (reservationText === 'noReservation') {
@@ -61,7 +67,7 @@ function StoreView({ popupStoreId }) {
         openTime: storeInfo.openTime,
         closeTime: storeInfo.closeTime,
         views: storeInfo.views,
-        popupStoreId: popupStoreId,
+        popupStoreId: storeId,
         storeImageList: [],
       },
       popupStoreSnsList: [],
@@ -70,6 +76,7 @@ function StoreView({ popupStoreId }) {
 
     const formData = new FormData();
     if (newStoreImages.length !== 0) {
+      console.log(newStoreImages);
       newStoreImages.forEach((image, index) => {
         formData.append('storeImageFiles', image);
       });
@@ -118,7 +125,7 @@ function StoreView({ popupStoreId }) {
     } else {
       storeTemp.popupStoreItemList = [];
     }
-    MultipartAxios.post(`popup-stores/${popupStoreId}/images`, formData)
+    MultipartAxios.post(`popup-stores/${storeId}/images`, formData)
       .then((response) => {
         const responseObj = response.data;
         var storeImagesWithoutLocalImages = storeInfo.storeImagesData.filter((image) => !image.startsWith('blob:'));
@@ -136,9 +143,10 @@ function StoreView({ popupStoreId }) {
           storeTemp.popupStoreItemList = itemsList;
         }
 
-        JsonAxios.put(`popup-stores/${popupStoreId}`, JSON.stringify(storeTemp))
+        JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {
             console.log(response.data);
+            navigate('/overview/list');
           })
           .catch((e) => {
             console.error(e);
