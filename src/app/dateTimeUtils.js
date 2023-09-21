@@ -35,4 +35,13 @@ function formatToLocalTimeFromLocalDateTime(localDateTime) {
   return `${hour}:${minute}`;
 }
 
-export { formatToLocalTime, addMinutesToLocalDateTime, formatToLocalTimeFromLocalDateTime };
+// 현재 날짜를 YYYY-MM-dd 형식의 문자열로 반환하는 함수
+function getCurrentDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export { formatToLocalTime, addMinutesToLocalDateTime, formatToLocalTimeFromLocalDateTime, getCurrentDate };

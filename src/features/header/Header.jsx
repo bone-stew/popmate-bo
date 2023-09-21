@@ -11,14 +11,16 @@ function Header() {
     '/overview/list': 'list',
     '/overview/banner': 'banner',
     '/store': 'store',
-    '/store/3': '이걸 어케 받아온담',
+    '/store/3': '팝업스토어 관리',
     '/store/write': 'write',
+    '/store/1/reservations': 'reservations',
   };
   const titleNameMap = {
     banner: '메인 배너 등록',
     list: '팝업스토어 목록',
-    3: '이걸 어케 받아온담',
+    3: '팝업스토어 관리',
     write: '팝업스토어 등록',
+    reservations: '일일 예약 내역',
   };
   return (
     <div className={styles.container}>

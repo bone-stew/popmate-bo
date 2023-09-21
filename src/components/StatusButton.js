@@ -8,11 +8,7 @@ const statusStyles = {
     color: '#00A76F',
   },
   /* 파란색 */
-  진행완료: {
-    backgroundColor: '#EAEBFF',
-    color: '#1273E4',
-  },
-  '예약 완료': {
+  '입장 완료': {
     backgroundColor: '#EAEBFF',
     color: '#1273E4',
   },
@@ -20,12 +16,17 @@ const statusStyles = {
     backgroundColor: '#EAEBFF',
     color: '#1273E4',
   },
+  /* 보라색 */
+  '예약 중': {
+    backgroundColor: '#F1EDFF',
+    color: '#9071C3',
+  },
   /* 빨간색 */
   진행취소: {
     backgroundColor: '#FFDDDD',
     color: '#FF6D6D',
   },
-  예약취소: {
+  '예약 중단': {
     backgroundColor: '#FFDDDD',
     color: '#FF6D6D',
   },
@@ -34,7 +35,7 @@ const statusStyles = {
     color: '#FF6D6D',
   },
   /* 노란색 */
-  '예약 중': {
+  '예약 마감': {
     backgroundColor: '#FEF0D2',
     color: '#FFAB00',
   },

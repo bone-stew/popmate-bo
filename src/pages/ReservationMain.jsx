@@ -155,7 +155,7 @@ const ReservationMain = () => {
                 </TableRow>
                 <TableRow style={{ backgroundColor: '#F2F4F6' }}>
                   <TableCellCenter>시간</TableCellCenter>
-                  <TableCellCenter>예약 받을 인원 수</TableCellCenter>
+                  <TableCellCenter>예약한 인원 수</TableCellCenter>
                   <TableCellCenter>입장/예약 상태</TableCellCenter>
                 </TableRow>
               </TableHead>
