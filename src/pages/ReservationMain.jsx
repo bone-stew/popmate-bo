@@ -19,7 +19,7 @@ import StatusButton from '../components/StatusButton';
 import MoreButton from '../components/MoreButton';
 import JsonAxios from '../api/jsonAxios';
 import { addMinutesToLocalDateTime, formatToLocalTime, formatToLocalTimeFromLocalDateTime } from '../app/dateTimeUtils';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -35,7 +35,9 @@ const cardStyle = {
 };
 
 const ReservationMain = () => {
-  const [popupStoreId, _popupStoreId] = useState(1);
+  const location = useLocation();
+
+  const [popupStoreId, _popupStoreId] = useState(location.pathname.split('/').filter((x) => x)[1]);
   const [todayReservations, _todayReservations] = useState([]);
   const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
   const [todayOrders, _todayOrders] = useState([]);
@@ -64,7 +66,7 @@ const ReservationMain = () => {
   }, [popupStoreId]);
 
   useEffect(() => {
-    const apiUrl = `popup-stores/1/orders/today?sort=${sortOrderOption}`;
+    const apiUrl = `popup-stores/${popupStoreId}/orders/today?sort=${sortOrderOption}`;
 
     JsonAxios.get(apiUrl)
       .then((response) => {
@@ -73,15 +75,14 @@ const ReservationMain = () => {
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
       });
-  }, [sortOrderOption]);
+  }, [popupStoreId, sortOrderOption]);
 
   const handleSortClick = (option) => {
     _sortOrderOption(option);
   };
 
   const handleMoreButtonClick = () => {
-    console.log('handleMoreButtonClick');
-    navigate(`/store/1/reservations`);
+    navigate(`/store/${popupStoreId}/reservations`);
   };
 
   return (
