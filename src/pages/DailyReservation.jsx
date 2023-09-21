@@ -28,12 +28,10 @@ const TableCellCenter = ({ children }) => (
 
 const DailyReservation = () => {
   const location = useLocation();
-  const popupStoreId = location.pathname.split('/').filter((x) => x)[1];
 
+  const popupStoreId = location.pathname.split('/').filter((x) => x)[1];
   const [dailyReservationData, _dailyReservationData] = useState([]);
-  const [state, setState] = React.useState({
-    completed: true,
-  });
+  const [state, _state] = React.useState({ includeEntered: true });
   const [selectedDate, _selectedDate] = useState(getCurrentDate());
 
   useEffect(() => {
@@ -48,9 +46,9 @@ const DailyReservation = () => {
   }, [selectedDate]);
 
   const handleChange = (event) => {
-    setState((prevState) => ({
+    _state((prevState) => ({
       ...prevState,
-      completed: !prevState.completed,
+      includeEntered: !prevState.includeEntered,
     }));
   };
 
@@ -64,7 +62,7 @@ const DailyReservation = () => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <div style={{ flex: 1 }}>
                     <FormControlLabel
-                      control={<Switch checked={state.completed} onChange={handleChange} name="completed" />}
+                      control={<Switch checked={state.includeEntered} onChange={handleChange} name="completed" />}
                       label="입장완료 포함"
                       labelPlacement="start"
                     />
@@ -90,26 +88,31 @@ const DailyReservation = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dailyReservationData.map((item, index) => (
-              <TableRow key={index}>
-                <TableCellCenter>
-                  {formatToLocalTime(item.startTime)} ~ {formatToLocalTime(item.endTime)}
-                </TableCellCenter>
-                <TableCellCenter>
-                  {formatToLocalTime(item.visitStartTime)} ~ {formatToLocalTime(item.visitEndTime)}
-                </TableCellCenter>
-                <TableCellCenter>{item.guestLimit}</TableCellCenter>
-                <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
-                <TableCellCenter>
-                  <StatusButton status={item.status} label={item.status} />
-                </TableCellCenter>
-                <TableCellCenter>
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
-                </TableCellCenter>
-              </TableRow>
-            ))}
+            {dailyReservationData.map((item, index) => {
+              if (!state.includeEntered && item.status === '입장 완료') {
+                return null;
+              }
+              return (
+                <TableRow key={index}>
+                  <TableCellCenter>
+                    {formatToLocalTime(item.startTime)} ~ {formatToLocalTime(item.endTime)}
+                  </TableCellCenter>
+                  <TableCellCenter>
+                    {formatToLocalTime(item.visitStartTime)} ~ {formatToLocalTime(item.visitEndTime)}
+                  </TableCellCenter>
+                  <TableCellCenter>{item.guestLimit}</TableCellCenter>
+                  <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
+                  <TableCellCenter>
+                    <StatusButton status={item.status} label={item.status} />
+                  </TableCellCenter>
+                  <TableCellCenter>
+                    <IconButton>
+                      <EditIcon />
+                    </IconButton>
+                  </TableCellCenter>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
