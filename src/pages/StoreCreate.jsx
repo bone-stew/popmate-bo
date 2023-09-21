@@ -124,7 +124,7 @@ function StoreCreate() {
           console.error(error);
         });
     }
-  }, [readySend, storeImageList, storeItemImageList, storeRequest]);
+  }, [readySend, storeImageList, storeItemImageList, storeRequest, navigate]);
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
