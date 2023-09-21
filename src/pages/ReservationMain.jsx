@@ -41,14 +41,7 @@ const ReservationMain = () => {
   const [todayReservations, _todayReservations] = useState([]);
   const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
   const [todayOrders, _todayOrders] = useState([]);
-  const [currentReservation, _currentReservation] = useState({
-    popupStoreId: 0,
-    popupStoreName: '트렌디 패션 팝업',
-    currentReservationStartTime: '10:00',
-    currentReservationEndTime: '10:15',
-    reservedGuestCount: 44,
-    entryGuestCount: 6,
-  });
+  const [currentReservation, _currentReservation] = useState([]);
 
   const navigate = useNavigate();
   console.log(_popupStoreId);
@@ -81,7 +74,11 @@ const ReservationMain = () => {
     _sortOrderOption(option);
   };
 
-  const handleMoreButtonClick = () => {
+  const handleReservationMoreButtonClick = () => {
+    navigate(`/store/${popupStoreId}/reservations`);
+  };
+
+  const handleOrderMoreButtonClick = () => {
     navigate(`/store/${popupStoreId}/reservations`);
   };
 
@@ -90,7 +87,7 @@ const ReservationMain = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '60px' }}>
         {/* 왼쪽 상단: "이 시각 예약 현황" */}
         <div style={{ minWidth: '300px', marginTop: '10px' }}>
-          <Typography variant="h7">이 시각</Typography>
+          <Typography variant="h7">{currentReservation.isEntering ? '이 시각' : '지난'}</Typography>
           <Typography variant="h4" style={{ marginBottom: '10px', marginTop: '10px' }}>
             {formatToLocalTime(currentReservation.currentReservationStartTime)} ~{' '}
             {formatToLocalTime(currentReservation.currentReservationEndTime)}
@@ -137,7 +134,7 @@ const ReservationMain = () => {
             <Typography variant="h6" style={{ fontWeight: 'bold' }}>
               이 시각 이후 예약 인원을 관리하세요
             </Typography>
-            <MoreButton handler={handleMoreButtonClick} />
+            <MoreButton handler={handleReservationMoreButtonClick} />
           </div>
           <TableContainer
             style={{
@@ -185,7 +182,7 @@ const ReservationMain = () => {
             <Typography variant="h6" style={{ fontWeight: 'bold' }}>
               오늘의 주문 목록을 확인하세요
             </Typography>
-            <MoreButton />
+            <MoreButton handler={handleOrderMoreButtonClick} />
           </div>
           <TableContainer
             style={{
