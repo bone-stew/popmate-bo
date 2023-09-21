@@ -1,4 +1,4 @@
-import { Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
+import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 import styles from './Sidebar.module.css';
 import { AddCircleOutline, Addchart, ImageOutlined, Logout, ManageSearch, Storefront } from '@mui/icons-material';
@@ -57,12 +57,14 @@ function Sidebar({ drawerWidth }) {
       )}
       <Typography className={`${styles.whiteFont} ${styles.padding}`}>
         Store
-        <AddCircleOutline
-          sx={{ verticalAlign: 'middle', paddingLeft: '12px' }}
+        <IconButton
+          sx={{ verticalAlign: 'middle', color: '#ffffff' }}
           onClick={() => {
             navigate('/store/write', { replace: true });
           }}
-        />
+        >
+          <AddCircleOutline />
+        </IconButton>
       </Typography>
       <List>
         {tempStoreList.map((value, index) => (
