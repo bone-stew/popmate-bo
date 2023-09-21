@@ -27,7 +27,7 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.value = { name: action.payload.data.nickname, role: action.payload.data.authorities[0].authority };
+        state.value = { name: action.payload.data.nickname, role: action.payload.data.authorities[0] };
         state.loading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
