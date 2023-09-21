@@ -6,13 +6,14 @@ import { IconButton, TextField } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-const DatePickerComponent = ({ todoObject, type }) => {
-  const initialDate =
-    todoObject && todoObject[type] && dayjs(todoObject[type]).isValid() ? dayjs(todoObject[type]) : dayjs();
-  const [date, setDate] = useState(initialDate);
+const DatePickerComponent = ({ selectedDate, onDateChange }) => {
+  const [date, setDate] = useState(() => dayjs(selectedDate).locale('ko'));
 
   const handleChange = (updatedDate) => {
     setDate(updatedDate);
+    console.log('updatedDate : ' + updatedDate);
+    console.log(updatedDate.format('YYYY-MM-DD'));
+    onDateChange(updatedDate.format('YYYY-MM-DD'));
   };
 
   const handlePrevDate = () => {
@@ -34,7 +35,6 @@ const DatePickerComponent = ({ todoObject, type }) => {
         <DatePicker
           className="datePicker"
           format="YYYY-MM-DD"
-          label={type === 't' ? 'Threshold' : '날짜'}
           value={date}
           onChange={(updatedDate) => handleChange(updatedDate)}
           renderInput={(props) => <TextField {...props} variant="standard" />}
