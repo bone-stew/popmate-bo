@@ -79,7 +79,7 @@ const ReservationMain = () => {
   };
 
   const handleOrderMoreButtonClick = () => {
-    navigate(`/store/${popupStoreId}/reservations`);
+    navigate(`/store/${popupStoreId}/orders`);
   };
 
   return (
