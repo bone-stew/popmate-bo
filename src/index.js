@@ -13,6 +13,7 @@ import Order from './pages/Order';
 import ReservationMain from './pages/ReservationMain';
 import StoreCreate from './pages/StoreCreate';
 import Login from './pages/Login';
+import OrderQR from './pages/OrderQR'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: '/store/write',
         element: <StoreCreate />,
+      },
+      {
+        path: '/store/orderQr',
+        element: <OrderQR/>
       },
     ],
   },
