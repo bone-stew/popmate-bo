@@ -445,7 +445,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className={styles.table}>
+              <TableCell sx={{ minWidth: '10rem' }} className={styles.table}>
                 스토어 이미지<span style={{ color: 'red' }}> (*)</span>
               </TableCell>
               <TableCell className={styles.table}>

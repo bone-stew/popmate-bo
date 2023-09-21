@@ -214,7 +214,12 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
   };
 
   const handleCancelSales = () => {
-    cancelSales('noReservation');
+    const userConfirmed = window.confirm('예약 시스템을 사용하지 않고 스토어를 등록하시겠습니까?');
+    if (userConfirmed) {
+      cancelSales('noReservation');
+    } else {
+      return;
+    }
   };
 
   return (

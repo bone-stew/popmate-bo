@@ -70,7 +70,12 @@ function StoreReservationForm({
   };
 
   const handleCancelReservation = () => {
-    cancelReservation('noReservation');
+    const userConfirmed = window.confirm('판매 시스템을 사용하지 않고 스토어를 등록하시겠습니까?');
+    if (userConfirmed) {
+      cancelReservation('noReservation');
+    } else {
+      return;
+    }
   };
 
   return (
