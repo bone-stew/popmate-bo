@@ -3,12 +3,11 @@ import { useState } from 'react';
 import MultipartAxios from '../../api/multipartAxios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import FormControl from '@mui/material/FormControl';
 import styles from './StoreCreate.module.css';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageList from '@mui/material/ImageList';
 
-import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, IconButton, Stack } from '@mui/material';
+import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, Stack } from '@mui/material';
 
 function StoreInfo() {
   const [storeData, setStoreData] = useState(null);
