@@ -244,7 +244,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  상품가격<span style={{ color: 'red' }}> (*)</span>
+                  상품가격<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -276,7 +276,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  재고<span style={{ color: 'red' }}> (*)</span>
+                  재고<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -305,7 +305,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  주문가능 수량<span style={{ color: 'red' }}> (*)</span>
+                  주문가능 수량<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -334,7 +334,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  상품 이미지<span style={{ color: 'red' }}> (*)</span>
+                  상품 이미지<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
