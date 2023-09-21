@@ -79,7 +79,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
         viewInfo.popupStoreSnsResponse.forEach((item) => {
           if (item.platform === 'Website') {
             setWebsite(item.url);
-          } else if (item.platform === 'YouTube') {
+          } else if (item.platform === 'Youtube') {
             setYoutube(item.url);
           } else if (item.platform === 'Instagram') {
             setInstagram(item.url);
@@ -198,14 +198,22 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
     // notifyReservationChange(reservationSystem);
   };
 
+  const checkFileSize = (fileSize) => {
+    const maxSize = 1024 * 1024; // 1MB (adjust as needed)
+    if (fileSize > maxSize) {
+      alert('파일 크기는 최대 1MB입니다');
+      return false;
+    }
+    return true;
+  };
+
   const handleSalesChange = (event) => {
     setSalesSystem(event.target.value);
-    // notifySalesChange(salesSystem);
   };
 
   const handleBannerImageUpload = (event) => {
     const selectedImage = event.target.files[0];
-    if (selectedImage) {
+    if (selectedImage && checkFileSize(selectedImage.size)) {
       setBannerImage(URL.createObjectURL(selectedImage));
       setBannerImageFile(selectedImage);
     }
@@ -213,7 +221,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
 
   const handleImageUpload = (event) => {
     const selectedImage = event.target.files[0];
-    if (selectedImage) {
+
+    if (selectedImage && checkFileSize(selectedImage.size)) {
       if (storeImages.length >= 6) {
         alert('스토어 이미지는 최대 6개만 업로드 할 수 있습니다.');
         return;
