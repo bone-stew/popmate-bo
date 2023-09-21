@@ -1,4 +1,14 @@
-import { InputAdornment, Table, TableContainer, TableCell, TextField, TableRow, Paper } from '@mui/material';
+import {
+  InputAdornment,
+  Table,
+  TableContainer,
+  TableCell,
+  TextField,
+  TableRow,
+  Paper,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { DatePicker, TimePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,19 +21,106 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 import styles from './StoreCreate.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageIcon from '@mui/icons-material/Image';
+import CancelIcon from '@mui/icons-material/Cancel';
 
-function StoreInfoForm({ onUserChoice }) {
-  const [openDate, setOpenDate] = useState(dayjs('2022-04-17'));
-  const [closeDate, setCloseDate] = useState(dayjs('2022-04-17'));
-  const [openTime, setOpenTime] = useState(dayjs('2022-04-17T15:30'));
-  const [closeTime, setCloseTime] = useState(dayjs('2022-04-17T15:30'));
+function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange }) {
+  const today = dayjs();
+  const [title, setStoreTitle] = useState('');
+  const [openDate, setOpenDate] = useState(today);
+  const [closeDate, setCloseDate] = useState(today.add(1, 'day'));
+  const [openTime, setOpenTime] = useState(today);
+  const [closeTime, setCloseTime] = useState(today.add(5, 'hour'));
   const [department, setDepartment] = useState('');
   const [priceRadio, setPriceRadio] = useState('무료');
+  const [entryFee, setEntryFee] = useState('');
+  const [organizer, setOrganizer] = useState('');
+  const [placeDetail, setPlaceDetail] = useState('');
+  const [description, setDescription] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+  const [reservationEnabled, setReservationEnabled] = useState(false);
+  const [storeImages, setStoreImages] = useState([]);
+  const [storeImageFiles, setStoreImageFiles] = useState([]);
+  const [website, setWebsite] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [youtube, setYoutube] = useState('');
   const [reservationSystem, setReservationSystem] = useState('yesReservation');
   const [salesSystem, setSalesSystem] = useState('yesSales');
+  const [bannerImage, setBannerImage] = useState(null);
+  const [bannerImageFile, setBannerImageFile] = useState(null);
+
+  useEffect(() => {
+    if (Object.keys(viewInfo).length !== 0) {
+      setStoreTitle(viewInfo.title);
+      setOpenDate(viewInfo.setOpenDate);
+      setCloseDate(viewInfo.setCloseDate);
+      setOpenTime(viewInfo.openTime);
+      setPlaceDetail(viewInfo.placeDetail);
+      setCloseTime(viewInfo.closeTime);
+      setDepartment(viewInfo.department.departmentId);
+      setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
+      setEntryFee(viewInfo.setEntryFee);
+      setOrganizer(viewInfo.organizer);
+      let imgUrls = viewInfo.popupStoreImgResponse.map((item) => item.imgUrl);
+      // imgUrls = [viewInfo.bannerImgUrl, ...imgUrls];
+      setBannerImage(viewInfo.bannerImgUrl);
+      setStoreImages(imgUrls);
+      setDescription(viewInfo.description);
+      setEventDescription(viewInfo.eventDescription !== null ? viewInfo.eventDescription : '');
+      setReservationEnabled(viewInfo.reservationEnabled);
+      setReservationSystem(viewInfo.reservationEnabled === true ? 'yesReservation' : 'noReservation');
+      setSalesSystem(viewInfo.popupStoreItemResponse.length === 0 ? 'noSales' : 'yesSales');
+      if (viewInfo.popupStoreSnsResponse.length > 0) {
+        viewInfo.popupStoreSnsResponse.forEach((item) => {
+          if (item.platform === 'Website') {
+            setWebsite(item.url);
+          } else if (item.platform === 'YouTube') {
+            setYoutube(item.url);
+          } else if (item.platform === 'Instagram') {
+            setInstagram(item.url);
+          }
+        });
+      }
+    }
+  }, [viewInfo]);
+
+  StoreInfoForm.getData = () => {
+    const storeImagesData = [bannerImage, ...storeImages];
+    const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
+    const storeData = {
+      title,
+      openDate,
+      closeDate,
+      openTime,
+      closeTime,
+      department,
+      priceRadio,
+      entryFee,
+      organizer,
+      placeDetail,
+      description,
+      eventDescription,
+      reservationEnabled,
+      reservationSystem,
+      storeImageFilesData,
+      website,
+      instagram,
+      youtube,
+      salesSystem,
+      storeImagesData,
+    };
+    return storeData;
+  };
+
+  useEffect(() => {
+    notifyReservationChange(reservationSystem);
+    notifySalesChange(salesSystem);
+  }, [reservationSystem, salesSystem, notifyReservationChange, notifySalesChange]);
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -37,6 +134,26 @@ function StoreInfoForm({ onUserChoice }) {
     width: 1,
   });
 
+  const handleStoreNameChange = (event) => {
+    setStoreTitle(event.target.value);
+  };
+
+  const handleOpenDateChange = (newValue) => {
+    setOpenDate(newValue);
+  };
+
+  const handleCloseDateChange = (newValue) => {
+    setCloseDate(newValue);
+  };
+
+  const handleOpenTimeChange = (newValue) => {
+    setOpenTime(newValue);
+  };
+
+  const handleCloseTimeChange = (newValue) => {
+    setCloseTime(newValue);
+  };
+
   const handleDepartmentChange = (event) => {
     setDepartment(event.target.value);
   };
@@ -45,22 +162,124 @@ function StoreInfoForm({ onUserChoice }) {
     setPriceRadio(event.target.value);
   };
 
+  const handleEntryFeeChange = (event) => {
+    setEntryFee(event.target.value);
+  };
+
+  const handleOrganizerChange = (event) => {
+    setOrganizer(event.target.value);
+  };
+  const handlePlaceDetailChange = (event) => {
+    setPlaceDetail(event.target.value);
+  };
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+  const handleEventDescriptionChange = (event) => {
+    setEventDescription(event.target.value);
+  };
+  const handleWebsiteChange = (event) => {
+    setWebsite(event.target.value);
+  };
+  const handleInstagramChange = (event) => {
+    setInstagram(event.target.value);
+  };
+  const handleYoutubeChange = (event) => {
+    setYoutube(event.target.value);
+  };
+
   const handleReservationChange = (event) => {
     setReservationSystem(event.target.value);
+    if (event.target.value === 'yesReservation') {
+      setReservationEnabled(true);
+    } else {
+      setReservationEnabled(false);
+    }
+    // notifyReservationChange(reservationSystem);
   };
 
   const handleSalesChange = (event) => {
     setSalesSystem(event.target.value);
+    // notifySalesChange(salesSystem);
+  };
+
+  const handleBannerImageUpload = (event) => {
+    const selectedImage = event.target.files[0];
+    if (selectedImage) {
+      setBannerImage(URL.createObjectURL(selectedImage));
+      setBannerImageFile(selectedImage);
+    }
+  };
+
+  const handleImageUpload = (event) => {
+    const selectedImage = event.target.files[0];
+    if (selectedImage) {
+      if (storeImages.length >= 6) {
+        alert('스토어 이미지는 최대 6개만 업로드 할 수 있습니다.');
+        return;
+      }
+      setStoreImageFiles([...storeImageFiles, selectedImage]);
+      setStoreImages([...storeImages, URL.createObjectURL(selectedImage)]);
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    const updatedImageUrls = storeImages.filter((_, index) => index !== indexToRemove);
+    const updatedImageFiles = storeImageFiles.filter((_, index) => index !== indexToRemove);
+    setStoreImages(updatedImageUrls);
+    setStoreImageFiles(updatedImageFiles);
   };
 
   const handleNextButtonClick = () => {
+    if (
+      title === '' ||
+      openDate === '' ||
+      closeDate === '' ||
+      openTime === '' ||
+      closeTime === '' ||
+      department === '' ||
+      priceRadio === '' ||
+      (priceRadio === '유료' && entryFee === '') ||
+      organizer === '' ||
+      placeDetail === '' ||
+      description === '' ||
+      (reservationSystem === 'yesReservation' && storeImages.length === 0) ||
+      bannerImage === null
+    ) {
+      alert('필수 항목을 기입해주세요');
+      return;
+    }
     onUserChoice(reservationSystem, salesSystem);
+    const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
+
+    const storeData = {
+      title,
+      openDate,
+      closeDate,
+      openTime,
+      closeTime,
+      department,
+      priceRadio,
+      entryFee,
+      organizer,
+      placeDetail,
+      description,
+      eventDescription,
+      reservationEnabled,
+      reservationSystem,
+      storeImageFilesData,
+      website,
+      instagram,
+      youtube,
+      salesSystem,
+    };
+    addStore(storeData);
   };
 
   return (
     <div className="styles.container">
       <h2>팝업스토어 상세정보를 입력하세요</h2>
-      <Paper variant="outlined" sx={{ padding: '2rem' }} square={false} elevation={0.5}>
+      <Paper variant="outlined" sx={{ padding: '2rem' }} square={false} elevation={1}>
         <TableContainer>
           <Table variant={'outlined'}>
             <TableRow>
@@ -69,7 +288,11 @@ function StoreInfoForm({ onUserChoice }) {
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <OutlinedInput placeholder="팝업스토어명을 입렵해주세요" />
+                  <OutlinedInput
+                    value={title}
+                    onChange={handleStoreNameChange}
+                    placeholder="팝업스토어명을 입렵해주세요"
+                  />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -80,11 +303,11 @@ function StoreInfoForm({ onUserChoice }) {
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker value={openDate} onChange={(newValue) => setOpenDate(newValue)} />
+                    <DatePicker value={openDate} onChange={handleOpenDateChange} />
                   </LocalizationProvider>
-                  <span style={{ margin: '0 8px' }}>~</span>
+                  <span style={{ margin: '0 0.3rem' }}>~</span>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker value={closeDate} onChange={(newValue) => setCloseDate(newValue)} />
+                    <DatePicker value={closeDate} onChange={handleCloseDateChange} />
                   </LocalizationProvider>
                 </div>
               </TableCell>
@@ -96,11 +319,11 @@ function StoreInfoForm({ onUserChoice }) {
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <TimePicker value={openTime} onChange={(newValue) => setOpenTime(newValue)} />
+                    <TimePicker value={openTime} onChange={handleOpenTimeChange} />
                   </LocalizationProvider>
-                  <span style={{ margin: '0 8px' }}>~</span>
+                  <span style={{ margin: '0 0.3rem' }}>~</span>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <TimePicker value={closeTime} onChange={(newValue) => setCloseTime(newValue)} />
+                    <TimePicker value={closeTime} onChange={handleCloseTimeChange} />
                   </LocalizationProvider>
                 </div>
               </TableCell>
@@ -121,23 +344,37 @@ function StoreInfoForm({ onUserChoice }) {
                     <MenuItem value="">
                       <em>지점 선택 없음</em>
                     </MenuItem>
-                    <MenuItem value={'더현대서울'}>더현대 서울</MenuItem>
-                    <MenuItem value={'압구정본점'}>압구정본점</MenuItem>
-                    <MenuItem value={'무역센터점'}>무역센터점</MenuItem>
-                    <MenuItem value={'천호점'}>천호점</MenuItem>
-                    <MenuItem value={'신촌점'}>신촌점</MenuItem>
-                    <MenuItem value={'미아점'}>미아점</MenuItem>
-                    <MenuItem value={'목동점'}>목동점</MenuItem>
-                    <MenuItem value={'중동점'}>중동점</MenuItem>
-                    <MenuItem value={'판교점'}>판교점</MenuItem>
-                    <MenuItem value={'킨텍스점'}>킨텍스점</MenuItem>
-                    <MenuItem value={'디큐브시티'}>디큐브시티</MenuItem>
-                    <MenuItem value={'부산점'}>부산점</MenuItem>
-                    <MenuItem value={'더현대대구'}>더현대 대구</MenuItem>
-                    <MenuItem value={'울산점'}>울산점</MenuItem>
-                    <MenuItem value={'울산동구점'}>울산동구점</MenuItem>
-                    <MenuItem value={'충청점'}>충청점</MenuItem>
+                    <MenuItem value={'1'}>더현대 서울</MenuItem>
+                    <MenuItem value={'2'}>압구정본점</MenuItem>
+                    <MenuItem value={'3'}>무역센터점</MenuItem>
+                    <MenuItem value={'4'}>천호점</MenuItem>
+                    <MenuItem value={'5'}>신촌점</MenuItem>
+                    <MenuItem value={'6'}>미아점</MenuItem>
+                    <MenuItem value={'7'}>목동점</MenuItem>
+                    <MenuItem value={'8'}>중동점</MenuItem>
+                    <MenuItem value={'9'}>판교점</MenuItem>
+                    <MenuItem value={'10'}>킨텍스점</MenuItem>
+                    <MenuItem value={'11'}>디큐브시티</MenuItem>
+                    <MenuItem value={'12'}>부산점</MenuItem>
+                    <MenuItem value={'13'}>더현대 대구</MenuItem>
+                    <MenuItem value={'14'}>울산점</MenuItem>
+                    <MenuItem value={'15'}>울산동구점</MenuItem>
+                    <MenuItem value={'16'}>충청점</MenuItem>
                   </Select>
+                </FormControl>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className={styles.table}>
+                상세 장소<span style={{ color: 'red' }}> (*)</span>
+              </TableCell>
+              <TableCell className={styles.table}>
+                <FormControl fullWidth>
+                  <OutlinedInput
+                    value={placeDetail}
+                    onChange={handlePlaceDetailChange}
+                    placeholder="상세장소를 입력해주세요"
+                  />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -153,8 +390,11 @@ function StoreInfoForm({ onUserChoice }) {
                   </RadioGroup>
                   <FormControl style={{ flex: '70%' }}>
                     <OutlinedInput
+                      onChange={handleEntryFeeChange}
                       placeholder="금액을 입력해주세요"
                       type="number"
+                      disabled={priceRadio === '무료'}
+                      value={entryFee}
                       endAdornment={<InputAdornment position="end">원</InputAdornment>}
                     />
                   </FormControl>
@@ -167,24 +407,97 @@ function StoreInfoForm({ onUserChoice }) {
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <OutlinedInput placeholder="주최사를 입력해주세요" />
+                  <OutlinedInput
+                    value={organizer}
+                    onChange={handleOrganizerChange}
+                    placeholder="주최사를 입력해주세요"
+                  />
                 </FormControl>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
+                대표 이미지<span style={{ color: 'red' }}> (*)</span>
+              </TableCell>
+              <TableCell className={styles.table}>
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    {bannerImage && (
+                      <img
+                        style={{ maxWidth: '10rem', maxHeight: '10rem', borderRadius: '10px' }}
+                        src={bannerImage}
+                        alt={`store item`}
+                      />
+                    )}
+                    <Button
+                      component="label"
+                      variant="contained"
+                      startIcon={<ImageIcon />}
+                      sx={{
+                        marginTop: '1em',
+                      }}
+                    >
+                      이미지 첨부하기
+                      <VisuallyHiddenInput type="file" onChange={handleBannerImageUpload} />
+                    </Button>
+                  </div>
+                </div>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ minWidth: '10rem' }} className={styles.table}>
                 스토어 이미지<span style={{ color: 'red' }}> (*)</span>
               </TableCell>
               <TableCell className={styles.table}>
-                <Paper>
-                  <Button
-                    component="label"
-                    variant="contained"
-                    startIcon={<AddRoundedIcon />}
-                    className={styles.customButton}
-                  >
-                    <VisuallyHiddenInput type="file" />
-                  </Button>
+                <Paper
+                  sx={{
+                    maxWidth: '45rem',
+                  }}
+                >
+                  <Stack direction="row" alignItems="flex-start">
+                    <IconButton
+                      component="label"
+                      variant="contained"
+                      className={styles.imageList}
+                      sx={{
+                        margin: '2em 0.2em',
+                        marginLeft: '0.5em',
+                        borderRadius: '5px',
+                        border: '1px solid #C1BCC0',
+                        padding: '2em',
+                      }}
+                    >
+                      <AddRoundedIcon />
+                      <VisuallyHiddenInput type="file" accept="image/*" onChange={handleImageUpload} />
+                    </IconButton>
+                    <ImageList
+                      sx={{
+                        margin: '2.5em 0.5em',
+                        gridAutoFlow: 'column',
+                        gridTemplateColumns: 'repeat(auto-fill,minmax(10rem,2fr)) !important',
+                        gridAutoColumns: 'minmax(10rem, 2fr)',
+                        overflowX: 'auto',
+                      }}
+                    >
+                      {storeImages.map((userImage, index) => (
+                        <ImageListItem
+                          sx={{
+                            marginRight: '0.5rem',
+                            maxWidth: '10rem',
+                            maxHeight: '10rem',
+                          }}
+                          key={index}
+                        >
+                          <img className={styles.image} src={userImage} alt={`store ${index}`} />
+                          <CancelIcon
+                            width="2rem"
+                            className={styles.imgDeleteButton}
+                            onClick={() => handleRemoveImage(index)}
+                          />
+                        </ImageListItem>
+                      ))}
+                    </ImageList>
+                  </Stack>
                 </Paper>
               </TableCell>
             </TableRow>
@@ -194,7 +507,13 @@ function StoreInfoForm({ onUserChoice }) {
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <TextField placeholder="상세 설명을 입력해주세요" multiline rows={7} maxRows={7} />
+                  <TextField
+                    onChange={handleDescriptionChange}
+                    value={description}
+                    placeholder="상세 설명을 입력해주세요"
+                    multiline
+                    rows={7}
+                  />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -202,7 +521,13 @@ function StoreInfoForm({ onUserChoice }) {
               <TableCell className={styles.table}>이벤트 정보</TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <TextField placeholder="진행되는 이벤트 내용을 입력해주세요" multiline rows={7} maxRows={7} />
+                  <TextField
+                    onChange={handleEventDescriptionChange}
+                    value={eventDescription}
+                    placeholder="진행되는 이벤트 내용을 입력해주세요"
+                    multiline
+                    rows={7}
+                  />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -210,8 +535,7 @@ function StoreInfoForm({ onUserChoice }) {
               <TableCell className={styles.table}>웹사이트 URL</TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <OutlinedInput placeholder="URL을 입력해주세요" />
-                  {/* <MyFormHelperText /> */}
+                  <OutlinedInput value={website} onChange={handleWebsiteChange} placeholder="URL을 입력해주세요" />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -219,7 +543,7 @@ function StoreInfoForm({ onUserChoice }) {
               <TableCell className={styles.table}>인스타그램 URL</TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <OutlinedInput placeholder="URL을 입력해주세요" />
+                  <OutlinedInput value={instagram} onChange={handleInstagramChange} placeholder="URL을 입력해주세요" />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -227,7 +551,7 @@ function StoreInfoForm({ onUserChoice }) {
               <TableCell className={styles.table}>유튜브 URL</TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
-                  <OutlinedInput placeholder="URL을 입력해주세요" />
+                  <OutlinedInput value={youtube} onChange={handleYoutubeChange} placeholder="URL을 입력해주세요" />
                 </FormControl>
               </TableCell>
             </TableRow>
@@ -250,11 +574,13 @@ function StoreInfoForm({ onUserChoice }) {
             <FormControlLabel value="noSales" control={<Radio />} label="아니요" />
           </RadioGroup>
         </div>
-        <div style={{ textAlign: 'center', marginTop: '5rem' }}>
-          <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
-            {salesSystem === 'yesSales' || reservationSystem === 'yesReservation' ? '다음보기' : '팝업스토어 등록'}
-          </Button>
-        </div>
+        {Object.keys(viewInfo).length === 0 && (
+          <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+            <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
+              {salesSystem === 'yesSales' || reservationSystem === 'yesReservation' ? '다음보기' : '팝업스토어 등록'}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

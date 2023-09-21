@@ -2,7 +2,13 @@
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 10%;
-  /* border: 1px black solid; */
+}
+
+.containerDisabled {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 10%;
+  color: #dddddd;
 }
 
 .table {
@@ -20,11 +26,49 @@
 }
 
 .reservationContainer {
-  margin: 0 25%;
+  margin: 0 20%;
 }
 
-.customButton:focus {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  outline: none !important; /* Optional: Remove the focus outline if desired */
+.reservationContainerDisabled {
+  margin: 0 20%;
+  color: #dddddd;
+}
+
+.disabled {
+  color: #dddddd;
+}
+
+.imgDeleteButton {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  background: none;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+
+.storeRepresent {
+  border: 5px solid rgb(127, 215, 127);
+  border-radius: 10px;
+  size: 150px;
+}
+
+.image {
+  border-radius: 10px;
+  size: 150px;
+}
+
+.redSpan {
+  color: red;
+}
+
+.shaded {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
