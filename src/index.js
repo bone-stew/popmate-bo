@@ -12,6 +12,7 @@ import MainBanner from './pages/MainBanner';
 import Order from './pages/Order';
 import ReservationMain from './pages/ReservationMain';
 import StoreCreate from './pages/StoreCreate';
+import StoreEdit from './pages/StoreEdit';
 import StoreView from './pages/StoreView';
 import Login from './pages/Login';
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/store/:storeId/edit',
+        element: <StoreEdit />,
+      },
+      {
+        path: '/store/:storeId/detail',
         element: <StoreView />,
       },
     ],

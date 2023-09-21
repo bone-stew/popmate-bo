@@ -79,7 +79,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
         viewInfo.popupStoreSnsResponse.forEach((item) => {
           if (item.platform === 'Website') {
             setWebsite(item.url);
-          } else if (item.platform === 'YouTube') {
+          } else if (item.platform === 'Youtube') {
             setYoutube(item.url);
           } else if (item.platform === 'Instagram') {
             setInstagram(item.url);

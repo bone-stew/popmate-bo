@@ -205,36 +205,34 @@ function StoreCreate() {
 
   return (
     <div>
-      <div className={styles.container}>
-        {currentForm === 'info' && (
-          <StoreInfoForm
-            viewInfo={{}}
-            onUserChoice={handleUserChoice}
-            addStore={addStoreInfo}
-            notifyReservationChange={handleReservationChange}
-            notifySalesChange={handleSalesChange}
-          />
-        )}
-        {currentForm === 'reservation' && (
-          <StoreReservationForm
-            viewInfo={{}}
-            onUserChoice={reservationFormSubmitted}
-            sales={sales}
-            addReservation={addReservationInfo}
-            cancelReservation={handleCancelReservation}
-            isUsingReservation={reservationStatus}
-          />
-        )}
-        {currentForm === 'items' && (
-          <StoreItemsForm
-            viewInfo={{}}
-            addSales={addSalesInfo}
-            cancelSales={handleCancelSales}
-            isUsingSales={salesStatus}
-          />
-        )}
-        {currentForm === 'complete' && <StoreCreateComplete />}
-      </div>
+      {currentForm === 'info' && (
+        <StoreInfoForm
+          viewInfo={{}}
+          onUserChoice={handleUserChoice}
+          addStore={addStoreInfo}
+          notifyReservationChange={handleReservationChange}
+          notifySalesChange={handleSalesChange}
+        />
+      )}
+      {currentForm === 'reservation' && (
+        <StoreReservationForm
+          viewInfo={{}}
+          onUserChoice={reservationFormSubmitted}
+          sales={sales}
+          addReservation={addReservationInfo}
+          cancelReservation={handleCancelReservation}
+          isUsingReservation={reservationStatus}
+        />
+      )}
+      {currentForm === 'items' && (
+        <StoreItemsForm
+          viewInfo={{}}
+          addSales={addSalesInfo}
+          cancelSales={handleCancelSales}
+          isUsingSales={salesStatus}
+        />
+      )}
+      {currentForm === 'complete' && <StoreCreateComplete />}
     </div>
   );
 }
