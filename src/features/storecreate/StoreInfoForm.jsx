@@ -305,7 +305,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker value={openDate} onChange={handleOpenDateChange} />
                   </LocalizationProvider>
-                  <span style={{ margin: '0 8px' }}>~</span>
+                  <span style={{ margin: '0 0.3rem' }}>~</span>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker value={closeDate} onChange={handleCloseDateChange} />
                   </LocalizationProvider>
@@ -321,7 +321,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker value={openTime} onChange={handleOpenTimeChange} />
                   </LocalizationProvider>
-                  <span style={{ margin: '0 8px' }}>~</span>
+                  <span style={{ margin: '0 0.3rem' }}>~</span>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker value={closeTime} onChange={handleCloseTimeChange} />
                   </LocalizationProvider>
@@ -424,7 +424,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {bannerImage && (
                       <img
-                        style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '10px' }}
+                        style={{ maxWidth: '10rem', maxHeight: '10rem', borderRadius: '10px' }}
                         src={bannerImage}
                         alt={`store item`}
                       />
@@ -474,23 +474,23 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                       sx={{
                         margin: '2.5em 0.5em',
                         gridAutoFlow: 'column',
-                        gridTemplateColumns: 'repeat(auto-fill,minmax(150px,2fr)) !important',
-                        gridAutoColumns: 'minmax(150px, 2fr)',
+                        gridTemplateColumns: 'repeat(auto-fill,minmax(10rem,2fr)) !important',
+                        gridAutoColumns: 'minmax(10rem, 2fr)',
                         overflowX: 'auto',
                       }}
                     >
                       {storeImages.map((userImage, index) => (
                         <ImageListItem
                           sx={{
-                            marginRight: index === 0 ? '20px' : '0',
-                            maxWidth: 150,
-                            maxHeight: 150,
+                            marginRight: '0.5rem',
+                            maxWidth: '10rem',
+                            maxHeight: '10rem',
                           }}
                           key={index}
                         >
                           <img className={styles.image} src={userImage} alt={`store ${index}`} />
                           <CancelIcon
-                            width="25px"
+                            width="2rem"
                             className={styles.imgDeleteButton}
                             onClick={() => handleRemoveImage(index)}
                           />

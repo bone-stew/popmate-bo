@@ -154,6 +154,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
     setOrderLimit('주문가능 수량을 입려해주세요');
     setUserImage(null);
     setUserImageFile(null);
+    setEditImage(null);
   };
 
   const handleDeleteItem = (index) => {
@@ -339,7 +340,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   {userImage && (
-                    <img style={{ maxWidth: '200px', borderRadius: '10px' }} src={userImage} alt={`store item`} />
+                    <img style={{ maxWidth: '10rem', borderRadius: '10px' }} src={userImage} alt={`store item`} />
                   )}
                   <Button
                     component="label"
@@ -371,7 +372,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
         </div>
       </Paper>
       <div>
-        <h4 style={{ marginTop: '4rem', textAlign: 'center' }}>추가된 상품 목록</h4>
+        <h3 style={{ marginTop: '4rem', textAlign: 'center' }}>추가된 상품 목록</h3>
         <TableContainer component={Paper}>
           <Table>
             <TableHead sx={{ backgroundColor: '#F8F9FA' }}>
@@ -400,35 +401,46 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
                   {editingItemIndex === index ? (
                     <TextField value={editItemName} onChange={handleEditItemNameChange} />
                   ) : (
-                    <div className={disableInput && styles.disabled}>{item.name}</div>
+                    <div style={{ textAlign: 'center' }} className={disableInput && styles.disabled}>
+                      {item.name}
+                    </div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editItemPrice} onChange={handleEditItemPriceChange} />
                   ) : (
-                    <div className={disableInput && styles.disabled}>{item.amount}</div>
+                    <div style={{ textAlign: 'center' }} className={disableInput && styles.disabled}>
+                      {item.amount}
+                    </div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editItemTotal} onChange={handleEditTotalChange} />
                   ) : (
-                    <div className={disableInput && styles.disabled}>{item.stock}</div>
+                    <div style={{ textAlign: 'center' }} className={disableInput && styles.disabled}>
+                      {item.stock}
+                    </div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <TextField value={editOrderLimit} onChange={handleEditOrderLimitChange} />
                   ) : (
-                    <div className={disableInput && styles.disabled}>{item.orderLimit}</div>
+                    <div style={{ textAlign: 'center' }} className={disableInput && styles.disabled}>
+                      {item.orderLimit}
+                    </div>
                   )}
                 </TableCell>
                 <TableCell className={styles.table}>
                   {editingItemIndex === index ? (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       {userImage && (
-                        <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={userImage} alt={`store item`} />
+                        <img style={{ maxWidth: '5rem', borderRadius: '10px' }} src={userImage} alt={`store item`} />
+                      )}
+                      {editImage && (
+                        <img style={{ maxWidth: '5rem', borderRadius: '10px' }} src={editImage} alt={`store item`} />
                       )}
                       <Button
                         component="label"
@@ -438,14 +450,17 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
                           marginTop: '1em',
                         }}
                       >
-                        이미지 첨부하기
+                        이미지 수정하기
                         <VisuallyHiddenInput type="file" onChange={handleEditImageUpload} />
                       </Button>
                     </div>
                   ) : (
-                    <div className={disableInput ? `${styles.disabled} ${styles.shaded}` : styles.disabled}>
+                    <div
+                      style={{ textAlign: 'center' }}
+                      className={disableInput ? `${styles.disabled} ${styles.shaded}` : styles.disabled}
+                    >
                       {item.imgUrl && (
-                        <img style={{ maxWidth: '100px', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
+                        <img style={{ maxWidth: '8rem', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
                       )}
                     </div>
                   )}
