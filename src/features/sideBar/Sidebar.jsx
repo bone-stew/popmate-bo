@@ -1,4 +1,4 @@
-import { Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
+import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 import styles from './Sidebar.module.css';
 import { AddCircleOutline, Addchart, ImageOutlined, Logout, ManageSearch, Storefront } from '@mui/icons-material';
@@ -11,7 +11,6 @@ function Sidebar({ drawerWidth }) {
   const currUser = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // useEffect({}, []);
   const adminMenu = [
     { icon: <ImageOutlined className={styles.whiteFont} />, title: '배너 관리', to: 'overview/banner' },
     { icon: <ManageSearch className={styles.whiteFont} />, title: '팝업 스토어 관리', to: 'overview/list' },
@@ -37,7 +36,7 @@ function Sidebar({ drawerWidth }) {
           Popmate
         </Typography>
       </Toolbar>
-      {currUser.value.role === 'manager' && (
+      {currUser.value.role === 'ROLE_MANAGER' && (
         <>
           <Typography className={`${styles.whiteFont} ${styles.padding}`}>Overview</Typography>
           <List>
@@ -58,12 +57,14 @@ function Sidebar({ drawerWidth }) {
       )}
       <Typography className={`${styles.whiteFont} ${styles.padding}`}>
         Store
-        <AddCircleOutline
-          sx={{ verticalAlign: 'middle', paddingLeft: '12px' }}
+        <IconButton
+          sx={{ verticalAlign: 'middle', color: '#ffffff' }}
           onClick={() => {
             navigate('/store/write', { replace: true });
           }}
-        />
+        >
+          <AddCircleOutline />
+        </IconButton>
       </Typography>
       <List>
         {tempStoreList.map((value, index) => (

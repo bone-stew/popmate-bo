@@ -47,6 +47,7 @@ const ReservationMain = () => {
     reservedGuestCount: 44,
     entryGuestCount: 6,
   });
+  
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -8,6 +8,10 @@ const statusStyles = {
     color: '#00A76F',
   },
   /* 파란색 */
+  진행완료: {
+    backgroundColor: '#EAEBFF',
+    color: '#1273E4',
+  },
   '입장 완료': {
     backgroundColor: '#EAEBFF',
     color: '#1273E4',

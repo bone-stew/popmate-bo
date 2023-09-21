@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import styles from './Login.module.css';
-import { Button, Divider, TextField } from '@mui/material';
+import { Alert, Button, Divider, TextField } from '@mui/material';
+import JsonAxios from '../../api/jsonAxios';
+import { useDispatch } from 'react-redux';
+import { fetchUser } from '../../slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [alert, _alert] = useState(false);
   const [inputs, _inputs] = useState({
     id: '',
     password: '',
@@ -17,11 +24,25 @@ function LoginForm() {
   };
 
   const onClick = () => {
-    console.log(inputs);
+    JsonAxios.post('/oauth/office', { id: inputs.id, password: inputs.password })
+      .then(async ({ data }) => {
+        sessionStorage.setItem('accessToken', data.data.token);
+        dispatch(fetchUser()).then(() => {
+          navigate('/');
+        });
+      })
+      .catch(() => {
+        _alert(true);
+      });
   };
 
   return (
     <div className={styles.login_container}>
+      {alert && (
+        <Alert sx={{ marginTop: '50px', marginBottom: '10px' }} severity="warning">
+          Incorrect username or password.
+        </Alert>
+      )}
       <TextField
         name="id"
         className={styles.input}
