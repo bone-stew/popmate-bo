@@ -19,6 +19,7 @@ import StatusButton from '../components/StatusButton';
 import MoreButton from '../components/MoreButton';
 import JsonAxios from '../api/jsonAxios';
 import { addMinutesToLocalDateTime, formatToLocalTime, formatToLocalTimeFromLocalDateTime } from '../app/dateTimeUtils';
+import { useNavigate } from 'react-router';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -34,6 +35,10 @@ const cardStyle = {
 };
 
 const ReservationMain = () => {
+  const [popupStoreId, _popupStoreId] = useState(1);
+  const [todayReservations, _todayReservations] = useState([]);
+  const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
+  const [todayOrders, _todayOrders] = useState([]);
   const [currentReservation, _currentReservation] = useState({
     popupStoreId: 0,
     popupStoreName: '트렌디 패션 팝업',
@@ -42,12 +47,10 @@ const ReservationMain = () => {
     reservedGuestCount: 44,
     entryGuestCount: 6,
   });
-  const [todayReservations, _todayReservations] = useState([]);
-  const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
-  const [todayOrders, _todayOrders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const apiUrl = 'popup-stores/1/reservations/today';
+    const apiUrl = `popup-stores/${popupStoreId}/reservations/today`;
     JsonAxios.get(apiUrl)
       .then((response) => {
         _currentReservation(response.data.data);
@@ -72,6 +75,11 @@ const ReservationMain = () => {
 
   const handleSortClick = (option) => {
     _sortOrderOption(option);
+  };
+
+  const handleMoreButtonClick = () => {
+    console.log('handleMoreButtonClick');
+    navigate(`/store/1/reservations`);
   };
 
   return (
@@ -126,7 +134,7 @@ const ReservationMain = () => {
             <Typography variant="h6" style={{ fontWeight: 'bold' }}>
               이 시각 이후 예약 인원을 관리하세요
             </Typography>
-            <MoreButton />
+            <MoreButton handler={handleMoreButtonClick} />
           </div>
           <TableContainer
             style={{
