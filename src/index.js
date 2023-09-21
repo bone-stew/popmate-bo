@@ -53,7 +53,7 @@ const router = createBrowserRouter([
       },
         path: '/store/:storeId/reservations',
         element: <DailyReservation />,
-      },
+      }
     ],
   },
   {
