@@ -1,40 +1,59 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import {
-  IconButton,
-  InputAdornment,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TextField,
-} from '@mui/material';
+import { IconButton, InputAdornment, MenuItem, OutlinedInput, Paper, TextField } from '@mui/material';
 import { Refresh, Search } from '@mui/icons-material';
 import JsonAxios from '../../api/jsonAxios';
 import { useNavigate } from 'react-router-dom';
+import { DataGrid } from '@mui/x-data-grid';
+
+const columns = [
+  { field: 'title', headerName: '팝업스토어명', minWidth: 240, headerAlign: 'center', align: 'center', flex: 2 },
+  {
+    field: 'name',
+    headerName: '지점',
+    minWidth: 180,
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+    valueGetter: (params) => {
+      return params.row.departmentName.split('T')[0];
+    },
+  },
+  {
+    field: 'close_date',
+    headerName: '기간',
+    minWidth: 240,
+    valueGetter: (params) => {
+      return `${params.row.openDate.split('T')[0]} ~ ${params.row.closeDate.split('T')[0]}`;
+    },
+    headerAlign: 'center',
+    align: 'center',
+    flex: 2,
+  },
+  { field: 'organizer', headerName: '주체기관', minWidth: 180, headerAlign: 'center', align: 'center', flex: 1 },
+  {
+    field: 'created_at',
+    headerName: '등록일',
+    minWidth: 100,
+    valueGetter: (params) => {
+      return params.row.createdAt.split('T')[0];
+    },
+    headerAlign: 'center',
+    align: 'center',
+    flex: 2,
+  },
+];
 
 function StoreListTable() {
-  const columns = [
-    { id: 'title', label: '팝업스토어명', minWidth: 170 },
-    { id: 'departmentName', label: '지점', minWidth: 100 },
-    { id: 'duration', label: '기간', minWidth: 170 },
-    { id: 'organizer', label: '주체기관', minWidth: 170 },
-    { id: 'createdAt', label: '등록일', minWidth: 100 },
-  ];
-
   const navigate = useNavigate();
-
   const [stores, _stores] = useState([]);
   const [category, _category] = useState(0);
   const [query, _query] = useState('');
-  const [page, _page] = useState(0);
-  const [rowsPerPage, _rowsPerPage] = useState(15);
+  const [paginationModel, _paginationModel] = useState({
+    page: 0,
+    pageSize: 15,
+  });
+  const [sortModel, _sortModel] = useState(null);
   const [totalPage, _totalPage] = useState(0);
   const [flag, _flag] = useState(false);
 
@@ -43,33 +62,34 @@ function StoreListTable() {
   };
 
   function updateList() {
-    console.log('update');
     JsonAxios.get('popup-stores/search', {
       params: {
         query: query,
         type: category,
-        page: page,
-        size: rowsPerPage,
+        page: paginationModel.page,
+        size: paginationModel.pageSize,
+        sort: sortModel != null ? `${sortModel.field},${sortModel.sort}` : null,
       },
     })
       .then((res) => {
         const list = res.data.data.popupStores;
         list.forEach((element) => {
-          element.duration = `${element.openDate.split('T')[0]} ~ ${element.closeDate.split('T')[0]}`;
-          element.createdAt = element.createdAt.split('T')[0];
+          element.id = element.popupStoreId;
         });
         _totalPage(list[0] != null ? list[0].total : 0);
         _stores(res.data.data.popupStores);
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => {});
   }
 
   const initList = () => {
     _query('');
     _category(0);
-    _page(0);
+    _sortModel(null);
+    _paginationModel({ page: 0, pageSize: 15 });
     _flag(!flag);
   };
 
@@ -99,7 +119,8 @@ function StoreListTable() {
           style={{ width: '70%' }}
           onSubmit={(e) => {
             e.preventDefault();
-            updateList();
+            _paginationModel({ ...paginationModel, page: 0 });
+            _flag(!flag);
           }}
         >
           <OutlinedInput
@@ -123,59 +144,36 @@ function StoreListTable() {
           <Refresh />
         </IconButton>
       </div>
-      <TableContainer sx={{ maxHeight: 'calc(100vh - 300px)' }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={'center'}
-                  style={{ minWidth: column.minWidth, backgroundColor: '#F4F6F8' }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {stores.map((row) => {
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={row.popupStoreId}
-                  onClick={() => handleItemClick(row.popupStoreId)}
-                >
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={'center'}>
-                        {value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[15, 25]}
-        component="div"
-        count={totalPage}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(_, newPage) => {
-          _page(newPage);
+
+      <DataGrid
+        sx={{
+          width: '100%',
+          height: 'calc(100vh - 300px)',
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: '#E0E0E0',
+          },
+        }}
+        onRowClick={(params) => {
+          handleItemClick(params.id);
+        }}
+        rows={stores}
+        columns={columns}
+        rowCount={totalPage}
+        paginationMode="server"
+        paginationModel={paginationModel}
+        onPaginationModelChange={(model) => {
+          _paginationModel(model);
           _flag(!flag);
         }}
-        onRowsPerPageChange={(event) => {
-          _rowsPerPage(event.target.value);
+        sortingMode="server"
+        sortModel={[{ ...sortModel }]}
+        onSortModelChange={(model) => {
+          _sortModel(...model);
           _flag(!flag);
         }}
+        pageSizeOptions={[15, 25]}
+        disableColumnMenu
+        disableRowSelectionOnClick
       />
     </Paper>
   );

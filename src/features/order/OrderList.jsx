@@ -26,6 +26,7 @@ function OrderList() {
 
   const fetchdata = async () => {
     try {
+      // const url = `http://localhost:8080/api/v1/orders/qrcode/${popupStoreId}`;
       const response = await JsonAxios.get('http://localhost:8080/api/v1/orders/backoffice/orderList/1');
       const orderListItemResponses = response.data;
       const orderList = orderListItemResponses.data.orderListItemResponses;
