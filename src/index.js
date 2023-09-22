@@ -14,6 +14,7 @@ import ReservationMain from './pages/ReservationMain';
 import StoreCreate from './pages/StoreCreate';
 import Login from './pages/Login';
 import OrderQR from './pages/OrderQR'
+import DailyReservation from './pages/DailyReservation';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +43,12 @@ const router = createBrowserRouter([
         element: <StoreCreate />,
       },
       {
+        path: '/store/:storeId/reservations',
+        element: <DailyReservation />,
+      },
+      {
         path: '/store/orderQr',
-        element: <OrderQR/>
+        element: <OrderQR/>,
       },
     ],
   },
@@ -55,11 +60,9 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
