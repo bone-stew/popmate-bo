@@ -106,7 +106,8 @@ function StoreEdit() {
       storeTemp.popupStore.reservationEnabled = 0;
     }
 
-    const { itemsList, itemFileList } = StoreItemsForm.getData();
+    const { itemsList, itemFileList, itemsToDelete } = StoreItemsForm.getData();
+    console.log('AFter get DAta', itemsToDelete);
     const fileIndices = [];
     const fileArray = [];
     if (storeInfo.salesSystem === 'yesSales') {
@@ -123,9 +124,12 @@ function StoreEdit() {
         });
       }
       storeTemp.popupStoreItemList = itemsList;
+      storeTemp.popupStoreItemsToDelete = itemsToDelete;
     } else {
       storeTemp.popupStoreItemList = [];
     }
+    console.log('popupStoreItemList before', storeTemp.popupStoreItemList);
+
     MultipartAxios.post(`popup-stores/${storeId}/images`, formData)
       .then((response) => {
         const responseObj = response.data;
@@ -144,10 +148,13 @@ function StoreEdit() {
           storeTemp.popupStoreItemList = itemsList;
         }
 
+        console.log('Before Json Axios Post  => popupStoreItemList: ', storeTemp.popupStoreItemList);
+        console.log('Before Json Axios Post  => popupStoreItemsToDelete: ', storeTemp.popupStoreItemsToDelete);
+
         JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {
             console.log(response.data);
-            navigate('/overview/list');
+            // navigate('/overview/list');
           })
           .catch((e) => {
             console.error(e);
