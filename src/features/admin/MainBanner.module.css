@@ -130,6 +130,15 @@
   height: 47%; /* 이미지 비율 유지하면서 높이 조절 */
 }
 
+.imageContainer:hover .imgdeletebuttton {
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  border: none;
+  cursor: pointer;
+  display: block;
+}
+
 .image{
   width: 100%;
   border-top-left-radius: 20px;
@@ -139,11 +148,9 @@
 
 .imgdeletebuttton {
   position: absolute;
-  top: 0;
-  right: 0;
-  background: none;
   border: none;
   cursor: pointer;
+  display: none;
 }
 
 .imagebottom{
@@ -170,6 +177,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  object-fit: cover;
 }
 
 .imagebottomfirstimage img {
@@ -181,6 +189,7 @@
 .imagebottomsecond{
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .imagebottomtitle{

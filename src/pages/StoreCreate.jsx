@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import styles from '../features/storecreate/StoreCreate.module.css';
 import StoreInfoForm from '../features/storecreate/StoreInfoForm';
 import StoreReservationForm from '../features/storecreate/StoreReservationForm';
 import StoreItemsForm from '../features/storecreate/StoreItemsForm';
@@ -125,7 +124,7 @@ function StoreCreate() {
           console.error(error);
         });
     }
-  }, [readySend, storeImageList, storeItemImageList, storeRequest]);
+  }, [readySend, storeImageList, storeItemImageList, storeRequest, navigate]);
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
@@ -205,36 +204,34 @@ function StoreCreate() {
 
   return (
     <div>
-      <div className={styles.container}>
-        {currentForm === 'info' && (
-          <StoreInfoForm
-            viewInfo={{}}
-            onUserChoice={handleUserChoice}
-            addStore={addStoreInfo}
-            notifyReservationChange={handleReservationChange}
-            notifySalesChange={handleSalesChange}
-          />
-        )}
-        {currentForm === 'reservation' && (
-          <StoreReservationForm
-            viewInfo={{}}
-            onUserChoice={reservationFormSubmitted}
-            sales={sales}
-            addReservation={addReservationInfo}
-            cancelReservation={handleCancelReservation}
-            isUsingReservation={reservationStatus}
-          />
-        )}
-        {currentForm === 'items' && (
-          <StoreItemsForm
-            viewInfo={{}}
-            addSales={addSalesInfo}
-            cancelSales={handleCancelSales}
-            isUsingSales={salesStatus}
-          />
-        )}
-        {currentForm === 'complete' && <StoreCreateComplete />}
-      </div>
+      {currentForm === 'info' && (
+        <StoreInfoForm
+          viewInfo={{}}
+          onUserChoice={handleUserChoice}
+          addStore={addStoreInfo}
+          notifyReservationChange={handleReservationChange}
+          notifySalesChange={handleSalesChange}
+        />
+      )}
+      {currentForm === 'reservation' && (
+        <StoreReservationForm
+          viewInfo={{}}
+          onUserChoice={reservationFormSubmitted}
+          sales={sales}
+          addReservation={addReservationInfo}
+          cancelReservation={handleCancelReservation}
+          isUsingReservation={reservationStatus}
+        />
+      )}
+      {currentForm === 'items' && (
+        <StoreItemsForm
+          viewInfo={{}}
+          addSales={addSalesInfo}
+          cancelSales={handleCancelSales}
+          isUsingSales={salesStatus}
+        />
+      )}
+      {currentForm === 'complete' && <StoreCreateComplete />}
     </div>
   );
 }

@@ -6,8 +6,11 @@ import Select from '@mui/material/Select';
 import imgLogo from '../img/Image.png'
 import JsonAxios from '../api/jsonAxios';
 import multipartJsonAxios from '../api/multipartAxios';
-import deleteBtn from '../img/deletebtn.png'
-import Button from '@mui/material/Button'
+import deleteBtn from '../img/deletebtn2.png';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 function MainBanner() {
@@ -19,6 +22,7 @@ function MainBanner() {
   const [banners, setBanners] = useState([]);
   const [fileName, setFileName] = React.useState('이미지 첨부하기');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
       fetchdata();
@@ -31,12 +35,6 @@ function MainBanner() {
           console.log(error)
         });
       }, []);
-
-    // 여긴 맞게 들어오는지 확인하고싶을때 실제로는 그냥 fileName을 쓰면 된다.
-    // useEffect(() => {
-    //   console.log(fileName);
-    // }, [fileName]);
-    
 
     const fetchdata = async () => {
       try{
@@ -118,19 +116,25 @@ function MainBanner() {
       }
     }
 
-    const handleDeleteImage = (banner) => {
-      // banner 객체에서 필요한 정보에 접근
-      const bannerId = banner.bannerId;
-      console.log(bannerId);
-      const url = `http://localhost:8080/api/v1/admin/banners/${bannerId}`;
-      JsonAxios.delete(url).then((res) => {
-          console.log(res.data)
-          const updatedBanners = banners.filter((b) => b.bannerId !== bannerId);
-          setBanners(updatedBanners);
-        }).catch((error) => {
-          console.log(error)
-        });
-      
+    
+    const handleClose = (banner) => {
+      if(banner===null){
+        setOpen(false);
+      }else{
+        const bannerId = banner.bannerId;
+        const url = `http://localhost:8080/api/v1/admin/banners/${bannerId}`;
+        JsonAxios.delete(url).then((res) => {
+            const updatedBanners = banners.filter((b) => b.bannerId !== bannerId);
+            setBanners(updatedBanners);
+            setOpen(false);
+          }).catch((error) => {
+            console.log(error)
+          });
+      }
+    };
+
+    const handleDeleteImage = () => {
+      setOpen(true);
     };
     
     function formatDate(dateString) {
@@ -197,7 +201,23 @@ function MainBanner() {
         {banners.map((banner, index) => (
             <div key={index} className={styles.imageContainer}>
               <img src={banner.imgUrl} alt={`이미지 ${index + 1}`} className={styles.image} />
-              <img src={deleteBtn} alt="삭제" width='25px' className={styles.imgdeletebuttton} onClick={() => handleDeleteImage(banner)}/>
+              <img src={deleteBtn} alt="삭제" width='25px' className={styles.imgdeletebuttton} onClick={() => handleDeleteImage()}/>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+              <DialogTitle id="alert-dialog-title" style={{ textAlign: 'center' }}>
+                  {"이미지 삭제하시겠습니까??"}
+              </DialogTitle>
+              <DialogActions>
+                  <Button onClick={() => handleClose(null)}>취소</Button>
+                  <Button onClick={() => (handleClose(banner))} autoFocus>
+                    확인
+                  </Button>
+              </DialogActions>
+              </Dialog>
               <div className={styles.imagebottom}>
                 <div className={styles.imagebottomfirst}>
                   <div className={styles.imagebottomfirstimage}>

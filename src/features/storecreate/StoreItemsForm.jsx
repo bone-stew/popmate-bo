@@ -186,6 +186,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
     setEditItemPrice(itemsList[index].amount);
     setEditItemTotal(itemsList[index].stock);
     setEditOrderLimit(itemsList[index].orderLimit);
+    setEditImage(itemsList[index].imgUrl);
     setIsEditing(true);
   };
 
