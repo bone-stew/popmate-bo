@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         element: <MainBanner />,
       },
       {
-        path: '/store/:storeId/order',
+        path: '/store/:storeId/orders',
         element: <Order />,
       },
       {
