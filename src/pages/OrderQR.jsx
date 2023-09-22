@@ -1,4 +1,4 @@
-import React ,{useState} from 'react';
+import React  from 'react';
 import styles from '../features/admin/OrderQr.module.css';
 import QrCodeReader, { QRCode } from 'react-qrcode-reader';
 import JsonAxios from '../api/jsonAxios';

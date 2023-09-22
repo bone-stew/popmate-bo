@@ -15,6 +15,7 @@ import StoreCreate from './pages/StoreCreate';
 import StoreEdit from './pages/StoreEdit';
 import StoreView from './pages/StoreView';
 import Login from './pages/Login';
+import OrderQR from './pages/OrderQR'
 import DailyReservation from './pages/DailyReservation';
 
 const router = createBrowserRouter([
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         element: <MainBanner />,
       },
       {
-        path: '/store/:storeId/order',
+        path: '/store/:storeId/orders',
         element: <Order />,
       },
       {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: '/store/:storeId/reservations',
         element: <DailyReservation />,
+      },
+      {
+        path: '/store/orderQr',
+        element: <OrderQR/>,
       },
     ],
   },
