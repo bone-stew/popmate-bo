@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@mui/material';
+import styles from '../features/reservation/StatusButton.module.css';
+import ReservationCancellationDialog from './ReservationCancellationDialog';
+import JsonAxios from '../api/jsonAxios';
 
 const statusStyles = {
   /* 초록색 */
@@ -47,6 +50,10 @@ const statusStyles = {
     backgroundColor: '#FEF0D2',
     color: '#FFAB00',
   },
+  '예약 예정': {
+    backgroundColor: '#E9E9E9',
+    color: '#7F7F7F',
+  },
 };
 
 const defaultStyle = {
@@ -54,16 +61,68 @@ const defaultStyle = {
   color: '#7F7F7F',
 };
 
-const StatusButton = ({ status, label }) => {
+const StatusButton = ({ status, label, reservationId }) => {
+  const [hovered, _hovered] = useState(false);
+  const [dialogOpen, _dialogOpen] = useState(false);
+
+  const handleMouseEnter = () => {
+    _hovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    _hovered(false);
+  };
+
   const buttonStyle = {
     ...(statusStyles[status] || defaultStyle),
     width: '100px',
   };
 
+  const buttonClass = `${styles['status-button']} ${status === '예약 예정' ? styles.scheduled : ''}`;
+
+  const buttonText = hovered && status === '예약 예정' ? '예약 중단' : label;
+
+  const handleCancelButtonClick = () => {
+    if (status === '예약 예정') {
+      _dialogOpen(true); // 다이얼로그 열기
+    }
+  };
+
+  const handleConfirmCancellation = () => {
+    // 예약 중단 API 호출
+    const apiUrl = `reservations/${reservationId}/cancellation`;
+    JsonAxios.patch(apiUrl)
+      .then((response) => {
+        console.log('예약이 중단되었습니다.');
+        _dialogOpen(false);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  };
+
+  const handleCloseDialog = () => {
+    _dialogOpen(false); // 다이얼로그 닫기
+  };
+
   return (
-    <Button variant="text" style={buttonStyle}>
-      {label}
-    </Button>
+    <>
+      <Button
+        variant="text"
+        className={buttonClass}
+        style={buttonStyle}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleCancelButtonClick}
+      >
+        {buttonText}
+      </Button>
+      <ReservationCancellationDialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmCancellation}
+      />
+    </>
   );
 };
 

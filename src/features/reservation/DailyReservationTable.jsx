@@ -154,7 +154,7 @@ function DailyReservationTable() {
                   </TableCellCenter>
                   <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                   <TableCellCenter>
-                    <StatusButton status={item.status} label={item.status} />
+                    <StatusButton status={item.status} label={item.status} reservationId={item.reservationId} />
                   </TableCellCenter>
                 </TableRow>
               );
