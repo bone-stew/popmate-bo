@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import styles from '../features/storecreate/StoreCreate.module.css';
 import StoreInfoForm from '../features/storecreate/StoreInfoForm';
 import StoreReservationForm from '../features/storecreate/StoreReservationForm';
 import StoreItemsForm from '../features/storecreate/StoreItemsForm';
 import { useState, useCallback } from 'react';
 import StoreCreateComplete from '../features/storecreate/StoreCreateComplete';
 import MultipartAxios from '../api/multipartAxios';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setHeaderTitle } from '../slices/headerSlice';
 
@@ -26,6 +26,7 @@ function StoreCreate() {
 
   const dispatch = useDispatch();
   dispatch(setHeaderTitle('팝업스토어 등록'));
+  const navigate = useNavigate();
 
   const handleUserChoice = (reservationText, salesText) => {
     setReservation(reservationText);
@@ -35,9 +36,9 @@ function StoreCreate() {
   const createStoreDetailRequest = useCallback(() => {
     const popupStoreRequest = {
       popupStore: {
-        user: {
-          userId: 122,
-        },
+        // user: {
+        //   userId: 122,
+        // },
         department: {
           departmentId: storeInfo.department,
         },
@@ -122,12 +123,13 @@ function StoreCreate() {
         .then((response) => {
           console.log(response.data);
           setCurrentForm('complete');
+          navigate('/overview/list');
         })
         .catch((error) => {
           console.error(error);
         });
     }
-  }, [readySend, storeImageList, storeItemImageList, storeRequest]);
+  }, [readySend, storeImageList, storeItemImageList, storeRequest, navigate]);
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
@@ -207,36 +209,34 @@ function StoreCreate() {
 
   return (
     <div>
-      <div className={styles.container}>
-        {currentForm === 'info' && (
-          <StoreInfoForm
-            viewInfo={{}}
-            onUserChoice={handleUserChoice}
-            addStore={addStoreInfo}
-            notifyReservationChange={handleReservationChange}
-            notifySalesChange={handleSalesChange}
-          />
-        )}
-        {currentForm === 'reservation' && (
-          <StoreReservationForm
-            viewInfo={{}}
-            onUserChoice={reservationFormSubmitted}
-            sales={sales}
-            addReservation={addReservationInfo}
-            cancelReservation={handleCancelReservation}
-            isUsingReservation={reservationStatus}
-          />
-        )}
-        {currentForm === 'items' && (
-          <StoreItemsForm
-            viewInfo={{}}
-            addSales={addSalesInfo}
-            cancelSales={handleCancelSales}
-            isUsingSales={salesStatus}
-          />
-        )}
-        {currentForm === 'complete' && <StoreCreateComplete />}
-      </div>
+      {currentForm === 'info' && (
+        <StoreInfoForm
+          viewInfo={{}}
+          onUserChoice={handleUserChoice}
+          addStore={addStoreInfo}
+          notifyReservationChange={handleReservationChange}
+          notifySalesChange={handleSalesChange}
+        />
+      )}
+      {currentForm === 'reservation' && (
+        <StoreReservationForm
+          viewInfo={{}}
+          onUserChoice={reservationFormSubmitted}
+          sales={sales}
+          addReservation={addReservationInfo}
+          cancelReservation={handleCancelReservation}
+          isUsingReservation={reservationStatus}
+        />
+      )}
+      {currentForm === 'items' && (
+        <StoreItemsForm
+          viewInfo={{}}
+          addSales={addSalesInfo}
+          cancelSales={handleCancelSales}
+          isUsingSales={salesStatus}
+        />
+      )}
+      {currentForm === 'complete' && <StoreCreateComplete />}
     </div>
   );
 }

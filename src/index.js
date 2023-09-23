@@ -12,7 +12,10 @@ import MainBanner from './pages/MainBanner';
 import Order from './pages/Order';
 import ReservationMain from './pages/ReservationMain';
 import StoreCreate from './pages/StoreCreate';
+import StoreEdit from './pages/StoreEdit';
+import StoreView from './pages/StoreView';
 import Login from './pages/Login';
+import OrderQR from './pages/OrderQR';
 import DailyReservation from './pages/DailyReservation';
 
 const router = createBrowserRouter([
@@ -42,8 +45,24 @@ const router = createBrowserRouter([
         element: <StoreCreate />,
       },
       {
+        path: '/popup-stores/:storeId/edit',
+        element: <StoreEdit />,
+      },
+      {
+        path: '/popup-stores/:storeId/detail',
+        element: <StoreView />,
+      },
+      {
         path: '/popup-stores/:storeId/daily-reservations',
         element: <DailyReservation />,
+      },
+      {
+        path: '/popup-stores/:storeId/pickup',
+        element: <OrderQR />,
+      },
+      {
+        path: '/popup-stores/:storeId/enter',
+        element: <OrderQR />,
       },
     ],
   },

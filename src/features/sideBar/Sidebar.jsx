@@ -152,7 +152,7 @@ function Sidebar({ drawerWidth }) {
                 <ListItem key={`/popup-stores/${value.popupStoreId}/enter`} disablePadding>
                   <ListItemButton
                     onClick={() => {
-                      navigate(`/store/${value.popupStoreId}/enter`);
+                      navigate(`/popup-stores/${value.popupStoreId}/enter`);
                     }}
                   >
                     <QrCode className={styles.whiteFont} />
