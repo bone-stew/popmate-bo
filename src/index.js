@@ -15,7 +15,7 @@ import StoreCreate from './pages/StoreCreate';
 import StoreEdit from './pages/StoreEdit';
 import StoreView from './pages/StoreView';
 import Login from './pages/Login';
-import OrderQR from './pages/OrderQR'
+import OrderQR from './pages/OrderQR';
 import DailyReservation from './pages/DailyReservation';
 
 const router = createBrowserRouter([
@@ -33,32 +33,36 @@ const router = createBrowserRouter([
         element: <MainBanner />,
       },
       {
-        path: '/store/:storeId/orders',
+        path: '/popup-stores/:storeId/orders',
         element: <Order />,
       },
       {
-        path: '/store/:storeId/',
+        path: '/popup-stores/:storeId',
         element: <ReservationMain />,
       },
       {
-        path: '/store/write',
+        path: '/popup-stores/write',
         element: <StoreCreate />,
       },
       {
-        path: '/store/:storeId/edit',
+        path: '/popup-stores/:storeId/edit',
         element: <StoreEdit />,
       },
       {
-        path: '/store/:storeId/detail',
+        path: '/popup-stores/:storeId/detail',
         element: <StoreView />,
       },
       {
-        path: '/store/:storeId/reservations',
+        path: '/popup-stores/:storeId/daily-reservations',
         element: <DailyReservation />,
       },
       {
-        path: '/store/:storeId/orderQr',
-        element: <OrderQR/>,
+        path: '/popup-stores/:storeId/pickup',
+        element: <OrderQR />,
+      },
+      {
+        path: '/popup-stores/:storeId/enter',
+        element: <OrderQR />,
       },
     ],
   },

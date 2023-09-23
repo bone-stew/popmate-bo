@@ -1,14 +1,16 @@
-import { Avatar, Breadcrumbs, Link, Typography } from '@mui/material';
+import { Avatar, Breadcrumbs, Typography } from '@mui/material';
 import React from 'react';
 import styles from './Header.module.css';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../slices/userSlice';
+import { selectHeader } from '../../slices/headerSlice';
 
 function Header() {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
   const currUser = useSelector(selectUser);
+  const header = useSelector(selectHeader);
   const breadcrumbNameMap = {
     '/overview': 'Overview',
     '/overview/list': 'list',
@@ -18,13 +20,10 @@ function Header() {
     '/store/write': 'write',
     '/store/1/reservations': 'reservations',
   };
-  const titleNameMap = {
-    banner: '메인 배너 등록',
-    list: '팝업스토어 목록',
-    3: '팝업스토어 관리',
-    write: '팝업스토어 등록',
-    reservations: '일일 예약 내역',
-  };
+  // const titleNameMap = {
+  //   3: '팝업스토어 관리',
+  //   reservations: '일일 예약 내역',
+  // };
   return (
     <div className={styles.container}>
       <div className={styles.profile}>
@@ -32,7 +31,7 @@ function Header() {
         <Avatar />
       </div>
       <div>
-        <span className={styles.title}>{titleNameMap[pathnames[pathnames.length - 1]]}</span>
+        <span className={styles.title}>{header.value}</span>
         <Breadcrumbs className={styles.breadcrumbs} aria-label="breadcrumb">
           {pathnames.map((value, index) => {
             const last = index === pathnames.length - 1;
@@ -42,9 +41,9 @@ function Header() {
                 {breadcrumbNameMap[to]}
               </Typography>
             ) : (
-              <Link underline="hover" color="inherit" href={to} key={to}>
+              <Typography underline="hover" color="inherit" key={to}>
                 {breadcrumbNameMap[to]}
-              </Link>
+              </Typography>
             );
           })}
         </Breadcrumbs>
