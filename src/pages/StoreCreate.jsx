@@ -6,6 +6,8 @@ import StoreItemsForm from '../features/storecreate/StoreItemsForm';
 import { useState, useCallback } from 'react';
 import StoreCreateComplete from '../features/storecreate/StoreCreateComplete';
 import MultipartAxios from '../api/multipartAxios';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../slices/headerSlice';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -21,6 +23,9 @@ function StoreCreate() {
   const [storeImageList, setStoreImageList] = useState([]);
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
+
+  const dispatch = useDispatch();
+  dispatch(setHeaderTitle('팝업스토어 등록'));
 
   const handleUserChoice = (reservationText, salesText) => {
     setReservation(reservationText);
