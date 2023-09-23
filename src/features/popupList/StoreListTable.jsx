@@ -81,8 +81,7 @@ function StoreListTable() {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {});
+      });
   }
 
   const initList = () => {
@@ -166,7 +165,7 @@ function StoreListTable() {
           _flag(!flag);
         }}
         sortingMode="server"
-        sortModel={[{ ...sortModel }]}
+        sortModel={[sortModel == null ? { field: '', sore: '' } : sortModel]}
         onSortModelChange={(model) => {
           _sortModel(...model);
           _flag(!flag);
