@@ -6,10 +6,7 @@ function Order() {
   return (
     <div className={styles.container}>
       <h3>주문목록</h3>
-      <div className={styles.orderListback}>
-        <OrderList />
-      </div>
-      
+      <OrderList />
     </div>
   );
 }

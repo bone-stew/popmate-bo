@@ -23,13 +23,14 @@ function MainBanner() {
   const [fileName, setFileName] = React.useState('이미지 첨부하기');
   const [selectedFile, setSelectedFile] = useState(null);
   const [open, setOpen] = React.useState(false);
+  const [bannerId, setBannerId] = useState(0);
 
     useEffect(() => {
       fetchdata();
     }, []);
 
     useEffect(() => {
-      JsonAxios.get('http://localhost:8080/api/v1/admin/banners').then((res) => {
+      JsonAxios.get('admin/banners').then((res) => {
           setBanners(res.data.data.bannerResponses);
         }).catch((error) => {
           console.log(error)
@@ -38,7 +39,7 @@ function MainBanner() {
 
     const fetchdata = async () => {
       try{
-        const response = await JsonAxios.get('http://localhost:8080/api/v1/admin/title');
+        const response = await JsonAxios.get('admin/title');
         const list = response.data.data.backOfficePopupStoreResponse
         setList(list);
         const newMenuItems = list.map((item) => (
@@ -86,14 +87,7 @@ function MainBanner() {
         const formData = new FormData();
         formData.append('multipartFile', selectedFile);
         formData.append('popupStoreId', popupStoreId);
-        // for (const pair of formData.entries()) {
-        //   console.log(pair[0], pair[1]);
-        // }
-        multipartJsonAxios.post('http://localhost:8080/api/v1/admin/banners/new',formData).then((res) => {
-            setSelectedFile(null);
-            setFileName('이미지 첨부하기');
-            setTitle('');
-            setPopupStoreId(0);
+        multipartJsonAxios.post('admin/banners/new',formData).then((res) => {
             console.log(title);
             const bannerInfo = res.data.data;
             const newBanner = {
@@ -108,6 +102,10 @@ function MainBanner() {
               title : bannerInfo.title
             };
             const updatedBanners = [...banners, newBanner];
+            setSelectedFile(null);
+            setFileName('이미지 첨부하기');
+            setTitle('');
+            setPopupStoreId(0);
             setBanners(updatedBanners);
           }).catch((error) => {
             console.log(error)
@@ -120,21 +118,23 @@ function MainBanner() {
     const handleClose = (banner) => {
       if(banner===null){
         setOpen(false);
+        setBannerId(0);
       }else{
-        const bannerId = banner.bannerId;
-        const url = `http://localhost:8080/api/v1/admin/banners/${bannerId}`;
+        const url = `admin/banners/${bannerId}`;
         JsonAxios.delete(url).then((res) => {
             const updatedBanners = banners.filter((b) => b.bannerId !== bannerId);
             setBanners(updatedBanners);
             setOpen(false);
+            setBannerId(0);
           }).catch((error) => {
             console.log(error)
           });
       }
     };
 
-    const handleDeleteImage = () => {
+    const handleDeleteImage = (bannerId) => {
       setOpen(true);
+      setBannerId(bannerId);
     };
     
     function formatDate(dateString) {
@@ -201,7 +201,7 @@ function MainBanner() {
         {banners.map((banner, index) => (
             <div key={index} className={styles.imageContainer}>
               <img src={banner.imgUrl} alt={`이미지 ${index + 1}`} className={styles.image} />
-              <img src={deleteBtn} alt="삭제" width='25px' className={styles.imgdeletebuttton} onClick={() => handleDeleteImage()}/>
+              <img src={deleteBtn} alt="삭제" width='25px' className={styles.imgdeletebuttton} onClick={() => handleDeleteImage(banner.bannerId)}/>
               <Dialog
                 open={open}
                 onClose={handleClose}
@@ -213,7 +213,7 @@ function MainBanner() {
               </DialogTitle>
               <DialogActions>
                   <Button onClick={() => handleClose(null)}>취소</Button>
-                  <Button onClick={() => (handleClose(banner))} autoFocus>
+                  <Button onClick={() => handleClose(bannerId)} autoFocus>
                     확인
                   </Button>
               </DialogActions>
