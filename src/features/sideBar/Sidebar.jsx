@@ -39,7 +39,7 @@ function Sidebar({ drawerWidth }) {
   const adminMenu = [
     { icon: <ImageOutlined className={styles.whiteFont} />, title: '배너 관리', to: 'overview/banner' },
     { icon: <ManageSearch className={styles.whiteFont} />, title: '팝업 스토어 관리', to: 'overview/list' },
-    { icon: <Addchart className={styles.whiteFont} />, title: '통계' },
+    // { icon: <Addchart className={styles.whiteFont} />, title: '통계' },
   ];
   const [storeList, _storeList] = useState([]);
   const [selectedStore, _selectedStore] = useState();
@@ -93,7 +93,7 @@ function Sidebar({ drawerWidth }) {
           <IconButton
             sx={{ verticalAlign: 'middle', color: 'white' }}
             onClick={() => {
-              navigate('/store/write', { replace: true });
+              navigate('/popup-stores/write', { replace: true });
             }}
           >
             <AddCircleOutline />
