@@ -30,19 +30,19 @@ const router = createBrowserRouter([
         element: <MainBanner />,
       },
       {
-        path: '/store/:storeId/order',
+        path: '/popup-stores/:storeId/orders',
         element: <Order />,
       },
       {
-        path: '/store/:storeId/',
+        path: '/popup-stores/:storeId',
         element: <ReservationMain />,
       },
       {
-        path: '/store/write',
+        path: '/popup-stores/write',
         element: <StoreCreate />,
       },
       {
-        path: '/store/:storeId/reservations',
+        path: '/popup-stores/:storeId/daily-reservations',
         element: <DailyReservation />,
       },
     ],
