@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         element: <DailyReservation />,
       },
       {
-        path: '/store/orderQr',
+        path: '/store/:storeId/orderQr',
         element: <OrderQR/>,
       },
     ],

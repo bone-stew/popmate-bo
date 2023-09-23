@@ -29,7 +29,7 @@ function MainBanner() {
     }, []);
 
     useEffect(() => {
-      JsonAxios.get('http://localhost:8080/api/v1/admin/banners').then((res) => {
+      JsonAxios.get('admin/banners').then((res) => {
           setBanners(res.data.data.bannerResponses);
         }).catch((error) => {
           console.log(error)
@@ -38,7 +38,7 @@ function MainBanner() {
 
     const fetchdata = async () => {
       try{
-        const response = await JsonAxios.get('http://localhost:8080/api/v1/admin/title');
+        const response = await JsonAxios.get('admin/title');
         const list = response.data.data.backOfficePopupStoreResponse
         setList(list);
         const newMenuItems = list.map((item) => (
@@ -89,7 +89,7 @@ function MainBanner() {
         // for (const pair of formData.entries()) {
         //   console.log(pair[0], pair[1]);
         // }
-        multipartJsonAxios.post('http://localhost:8080/api/v1/admin/banners/new',formData).then((res) => {
+        multipartJsonAxios.post('admin/banners/new',formData).then((res) => {
             setSelectedFile(null);
             setFileName('이미지 첨부하기');
             setTitle('');

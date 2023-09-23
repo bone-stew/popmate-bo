@@ -17,7 +17,7 @@ function OrderQR() {
     });
     const orderId = data.orderId;
     const userId = data.userId;
-    const url = `http://localhost:8080/api/v1/orders/qrcode/${orderId}/${userId}`;
+    const url = `orders/qrcode/${orderId}/${userId}`;
     JsonAxios.get(url).then((res) => {
       alert('픽업완료하였습니다.');  
     }).catch((error) => {
