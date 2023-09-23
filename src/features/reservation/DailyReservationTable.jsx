@@ -62,12 +62,38 @@ function DailyReservationTable() {
     }
   };
 
-  const handleEditComplete = () => {
+  const handleEditComplete = (editedValue) => {
     if (selectedItem && selectedItem.status !== '입장 완료') {
       selectedItem.guestLimit = parseInt(editableGuestLimit);
       _dailyReservationData([...dailyReservationData]);
       _editableGuestLimit(0);
       _editDialogOpen(false);
+
+      const apiUrl = `reservations/${selectedItem.reservationId}/guest-limit`;
+      JsonAxios.patch(apiUrl, { guestLimit: editedValue })
+        .then((response) => {
+          if (response.data.code === 'SUCCESS') {
+            console.log('업데이트되었습니다.');
+            if (editedValue !== editableGuestLimit) {
+              const updatedData = dailyReservationData.map((item) =>
+                item.reservationId === selectedItem.reservationId
+                  ? {
+                      ...item,
+                      guestLimit: editedValue,
+                    }
+                  : item,
+              );
+              _dailyReservationData(updatedData);
+            }
+            _editDialogOpen(false);
+            _editableGuestLimit(0); // 수정값 초기화
+          } else {
+            console.error('업데이트 실패');
+          }
+        })
+        .catch((error) => {
+          console.error('API 호출 중 오류 발생:', error);
+        });
     }
   };
 
@@ -140,7 +166,7 @@ function DailyReservationTable() {
         open={editDialogOpen}
         onClose={() => _editDialogOpen(false)}
         onSave={handleEditComplete}
-        title="최대 예약 인원 수 수정"
+        title="예약 인원 수 수정"
         value={editableGuestLimit}
       />
     </>
