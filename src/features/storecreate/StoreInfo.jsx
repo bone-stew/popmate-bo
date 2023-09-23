@@ -13,7 +13,6 @@ function StoreInfo() {
   const [storeData, setStoreData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   const { storeId } = useParams();
 
   useEffect(() => {
