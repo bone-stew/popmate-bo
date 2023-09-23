@@ -7,7 +7,7 @@ import Header from './features/header/Header';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const drawerWidth = 240;
+  const drawerWidth = 260;
   const currUser = useSelector(selectUser);
   const [pageTitle, _pageTitle] = useState();
   const dispatch = useDispatch();
