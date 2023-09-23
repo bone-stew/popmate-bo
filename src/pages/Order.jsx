@@ -9,7 +9,6 @@ function Order() {
   dispatch(setHeaderTitle('주문목록'));
   return (
     <div className={styles.container}>
-      <h3>주문목록</h3>
       <div className={styles.orderListback}>
         <OrderList />
       </div>
