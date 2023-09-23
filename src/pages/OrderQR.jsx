@@ -17,11 +17,14 @@ function OrderQR() {
     });
     const orderId = data.orderId;
     const userId = data.userId;
-    const url = `orders/qrcode/${orderId}/${userId}`;
+    // 나중에 팝업스토어아이디 받아서 넣어줘야함
+    const popupStoreId = 1;
+    const url = `orders/qrcode/${orderId}/${userId}/${popupStoreId}`;
     JsonAxios.get(url).then((res) => {
-      alert('픽업완료하였습니다.');  
+      const message = res.data.data;
+      alert(message);  
     }).catch((error) => {
-      console.log(error)
+      // alert('상품 픽업 QR코드가 아닙니다.');
     });
   }
   
