@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import styles from '../features/reservation/StatusButton.module.css';
 import ReservationCancellationDialog from './ReservationCancellationDialog';
+import ReservationStartDialog from './ReservationStartDialog';
+
 import JsonAxios from '../api/jsonAxios';
 
 const statusStyles = {
@@ -64,6 +66,7 @@ const defaultStyle = {
 const StatusButton = ({ status, label, reservationId }) => {
   const [hovered, _hovered] = useState(false);
   const [dialogOpen, _dialogOpen] = useState(false);
+  const [restartDialogOpen, _restartDialogOpen] = useState(false);
 
   const handleMouseEnter = () => {
     _hovered(true);
@@ -85,24 +88,41 @@ const StatusButton = ({ status, label, reservationId }) => {
   const handleCancelButtonClick = () => {
     if (status === '예약 예정') {
       _dialogOpen(true); // 다이얼로그 열기
+    } else if (status === '예약 중단') {
+      _restartDialogOpen(true); // 다이얼로그 열기
     }
   };
 
   const handleConfirmCancellation = () => {
-    // 예약 중단 API 호출
-    const apiUrl = `reservations/${reservationId}/cancellation`;
-    JsonAxios.patch(apiUrl)
-      .then((response) => {
-        console.log('예약이 중단되었습니다.');
-        _dialogOpen(false);
-      })
-      .catch((error) => {
-        console.error('API 호출 중 오류 발생:', error);
-      });
+    if (dialogOpen === true) {
+      // 예약 중단 API 호출
+      const apiUrl = `reservations/${reservationId}/cancellation`;
+      JsonAxios.patch(apiUrl)
+        .then((response) => {
+          console.log('예약이 중단되었습니다.');
+          _;
+          _dialogOpen(false);
+        })
+        .catch((error) => {
+          console.error('API 호출 중 오류 발생:', error);
+        });
+    } else if (restartDialogOpen === true) {
+      // 예약 재개 API 호출
+      const apiUrl = `reservations/${reservationId}/restart`;
+      JsonAxios.patch(apiUrl)
+        .then((response) => {
+          console.log('예약이 재개되었습니다.');
+          _restartDialogOpen(false);
+        })
+        .catch((error) => {
+          console.error('API 호출 중 오류 발생:', error);
+        });
+    }
   };
 
   const handleCloseDialog = () => {
     _dialogOpen(false); // 다이얼로그 닫기
+    _restartDialogOpen(false); // 다이얼로그 닫기
   };
 
   return (
@@ -121,6 +141,11 @@ const StatusButton = ({ status, label, reservationId }) => {
         open={dialogOpen}
         onClose={handleCloseDialog}
         onConfirm={handleConfirmCancellation}
+      />
+      <ReservationStartDialog
+        open={restartDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleCancelButtonClick}
       />
     </>
   );
