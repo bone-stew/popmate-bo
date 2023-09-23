@@ -29,6 +29,7 @@ function MainBanner() {
     dispatch(setHeaderTitle('메인베너등록'));
 
     fetchdata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
