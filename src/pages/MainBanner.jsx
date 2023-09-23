@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import styles from '../features/admin/MainBanner.module.css';
 import MenuItem from '@mui/material/MenuItem';
@@ -26,29 +27,56 @@ function MainBanner() {
   const [bannerId, setBannerId] = useState(0);
 
   const dispatch = useDispatch();
-    useEffect(() => {
+  useEffect(() => {
     dispatch(setHeaderTitle('메인베너등록'));
-      JsonAxios.get('admin/banners').then((res) => {
-          setBanners(res.data.data.bannerResponses);
-        }).catch((error) => {
-          console.log(error)
-        });
-      }, []);
+    fetchdata();
+  }, []);
 
-    const fetchdata = async () => {
-      try{
-        const response = await JsonAxios.get('admin/title');
-        const list = response.data.data.backOfficePopupStoreResponse
-        setList(list);
-        const newMenuItems = list.map((item) => (
-          <MenuItem key={item.popupStoreId} value={item.popupStoreId}>
-            {item.title}
-          </MenuItem>
-        ));
-          setMenuItems(newMenuItems);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  useEffect(() => {
+    JsonAxios.get('admin/banners')
+      .then((res) => {
+        setBanners(res.data.data.bannerResponses);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const fetchdata = async () => {
+    try {
+      const response = await JsonAxios.get('admin/title');
+      const list = response.data.data.backOfficePopupStoreResponse;
+      setList(list);
+      const newMenuItems = list.map((item) => (
+        <MenuItem key={item.popupStoreId} value={item.popupStoreId}>
+          {item.title}
+        </MenuItem>
+      ));
+      setMenuItems(newMenuItems);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleChange = (event) => {
+    const selectedPopupStoreId = event.target.value;
+    setPopupStoreId(selectedPopupStoreId);
+    const selectedTitle = findTitleByPopupStoreId(selectedPopupStoreId);
+    setTitle(selectedTitle);
+  };
+  const findTitleByPopupStoreId = (popupStoreId) => {
+    const foundItem = list.find((item) => item.popupStoreId === popupStoreId);
+    return foundItem ? foundItem.title : '';
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setSelectedFile(selectedFile);
+      setFileName(selectedFile.name);
+    } else {
+      setSelectedFile(null);
+      setFileName('이미지 첨부하기');
     }
   };
 
@@ -64,7 +92,9 @@ function MainBanner() {
         const formData = new FormData();
         formData.append('multipartFile', selectedFile);
         formData.append('popupStoreId', popupStoreId);
-        multipartJsonAxios.post('admin/banners/new',formData).then((res) => {
+        multipartJsonAxios
+          .post('admin/banners/new', formData)
+          .then((res) => {
             console.log(title);
             const bannerInfo = res.data.data;
             const newBanner = {
@@ -91,40 +121,29 @@ function MainBanner() {
       }
     }
   };
-    
-    const handleClose = (banner) => {
-      if(banner===null){
-        setOpen(false);
-        setBannerId(0);
-      }else{
-        const url = `admin/banners/${bannerId}`;
-        JsonAxios.delete(url).then((res) => {
-            const updatedBanners = banners.filter((b) => b.bannerId !== bannerId);
-            setBanners(updatedBanners);
-            setOpen(false);
-            setBannerId(0);
-          }).catch((error) => {
-            console.log(error)
-          });
-      }
-    };
 
-    const handleDeleteImage = (bannerId) => {
-      setOpen(true);
-      setBannerId(bannerId);
-    };
-    
-    function formatDate(dateString) {
-      const date = new Date(dateString);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}.${month}.${day}`;
+  const handleClose = (banner) => {
+    if (banner === null) {
+      setOpen(false);
+      setBannerId(0);
+    } else {
+      const url = `admin/banners/${bannerId}`;
+      JsonAxios.delete(url)
+        .then((res) => {
+          const updatedBanners = banners.filter((b) => b.bannerId !== bannerId);
+          setBanners(updatedBanners);
+          setOpen(false);
+          setBannerId(0);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
-  const handleDeleteImage = () => {
+  const handleDeleteImage = (bannerId) => {
     setOpen(true);
+    setBannerId(bannerId);
   };
 
   function formatDate(dateString) {
@@ -137,6 +156,7 @@ function MainBanner() {
 
   return (
     <div className={styles.container}>
+      <h3>메인 배너 등록</h3>
       <div className={styles.bottom}>
         <div className={styles.bottomfirst}>
           <div className={styles.bottomfirsttitle}>
@@ -200,7 +220,7 @@ function MainBanner() {
               alt="삭제"
               width="25px"
               className={styles.imgdeletebuttton}
-              onClick={() => handleDeleteImage()}
+              onClick={() => handleDeleteImage(banner.bannerId)}
             />
             <Dialog
               open={open}
@@ -213,7 +233,7 @@ function MainBanner() {
               </DialogTitle>
               <DialogActions>
                 <Button onClick={() => handleClose(null)}>취소</Button>
-                <Button onClick={() => handleClose(banner)} autoFocus>
+                <Button onClick={() => handleClose(bannerId)} autoFocus>
                   확인
                 </Button>
               </DialogActions>
