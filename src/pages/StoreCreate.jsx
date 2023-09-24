@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setHeaderTitle } from '../slices/headerSlice';
 import Loading from '../components/Loading.js';
 
+
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
   const [reservation, setReservation] = useState('');
@@ -24,8 +25,6 @@ function StoreCreate() {
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
 
-  const dispatch = useDispatch();
-  dispatch(setHeaderTitle('팝업스토어 등록'));
   const navigate = useNavigate();
 
   const handleUserChoice = (reservationText, salesText) => {

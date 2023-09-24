@@ -18,7 +18,6 @@ function StoreEdit() {
   const navigate = useNavigate();
 
   const { storeId } = useParams();
-
   useEffect(() => {
     MultipartAxios.get(`popup-stores/${storeId}/edit`)
       .then((response) => {

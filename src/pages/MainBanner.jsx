@@ -12,8 +12,6 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useDispatch } from 'react-redux';
-import { setHeaderTitle } from '../slices/headerSlice';
 
 function MainBanner() {
   const [popupStoreId, setPopupStoreId] = useState(0);
@@ -26,9 +24,7 @@ function MainBanner() {
   const [open, setOpen] = React.useState(false);
   const [bannerId, setBannerId] = useState(0);
 
-  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setHeaderTitle('메인베너등록'));
     fetchdata();
   }, []);
 
