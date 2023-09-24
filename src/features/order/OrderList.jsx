@@ -11,16 +11,17 @@ import { Refresh, Search } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import JsonAxios from '../../api/jsonAxios';
 import StatusButton from '../../components/StatusButton';
+import { useParams } from 'react-router-dom';
 
 function OrderList() {
   const [originalRows, setOriginalRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [category, setCategory] = useState(0);
   const [query, setQuery] = useState('');
-
+  const { storeId } = useParams();
   useEffect(() => {
     fetchdata();
-  }, []);
+  },);
 
   const columns = [
     { field: 'orderId', headerName: '주문 번호', flex: 1, align: 'center', headerAlign: 'center'},
@@ -42,7 +43,9 @@ function OrderList() {
 
   const fetchdata = async () => {
     try {
-      const response = await JsonAxios.get('orders/backoffice/orderList/1');
+      const popupStoreId = storeId;
+      const apiUrl = `orders/backoffice/orderList/${popupStoreId}`;
+      const response = await JsonAxios.get(apiUrl);
       const orderListItemResponses = response.data;
       const orderList = orderListItemResponses.data.orderListItemResponses;
 

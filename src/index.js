@@ -17,6 +17,7 @@ import StoreView from './pages/StoreView';
 import Login from './pages/Login';
 import OrderQR from './pages/OrderQR';
 import DailyReservation from './pages/DailyReservation';
+import ReservationQR from './pages/ReservationQR';
 
 const router = createBrowserRouter([
   {
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/popup-stores/:storeId/enter',
-        element: <OrderQR />,
+        element: <ReservationQR />,
       },
     ],
   },
