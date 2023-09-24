@@ -21,7 +21,7 @@ function OrderList() {
   const { storeId } = useParams();
   useEffect(() => {
     fetchdata();
-  }, []);
+  },);
 
   const columns = [
     { field: 'orderId', headerName: '주문 번호', flex: 1, align: 'center', headerAlign: 'center'},
