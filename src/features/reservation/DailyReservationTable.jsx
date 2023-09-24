@@ -1,5 +1,6 @@
 import { Edit as EditIcon } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
+import TocIcon from '@mui/icons-material/Toc';
 import {
   FormControlLabel,
   IconButton,
@@ -13,12 +14,13 @@ import {
   TableRow,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { formatToLocalTime, getCurrentDate } from '../../app/dateTimeUtils';
 import JsonAxios from '../../api/jsonAxios';
 import DatePickerComponent from '../../components/CustomDatePicker';
 import StatusButton from '../../components/StatusButton';
 import CustomDialog from '../dialog/CustomDialog';
+
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '50px' }}>
     {children}
@@ -27,6 +29,7 @@ const TableCellCenter = ({ children }) => (
 
 function DailyReservationTable() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const popupStoreId = location.pathname.split('/').filter((x) => x)[1];
   const [dailyReservationData, _dailyReservationData] = useState([]);
@@ -97,6 +100,11 @@ function DailyReservationTable() {
     }
   };
 
+  const handleTableRowClick = (reservationId) => {
+    const detailPageURL = `/reservations/${reservationId}/detail`;
+    navigate(detailPageURL);
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -129,6 +137,7 @@ function DailyReservationTable() {
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>최대 예약 인원 수</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>예약한 인원 수</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>상태</TableCellCenter>
+              <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>상세</TableCellCenter>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -155,6 +164,11 @@ function DailyReservationTable() {
                   <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                   <TableCellCenter>
                     <StatusButton status={item.status} label={item.status} reservationId={item.reservationId} />
+                  </TableCellCenter>
+                  <TableCellCenter>
+                    <IconButton onClick={() => handleTableRowClick(item.reservationId)}>
+                      <TocIcon />
+                    </IconButton>
                   </TableCellCenter>
                 </TableRow>
               );
