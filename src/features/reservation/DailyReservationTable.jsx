@@ -1,5 +1,6 @@
 import { Edit as EditIcon } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
+import TocIcon from '@mui/icons-material/Toc';
 import {
   FormControlLabel,
   IconButton,
@@ -136,6 +137,7 @@ function DailyReservationTable() {
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>최대 예약 인원 수</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>예약한 인원 수</TableCellCenter>
               <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>상태</TableCellCenter>
+              <TableCellCenter style={{ fontSize: '1.2rem', padding: '8px' }}>상세</TableCellCenter>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -144,7 +146,7 @@ function DailyReservationTable() {
                 return null;
               }
               return (
-                <TableRow key={index} onClick={() => handleTableRowClick(item.reservationId)}>
+                <TableRow key={index}>
                   <TableCellCenter>
                     {formatToLocalTime(item.startTime)} ~ {formatToLocalTime(item.endTime)}
                   </TableCellCenter>
@@ -162,6 +164,11 @@ function DailyReservationTable() {
                   <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                   <TableCellCenter>
                     <StatusButton status={item.status} label={item.status} reservationId={item.reservationId} />
+                  </TableCellCenter>
+                  <TableCellCenter>
+                    <IconButton onClick={() => handleTableRowClick(item.reservationId)}>
+                      <TocIcon />
+                    </IconButton>
                   </TableCellCenter>
                 </TableRow>
               );
