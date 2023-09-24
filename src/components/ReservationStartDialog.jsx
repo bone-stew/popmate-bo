@@ -5,7 +5,7 @@ const ReservationStartDialog = ({ open, onClose, onConfirm }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>예약 진행</DialogTitle>
-      <DialogContent>예약을 진행하시겠습니까?</DialogContent>
+      <DialogContent>예약을 다시 진행하시겠습니까?</DialogContent>
       <DialogActions>
         <Button onClick={onClose}>취소</Button>
         <Button onClick={onConfirm} color="error">

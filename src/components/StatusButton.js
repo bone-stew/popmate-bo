@@ -86,9 +86,9 @@ const StatusButton = ({ status, label, reservationId }) => {
   const buttonText = hovered && status === '예약 예정' ? '예약 중단' : label;
 
   const handleCancelButtonClick = () => {
-    if (status === '예약 예정') {
+    if (status === '예약 예정' && hovered === true) {
       _dialogOpen(true); // 다이얼로그 열기
-    } else if (status === '예약 중단') {
+    } else if (status === '예약 중단' && hovered === true) {
       _restartDialogOpen(true); // 다이얼로그 열기
     }
   };
@@ -100,7 +100,6 @@ const StatusButton = ({ status, label, reservationId }) => {
       JsonAxios.patch(apiUrl)
         .then((response) => {
           console.log('예약이 중단되었습니다.');
-          _;
           _dialogOpen(false);
         })
         .catch((error) => {
@@ -108,7 +107,7 @@ const StatusButton = ({ status, label, reservationId }) => {
         });
     } else if (restartDialogOpen === true) {
       // 예약 재개 API 호출
-      const apiUrl = `reservations/${reservationId}/restart`;
+      const apiUrl = `reservations/${reservationId}/resume`;
       JsonAxios.patch(apiUrl)
         .then((response) => {
           console.log('예약이 재개되었습니다.');
@@ -145,7 +144,7 @@ const StatusButton = ({ status, label, reservationId }) => {
       <ReservationStartDialog
         open={restartDialogOpen}
         onClose={handleCloseDialog}
-        onConfirm={handleCancelButtonClick}
+        onConfirm={handleConfirmCancellation}
       />
     </>
   );
