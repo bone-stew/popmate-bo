@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   IconButton,
   InputAdornment,
@@ -38,14 +38,14 @@ function OrderList() {
     { field: 'pickupTime', headerName: '픽업 예정시간', flex: 1.5, align: 'center', headerAlign: 'center' },
   ];
 
-  const fetchdata = async () => {
+  const fetchdata = useCallback(async () => {
     try {
       const popupStoreId = storeId;
       const apiUrl = `orders/backoffice/orderList/${popupStoreId}`;
       const response = await JsonAxios.get(apiUrl);
       const orderListItemResponses = response.data;
       const orderList = orderListItemResponses.data.orderListItemResponses;
-
+  
       const rows = orderList.map((order, index) => ({
         id: index,
         orderId: order.orderTossId,
@@ -64,17 +64,18 @@ function OrderList() {
             : '주문취소',
         pickupTime: addMinutesToDateTime(order.createdAt, 10),
       }));
-
+  
       setFilteredRows(rows);
       setOriginalRows(rows);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [storeId]);
+  
 
   useEffect(() => {
     fetchdata();
-  },[]);
+  },[fetchdata]);
 
   const handleSearch = () => {
     
