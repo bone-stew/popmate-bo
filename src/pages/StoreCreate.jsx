@@ -3,11 +3,11 @@ import StoreInfoForm from '../features/storecreate/StoreInfoForm';
 import StoreReservationForm from '../features/storecreate/StoreReservationForm';
 import StoreItemsForm from '../features/storecreate/StoreItemsForm';
 import { useState, useCallback } from 'react';
-import StoreCreateComplete from '../features/storecreate/StoreCreateComplete';
 import MultipartAxios from '../api/multipartAxios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setHeaderTitle } from '../slices/headerSlice';
+import Loading from '../components/Loading.js';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -36,9 +36,6 @@ function StoreCreate() {
   const createStoreDetailRequest = useCallback(() => {
     const popupStoreRequest = {
       popupStore: {
-        // user: {
-        //   userId: 122,
-        // },
         department: {
           departmentId: storeInfo.department,
         },
@@ -119,6 +116,8 @@ function StoreCreate() {
     });
 
     if (readySend === true) {
+      setCurrentForm('loading');
+
       MultipartAxios.post('popup-stores/new', formData)
         .then((response) => {
           console.log(response.data);
@@ -189,14 +188,14 @@ function StoreCreate() {
     if (sales === 'yesSales') {
       setCurrentForm('items');
     } else {
-      setCurrentForm('complete');
+      navigate('/overview/list');
     }
   };
 
   const handleCancelSales = () => {
     setSalesStatus(true);
     setSales('noSales');
-    setCurrentForm('complete');
+    navigate('/overview/list');
   };
 
   const handleSalesChange = () => {
@@ -209,6 +208,7 @@ function StoreCreate() {
 
   return (
     <div>
+      {currentForm === 'loading' && <Loading />}
       {currentForm === 'info' && (
         <StoreInfoForm
           viewInfo={{}}
@@ -236,7 +236,6 @@ function StoreCreate() {
           isUsingSales={salesStatus}
         />
       )}
-      {currentForm === 'complete' && <StoreCreateComplete />}
     </div>
   );
 }

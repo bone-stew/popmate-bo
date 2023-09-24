@@ -8,10 +8,11 @@ import JsonAxios from '../api/jsonAxios';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading.js';
 
 function StoreEdit() {
   const [storeData, setStoreData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [isUsingReservation, setIsUsingReservation] = useState();
   const [isUsingSales, setIsUsingSales] = useState();
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function StoreEdit() {
         setStoreData(response.data.data);
         setIsUsingReservation(response.data.data.reservationEnabled);
         setIsUsingSales(response.data.data.popupStoreItemResponse.length !== 0);
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -48,6 +49,7 @@ function StoreEdit() {
   };
 
   const handleEditStore = async () => {
+    setIsLoading(true);
     const storeInfo = StoreInfoForm.getData();
     const newStoreImages = storeInfo.storeImageFilesData;
 
@@ -154,7 +156,7 @@ function StoreEdit() {
         JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {
             console.log(response.data);
-            // navigate('/overview/list');
+            navigate('/overview/list');
           })
           .catch((e) => {
             console.error(e);
@@ -162,10 +164,15 @@ function StoreEdit() {
       })
       .catch((e) => {
         console.error(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
-  if (!isLoading) {
+  if (isLoading) {
+    return <Loading />;
+  } else {
     return (
       <div>
         {storeData && (

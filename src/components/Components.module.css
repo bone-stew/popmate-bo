@@ -1,0 +1,24 @@
+.customLoaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.customLoader {
+  width: 3em;
+  height: 5em;
+  --c: linear-gradient(#233044 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background-size: 0.8em 60%;
+  background-repeat: no-repeat;
+  animation: b9 1s infinite;
+}
+@keyframes b9 {
+  33% {
+    background-position: 0% 0%, 50% 100%, 100% 0%;
+  }
+  66% {
+    background-position: 0% 100%, 50% 0%, 100% 100%;
+  }
+}
