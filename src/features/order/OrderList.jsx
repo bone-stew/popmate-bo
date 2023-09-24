@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   IconButton,
   InputAdornment,
@@ -11,16 +11,14 @@ import { Refresh, Search } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import JsonAxios from '../../api/jsonAxios';
 import StatusButton from '../../components/StatusButton';
+import { useParams } from 'react-router-dom';
 
 function OrderList() {
   const [originalRows, setOriginalRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [category, setCategory] = useState(0);
   const [query, setQuery] = useState('');
-
-  useEffect(() => {
-    fetchdata();
-  }, []);
+  const { storeId } = useParams();
 
   const columns = [
     { field: 'orderId', headerName: '주문 번호', flex: 1, align: 'center', headerAlign: 'center'},
@@ -40,12 +38,14 @@ function OrderList() {
     { field: 'pickupTime', headerName: '픽업 예정시간', flex: 1.5, align: 'center', headerAlign: 'center' },
   ];
 
-  const fetchdata = async () => {
+  const fetchdata = useCallback(async () => {
     try {
-      const response = await JsonAxios.get('orders/backoffice/orderList/1');
+      const popupStoreId = storeId;
+      const apiUrl = `orders/backoffice/orderList/${popupStoreId}`;
+      const response = await JsonAxios.get(apiUrl);
       const orderListItemResponses = response.data;
       const orderList = orderListItemResponses.data.orderListItemResponses;
-
+  
       const rows = orderList.map((order, index) => ({
         id: index,
         orderId: order.orderTossId,
@@ -64,36 +64,32 @@ function OrderList() {
             : '주문취소',
         pickupTime: addMinutesToDateTime(order.createdAt, 10),
       }));
-
+  
       setFilteredRows(rows);
       setOriginalRows(rows);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [storeId]);
+  
+
+  useEffect(() => {
+    fetchdata();
+  },[fetchdata]);
 
   const handleSearch = () => {
+    
+    let filteredData = originalRows;
     if (category === 1) {
-      const filteredData = originalRows.filter((row) =>
-        row.orderId.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.orderId.includes(query));
     } else if (category === 2) {
-      const filteredData = originalRows.filter((row) =>
-        row.name.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.name.includes(query));
     } else if (category === 3) {
-      const filteredData = originalRows.filter((row) =>
-        row.orderList.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.orderList.includes(query));
     } else if (category === 4) {
-      const filteredData = originalRows.filter((row) =>
-        row.status.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.status.includes(query));
     }
+    setFilteredRows(filteredData);
   };
 
   const onRefreshClick = () => {
