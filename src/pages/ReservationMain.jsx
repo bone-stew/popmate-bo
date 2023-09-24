@@ -75,7 +75,7 @@ const ReservationMain = () => {
   };
 
   const handleReservationMoreButtonClick = () => {
-    navigate(`/popup-stores/${popupStoreId}/reservations`);
+    navigate(`/popup-stores/${popupStoreId}/daily-reservations`);
   };
 
   const handleOrderMoreButtonClick = () => {

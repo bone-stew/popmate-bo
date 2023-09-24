@@ -1,0 +1,5 @@
+.status-button.scheduled:hover {
+  background-color: #ffdddd !important;
+  color: #ff6d6d !important;
+  cursor: pointer;
+}
