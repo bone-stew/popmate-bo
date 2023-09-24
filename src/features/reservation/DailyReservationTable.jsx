@@ -50,6 +50,21 @@ function DailyReservationTable() {
       });
   }, [selectedDate, popupStoreId]);
 
+  const fetchDailyReservationData = () => {
+    const apiUrl = `popup-stores/${popupStoreId}/reservations?date=${selectedDate}`;
+    JsonAxios.get(apiUrl)
+      .then((response) => {
+        _dailyReservationData(response.data.data);
+      })
+      .catch((error) => {
+        console.error('API 호출 중 오류 발생:', error);
+      });
+  };
+
+  const handleReservationActionSuccess = () => {
+    fetchDailyReservationData();
+  };
+
   const handleChange = (event) => {
     _state((prevState) => ({
       ...prevState,
@@ -163,7 +178,12 @@ function DailyReservationTable() {
                   </TableCellCenter>
                   <TableCellCenter>{item.currentGuestCount}</TableCellCenter>
                   <TableCellCenter>
-                    <StatusButton status={item.status} label={item.status} reservationId={item.reservationId} />
+                    <StatusButton
+                      status={item.status}
+                      label={item.status}
+                      reservationId={item.reservationId}
+                      successHandler={handleReservationActionSuccess}
+                    />
                   </TableCellCenter>
                   <TableCellCenter>
                     <IconButton onClick={() => handleTableRowClick(item.reservationId)}>

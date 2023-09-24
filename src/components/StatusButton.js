@@ -63,7 +63,7 @@ const defaultStyle = {
   color: '#7F7F7F',
 };
 
-const StatusButton = ({ status, label, reservationId }) => {
+const StatusButton = ({ status, label, reservationId, successHandler }) => {
   const [hovered, _hovered] = useState(false);
   const [dialogOpen, _dialogOpen] = useState(false);
   const [restartDialogOpen, _restartDialogOpen] = useState(false);
@@ -101,6 +101,7 @@ const StatusButton = ({ status, label, reservationId }) => {
         .then((response) => {
           console.log('예약이 중단되었습니다.');
           _dialogOpen(false);
+          successHandler();
         })
         .catch((error) => {
           console.error('API 호출 중 오류 발생:', error);
@@ -112,6 +113,7 @@ const StatusButton = ({ status, label, reservationId }) => {
         .then((response) => {
           console.log('예약이 재개되었습니다.');
           _restartDialogOpen(false);
+          successHandler();
         })
         .catch((error) => {
           console.error('API 호출 중 오류 발생:', error);
