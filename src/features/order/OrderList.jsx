@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   IconButton,
   InputAdornment,
@@ -19,9 +19,6 @@ function OrderList() {
   const [category, setCategory] = useState(0);
   const [query, setQuery] = useState('');
   const { storeId } = useParams();
-  useEffect(() => {
-    fetchdata();
-  },);
 
   const columns = [
     { field: 'orderId', headerName: '주문 번호', flex: 1, align: 'center', headerAlign: 'center'},
@@ -41,14 +38,14 @@ function OrderList() {
     { field: 'pickupTime', headerName: '픽업 예정시간', flex: 1.5, align: 'center', headerAlign: 'center' },
   ];
 
-  const fetchdata = async () => {
+  const fetchdata = useCallback(async () => {
     try {
       const popupStoreId = storeId;
       const apiUrl = `orders/backoffice/orderList/${popupStoreId}`;
       const response = await JsonAxios.get(apiUrl);
       const orderListItemResponses = response.data;
       const orderList = orderListItemResponses.data.orderListItemResponses;
-
+  
       const rows = orderList.map((order, index) => ({
         id: index,
         orderId: order.orderTossId,
@@ -67,36 +64,32 @@ function OrderList() {
             : '주문취소',
         pickupTime: addMinutesToDateTime(order.createdAt, 10),
       }));
-
+  
       setFilteredRows(rows);
       setOriginalRows(rows);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [storeId]);
+  
+
+  useEffect(() => {
+    fetchdata();
+  },[fetchdata]);
 
   const handleSearch = () => {
+    
+    let filteredData = originalRows;
     if (category === 1) {
-      const filteredData = originalRows.filter((row) =>
-        row.orderId.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.orderId.includes(query));
     } else if (category === 2) {
-      const filteredData = originalRows.filter((row) =>
-        row.name.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.name.includes(query));
     } else if (category === 3) {
-      const filteredData = originalRows.filter((row) =>
-        row.orderList.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.orderList.includes(query));
     } else if (category === 4) {
-      const filteredData = originalRows.filter((row) =>
-        row.status.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.status.includes(query));
     }
+    setFilteredRows(filteredData);
   };
 
   const onRefreshClick = () => {
