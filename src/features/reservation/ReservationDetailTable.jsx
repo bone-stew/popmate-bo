@@ -103,6 +103,13 @@ function ReservationDetailTable() {
             <TableRow>
               <TableCell>
                 <TableSortLabel
+                  active={orderBy === 'userReservationId'}
+                  direction={orderBy === 'userReservationId' ? order : 'asc'}
+                  onClick={handleRequestSort('userReservationId')}
+                >
+                  예약 번호
+                </TableSortLabel>
+                <TableSortLabel
                   active={orderBy === 'userName'}
                   direction={orderBy === 'userName' ? order : 'asc'}
                   onClick={handleRequestSort('userName')}
@@ -151,6 +158,7 @@ function ReservationDetailTable() {
           <TableBody>
             {sortedAndPaginatedData().map((row) => (
               <TableRow key={row.userReservationId}>
+                <TableCell>{row.userReservationId}</TableCell>
                 <TableCell>{row.userName}</TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.guestCount}</TableCell>
