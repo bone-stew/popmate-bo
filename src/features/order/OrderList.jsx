@@ -19,9 +19,6 @@ function OrderList() {
   const [category, setCategory] = useState(0);
   const [query, setQuery] = useState('');
   const { storeId } = useParams();
-  useEffect(() => {
-    fetchdata();
-  },);
 
   const columns = [
     { field: 'orderId', headerName: '주문 번호', flex: 1, align: 'center', headerAlign: 'center'},
@@ -75,28 +72,23 @@ function OrderList() {
     }
   };
 
+  useEffect(() => {
+    fetchdata();
+  },[]);
+
   const handleSearch = () => {
+    
+    let filteredData = originalRows;
     if (category === 1) {
-      const filteredData = originalRows.filter((row) =>
-        row.orderId.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.orderId.includes(query));
     } else if (category === 2) {
-      const filteredData = originalRows.filter((row) =>
-        row.name.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.name.includes(query));
     } else if (category === 3) {
-      const filteredData = originalRows.filter((row) =>
-        row.orderList.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.orderList.includes(query));
     } else if (category === 4) {
-      const filteredData = originalRows.filter((row) =>
-        row.status.includes(query)
-      );
-      setFilteredRows(filteredData);
+      filteredData = originalRows.filter((row) => row.status.includes(query));
     }
+    setFilteredRows(filteredData);
   };
 
   const onRefreshClick = () => {
