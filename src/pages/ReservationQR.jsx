@@ -2,9 +2,28 @@ import React, { useRef, useState } from 'react';
 import styles from '../features/admin/ReservationQr.module.css';
 import QrCodeReader, { QRCode } from 'react-qrcode-reader';
 import JsonAxios from '../api/jsonAxios';
+import EntryConfirmationDialog from '../features/dialog/EntryConfirmationDialog';
 
 function ReservationQR() {
   const prevQRCode = useRef(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+
+  // 다이얼로그 열기
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+    setDialogMessage('입장 처리가 완료되었습니다.');
+  };
+
+  const handleOpenFailDialog = () => {
+    setDialogOpen(true);
+  };
+
+  // 다이얼로그 닫기
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setDialogMessage(''); // 메시지 초기화
+  };
 
   const handleRead = (code: QRCode) => {
     const text = code.data;
@@ -29,15 +48,20 @@ function ReservationQR() {
 
       JsonAxios.patch(apiUrl, params)
         .then((res) => {
+          console.log(res.data);
           if (res.data.code === 'SUCCESS') {
-            alert('입장 처리 완료'); // 성공 시 경고창 표시
+            handleOpenDialog(); // 성공 시 다이얼로그 열기
           } else {
-            alert('입장 처리 실패'); // 실패 시 경고창 표시
+            setDialogMessage(res.data.data);
+            handleOpenFailDialog(); // 실패 시 경고창 표시
           }
         })
         .catch((error) => {
-          alert('입장 QR코드가 아닙니다.');
+          setDialogMessage(error.response.data.message);
+          handleOpenFailDialog(); // 실패 시 경고창 표시
+          // alert('입장 QR코드가 아닙니다.');
           console.error('API 호출 중 오류 발생:', error);
+          console.log(error.response.data.message);
         });
     }
   };
@@ -54,6 +78,7 @@ function ReservationQR() {
           </div>
         </div>
       </div>
+      <EntryConfirmationDialog open={dialogOpen} onClose={handleCloseDialog} message={dialogMessage} />
     </>
   );
 }
