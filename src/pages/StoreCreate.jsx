@@ -236,6 +236,18 @@ function StoreCreate() {
     return;
   };
 
+  useEffect(() => {
+    const confirmExit = (e) => {
+      const confirmationMessage = '현재 페이지를 떠날시 입력한 정보가 사라집니다. 새로고침 하시겠습니까?';
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    };
+    window.addEventListener('beforeunload', confirmExit);
+    return () => {
+      window.removeEventListener('beforeunload', confirmExit);
+    };
+  }, []);
+
   return (
     <div>
       <Stepper activeStep={activeStep}>
