@@ -74,7 +74,7 @@ function ReservationQR() {
         </div>
         <div className={styles.outer}>
           <div style={{ width: '100%', height: '100%' }}>
-            <QrCodeReader delay={100} width={900} height={900} onRead={handleRead} />
+            <QrCodeReader delay={100} width={900} height={700} onRead={handleRead} />
           </div>
         </div>
       </div>
