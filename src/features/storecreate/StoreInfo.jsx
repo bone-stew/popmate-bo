@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './StoreCreate.module.css';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageList from '@mui/material/ImageList';
+import { formatToLocalDate, formatToLocalTime } from '../../app/dateTimeUtils';
 
 import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, Stack } from '@mui/material';
 
@@ -43,13 +44,13 @@ function StoreInfo() {
             <TableRow>
               <TableCell className={styles.table}>팝업스토어 운영기간</TableCell>
               <TableCell className={styles.table}>
-                {storeData.openDate} ~ {storeData.closeDate}
+                {formatToLocalDate(storeData.openDate)} ~ {formatToLocalDate(storeData.closeDate)}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>팝업스토어 영업시간</TableCell>
               <TableCell className={styles.table}>
-                {storeData.openTime} ~ {storeData.closeTime}
+                {formatToLocalTime(storeData.openTime)} ~ {formatToLocalTime(storeData.closeTime)}
               </TableCell>
             </TableRow>
             <TableRow>
