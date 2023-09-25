@@ -6,7 +6,10 @@ import { useState, useCallback } from 'react';
 import MultipartAxios from '../api/multipartAxios';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading.js';
-
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -22,6 +25,19 @@ function StoreCreate() {
   const [storeImageList, setStoreImageList] = useState([]);
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
+
+  const [activeStep, setActiveStep] = useState(0);
+
+  const steps = ['팝업스토어 상세정보', '예약 시스템 정보', '판매 시스템 정보'];
+  const [skipped, setSkipped] = React.useState(new Set());
+
+  const isStepOptional = (step) => {
+    return step === 1 || step === 2;
+  };
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
 
   const navigate = useNavigate();
 
@@ -129,7 +145,6 @@ function StoreCreate() {
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
-      console.log('HERE');
       createStoreDetailRequest();
     }
   }, [storeStatus, reservationStatus, salesStatus, createStoreDetailRequest]);
@@ -139,11 +154,26 @@ function StoreCreate() {
       setStoreStatus(true);
       setReservationStatus(true);
       setSalesStatus(true);
+      setActiveStep((prevActiveStep) => prevActiveStep + 2);
     }
     if (reservation === 'yesReservation') {
+      // let newSkipped = skipped;
+      // if (isStepSkipped(activeStep)) {
+      //   newSkipped = new Set(newSkipped.values());
+      //   newSkipped.delete(activeStep);
+      // }
+
       setCurrentForm('reservation');
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      // setSkipped(newSkipped);
     } else if (reservation === 'noReservation' && sales === 'yesSales') {
       setCurrentForm('items');
+      setSkipped((prevSkipped) => {
+        const newSkipped = new Set(prevSkipped.values());
+        newSkipped.add(activeStep + 1);
+        return newSkipped;
+      });
+      setActiveStep((prevActiveStep) => prevActiveStep + 2);
     }
   }, [reservation, sales]);
 
@@ -168,6 +198,8 @@ function StoreCreate() {
     setReservationStatus(true);
     if (sales === 'noSales') {
       setSalesStatus(true);
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
@@ -177,6 +209,7 @@ function StoreCreate() {
     if (reservation === 'noReservation') {
       setReservationStatus(true);
     }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleCancelReservation = () => {
@@ -205,6 +238,24 @@ function StoreCreate() {
 
   return (
     <div>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = <Typography variant="caption">선택사항</Typography>;
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+
       {currentForm === 'loading' && <Loading />}
       {currentForm === 'info' && (
         <StoreInfoForm

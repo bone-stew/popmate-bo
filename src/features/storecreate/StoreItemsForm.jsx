@@ -51,8 +51,6 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
       setItemsList(viewInfo.popupStoreItemResponse);
       setItemFileList(JSON.parse(JSON.stringify(viewInfo.popupStoreItemResponse)));
     }
-
-    console.log(viewInfo.popupStoreItemResponse);
   }, [viewInfo]);
 
   useEffect(() => {

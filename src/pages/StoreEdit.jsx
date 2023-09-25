@@ -18,6 +18,7 @@ function StoreEdit() {
   const navigate = useNavigate();
 
   const { storeId } = useParams();
+
   useEffect(() => {
     MultipartAxios.get(`popup-stores/${storeId}/edit`)
       .then((response) => {
@@ -77,7 +78,6 @@ function StoreEdit() {
 
     const formData = new FormData();
     if (newStoreImages.length !== 0) {
-      console.log(newStoreImages);
       newStoreImages.forEach((image, index) => {
         formData.append('storeImageFiles', image);
       });
@@ -99,7 +99,6 @@ function StoreEdit() {
         });
       }
     });
-    console.log('SNSLIST', storeTemp.popupStoreSnsList);
 
     if (storeInfo.reservationEnabled) {
       const reservationInfo = StoreReservationForm.getData();
@@ -113,7 +112,6 @@ function StoreEdit() {
     }
 
     const { itemsList, itemFileList, itemsToDelete } = StoreItemsForm.getData();
-    console.log('AFter get DAta', itemsToDelete);
     const fileIndices = [];
     const fileArray = [];
     if (storeInfo.salesSystem === 'yesSales') {
@@ -134,7 +132,6 @@ function StoreEdit() {
     } else {
       storeTemp.popupStoreItemList = [];
     }
-    console.log('popupStoreItemList before', storeTemp.popupStoreItemList);
 
     MultipartAxios.post(`popup-stores/${storeId}/images`, formData)
       .then((response) => {
@@ -154,13 +151,10 @@ function StoreEdit() {
           storeTemp.popupStoreItemList = itemsList;
         }
 
-        console.log('Before Json Axios Post  => popupStoreItemList: ', storeTemp.popupStoreItemList);
-        console.log('Before Json Axios Post  => popupStoreItemsToDelete: ', storeTemp.popupStoreItemsToDelete);
-
         JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {
             console.log(response.data);
-            navigate('/overview/list');
+            navigate(`/popup-stores/${storeId}/detail`);
           })
           .catch((e) => {
             console.error(e);

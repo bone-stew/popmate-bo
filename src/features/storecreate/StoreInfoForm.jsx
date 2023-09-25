@@ -31,11 +31,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange }) {
   const today = dayjs();
+  const midnight = dayjs().startOf('day');
   const [title, setStoreTitle] = useState('');
   const [openDate, setOpenDate] = useState(today);
   const [closeDate, setCloseDate] = useState(today.add(1, 'day'));
-  const [openTime, setOpenTime] = useState(today);
-  const [closeTime, setCloseTime] = useState(today.add(5, 'hour'));
+  const [openTime, setOpenTime] = useState(midnight.add(12, 'hour'));
+  const [closeTime, setCloseTime] = useState(midnight.add(1, 'day'));
   const [department, setDepartment] = useState('');
   const [priceRadio, setPriceRadio] = useState('무료');
   const [entryFee, setEntryFee] = useState('');
