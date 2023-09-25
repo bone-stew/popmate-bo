@@ -92,6 +92,11 @@ function StoreEdit() {
           platform: platform.charAt(0).toUpperCase() + platform.slice(1),
           url: storeInfo[platform],
         });
+      } else {
+        storeTemp.popupStoreSnsList.push({
+          platform: platform.charAt(0).toUpperCase() + platform.slice(1),
+          url: '',
+        });
       }
     });
     console.log('SNSLIST', storeTemp.popupStoreSnsList);
