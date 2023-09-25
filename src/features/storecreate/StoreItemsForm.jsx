@@ -32,6 +32,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
   const [userImageFile, setUserImageFile] = useState('');
   const [itemsList, setItemsList] = useState([]);
   const [itemFileList, setItemFileList] = useState([]);
+  const [itemsToDelete, setItemsToDelete] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
   const [editItemName, setEditItemName] = useState('');
@@ -40,6 +41,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
   const [editOrderLimit, setEditOrderLimit] = useState(0);
   const [editImage, setEditImage] = useState(null);
   const [editImageFile, setEditImageFile] = useState('');
+  const [itemId, setItemId] = useState(null);
 
   const [editingItemIndex, setEditingItemIndex] = useState(-1);
   const [disableInput, setDisableInput] = useState(isUsingSales);
@@ -49,6 +51,8 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
       setItemsList(viewInfo.popupStoreItemResponse);
       setItemFileList(JSON.parse(JSON.stringify(viewInfo.popupStoreItemResponse)));
     }
+
+    console.log(viewInfo.popupStoreItemResponse);
   }, [viewInfo]);
 
   useEffect(() => {
@@ -62,7 +66,8 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
   }, [isUsingSales, viewInfo]);
 
   StoreItemsForm.getData = () => {
-    return { itemsList, itemFileList };
+    console.log('Befre getData', itemsToDelete);
+    return { itemsList, itemFileList, itemsToDelete };
   };
 
   const handleItemNameChange = (event) => {
@@ -164,13 +169,19 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
     setUserImage(null);
     setUserImageFile(null);
     setEditImage(null);
+    setItemId(null);
   };
 
   const handleDeleteItem = (index) => {
     const updatedItemsList = [...itemsList];
     const updatedImageFilesList = [...itemFileList];
+    const itemsToDeleteTemp = itemsToDelete.length !== 0 ? [...itemsToDelete] : [];
     updatedItemsList.splice(index, 1);
     updatedImageFilesList.splice(index, 1);
+    if (itemsList[index].hasOwnProperty('popupStoreItemId')) {
+      itemsToDeleteTemp.push(itemsList[index]);
+      setItemsToDelete(itemsToDeleteTemp);
+    }
     setItemsList(updatedItemsList);
     setItemFileList(updatedImageFilesList);
   };
@@ -181,7 +192,12 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
       return;
     }
     setEditingItemIndex(index);
+    console.log('EDITING ITEEM INDEX:', itemsList[index]);
 
+    if (itemsList[index].hasOwnProperty('popupStoreItemId')) {
+      console.log('EDITING ITEEM INDEX:', itemsList[index].popupStoreItemId);
+      setItemId(itemsList[index].popupStoreItemId);
+    }
     setEditItemName(itemsList[index].name);
     setEditItemPrice(itemsList[index].amount);
     setEditItemTotal(itemsList[index].stock);
@@ -212,6 +228,13 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
       orderLimit: editOrderLimit,
       imgUrl: editImageFile,
     };
+    console.log('SAVE EDIT check if ITEM ID is NULL', itemId === null);
+    if (itemId !== null) {
+      updatedItemsList[editingItemIndex].popupStoreItemId = itemId;
+      updatedItemsFileList[editingItemIndex].popupStoreItemId = itemId;
+      console.log('INSIDE null CHECK updatedItemsList: ', updatedItemsList);
+      console.log('INSIDE null CHECK updatedItemsFileList: ', updatedItemsFileList);
+    }
     setItemsList(updatedItemsList);
     setItemFileList(updatedItemsFileList);
     setIsEditing(false);

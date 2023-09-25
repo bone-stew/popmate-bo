@@ -28,7 +28,7 @@ function StoreInfo() {
   }, [storeId]);
 
   const handleSubmit = () => {
-    navigate(`/store/${storeId}/edit`);
+    navigate(`/popup-stores/${storeId}/edit`);
   };
 
   if (!isLoading) {

@@ -67,7 +67,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setEntryFee(viewInfo.setEntryFee);
       setOrganizer(viewInfo.organizer);
       let imgUrls = viewInfo.popupStoreImgResponse.map((item) => item.imgUrl);
-      // imgUrls = [viewInfo.bannerImgUrl, ...imgUrls];
       setBannerImage(viewInfo.bannerImgUrl);
       setStoreImages(imgUrls);
       setDescription(viewInfo.description);

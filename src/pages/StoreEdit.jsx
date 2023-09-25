@@ -8,10 +8,11 @@ import JsonAxios from '../api/jsonAxios';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading.js';
 
 function StoreEdit() {
   const [storeData, setStoreData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [isUsingReservation, setIsUsingReservation] = useState();
   const [isUsingSales, setIsUsingSales] = useState();
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function StoreEdit() {
         setStoreData(response.data.data);
         setIsUsingReservation(response.data.data.reservationEnabled);
         setIsUsingSales(response.data.data.popupStoreItemResponse.length !== 0);
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -47,6 +48,7 @@ function StoreEdit() {
   };
 
   const handleEditStore = async () => {
+    setIsLoading(true);
     const storeInfo = StoreInfoForm.getData();
     const newStoreImages = storeInfo.storeImageFilesData;
 
@@ -105,7 +107,8 @@ function StoreEdit() {
       storeTemp.popupStore.reservationEnabled = 0;
     }
 
-    const { itemsList, itemFileList } = StoreItemsForm.getData();
+    const { itemsList, itemFileList, itemsToDelete } = StoreItemsForm.getData();
+    console.log('AFter get DAta', itemsToDelete);
     const fileIndices = [];
     const fileArray = [];
     if (storeInfo.salesSystem === 'yesSales') {
@@ -122,9 +125,12 @@ function StoreEdit() {
         });
       }
       storeTemp.popupStoreItemList = itemsList;
+      storeTemp.popupStoreItemsToDelete = itemsToDelete;
     } else {
       storeTemp.popupStoreItemList = [];
     }
+    console.log('popupStoreItemList before', storeTemp.popupStoreItemList);
+
     MultipartAxios.post(`popup-stores/${storeId}/images`, formData)
       .then((response) => {
         const responseObj = response.data;
@@ -143,6 +149,9 @@ function StoreEdit() {
           storeTemp.popupStoreItemList = itemsList;
         }
 
+        console.log('Before Json Axios Post  => popupStoreItemList: ', storeTemp.popupStoreItemList);
+        console.log('Before Json Axios Post  => popupStoreItemsToDelete: ', storeTemp.popupStoreItemsToDelete);
+
         JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {
             console.log(response.data);
@@ -154,10 +163,15 @@ function StoreEdit() {
       })
       .catch((e) => {
         console.error(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
-  if (!isLoading) {
+  if (isLoading) {
+    return <Loading />;
+  } else {
     return (
       <div>
         {storeData && (
