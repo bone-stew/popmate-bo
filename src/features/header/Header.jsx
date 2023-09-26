@@ -31,15 +31,20 @@ function Header() {
         _title(res.data.data.title);
         console.log('===========호출=========');
       });
-    } else {
-      if (pathnames[pathnames.length - 1] === 'list') _title('팝업 스토어 목록');
-      if (pathnames[pathnames.length - 1] === 'banner') _title('배너 등록');
     }
-  }, [storeId, pathnames]);
+  }, [storeId]);
+
+  useEffect(() => {
+    if (pathnames[pathnames.length - 1] === 'list') _title('팝업 스토어 목록');
+    if (pathnames[pathnames.length - 1] === 'banner') _title('배너 등록');
+  }, [pathnames]);
+
   return (
     <div className={styles.container}>
       <div className={styles.profile}>
-        <p>{currUser.value.name}</p>
+        <p>
+          {currUser.value.name} {currUser.value.role === 'ROLE_MANAGER' ? '매니저님' : '스태프님'}
+        </p>
         <Avatar />
       </div>
       <div>
