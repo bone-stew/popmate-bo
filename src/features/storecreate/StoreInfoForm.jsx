@@ -279,6 +279,61 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       alert('필수 항목을 기입해주세요');
       return;
     }
+
+    const columnSizeLimits = {
+      small: 255,
+      long: 2000,
+    };
+
+    const validationErrors = {};
+
+    if (title.length > columnSizeLimits.small) {
+      validationErrors.title = '팝업스토어명이 너무 깁니다.';
+    }
+    if (placeDetail.length > columnSizeLimits.small) {
+      validationErrors.placeDetail = '상세 장소가 너무 깁니다.';
+    }
+    if (description.length > columnSizeLimits.long) {
+      validationErrors.description = '상세 설명이 너무 깁니다.';
+    }
+    if (eventDescription.length > columnSizeLimits.long) {
+      validationErrors.eventDescription = '이벤트 정보가 너무 깁니다.';
+    }
+    if (website.length > columnSizeLimits.small) {
+      validationErrors.website = '웹사이트 URL이 너무 깁니다.';
+    }
+    if (instagram.length > columnSizeLimits.small) {
+      validationErrors.instagram = '인스타그램 URL이 너무 깁니다.';
+    }
+    if (youtube.length > columnSizeLimits.small) {
+      validationErrors.youtube = '유튜브 URL이 너무 깁니다.';
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      if (validationErrors.title) {
+        alert(validationErrors.title);
+      }
+      if (validationErrors.placeDetail) {
+        alert(validationErrors.placeDetail);
+      }
+      if (validationErrors.description) {
+        alert(validationErrors.description);
+      }
+      if (validationErrors.eventDescription) {
+        alert(validationErrors.eventDescription);
+      }
+      if (validationErrors.website) {
+        alert(validationErrors.website);
+      }
+      if (validationErrors.instagram) {
+        alert(validationErrors.instagram);
+      }
+      if (validationErrors.youtube) {
+        alert(validationErrors.youtube);
+      }
+      return;
+    }
+
     onUserChoice(reservationSystem, salesSystem);
     const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
 
