@@ -23,6 +23,7 @@ function MainBanner() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [bannerId, setBannerId] = useState(0);
+  const placeholderText = "팝업스토어";
 
   useEffect(() => {
     fetchdata();
@@ -43,11 +44,16 @@ function MainBanner() {
       const response = await JsonAxios.get('admin/title');
       const list = response.data.data.backOfficePopupStoreResponse;
       setList(list);
-      const newMenuItems = list.map((item) => (
-        <MenuItem key={item.popupStoreId} value={item.popupStoreId}>
-          {item.title}
-        </MenuItem>
-      ));
+      const newMenuItems = [
+        <MenuItem key="placeholder" value=''>
+          {placeholderText}
+        </MenuItem>,
+        ...list.map((item) => (
+          <MenuItem key={item.popupStoreId} value={item.popupStoreId}>
+            {item.title}
+          </MenuItem>
+        )),
+      ];
       setMenuItems(newMenuItems);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -82,7 +88,7 @@ function MainBanner() {
     if (banners.length === 5) {
       alert('등록할 수 있는 최대 사진 수 입니다.');
     } else {
-      if (fileName === '이미지 첨부하기' || popupStoreId === 0) {
+      if (fileName === '이미지 첨부하기' || popupStoreId === 0 || popupStoreId==='') {
         alert('팝업스토어와 이미지를 다 선택해주세요');
       } else {
         const formData = new FormData();
