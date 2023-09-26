@@ -411,21 +411,21 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
         <h3 style={{ marginTop: '4rem', textAlign: 'center' }}>추가된 상품 목록</h3>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead sx={{ backgroundColor: '#F8F9FA' }}>
+            <TableHead sx={{ backgroundColor: '#F2F4F6' }}>
               <TableRow>
-                <TableCell className={styles.table}>
+                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
                   <div className={disableInput && styles.disabled}>상품명</div>
                 </TableCell>
-                <TableCell className={styles.table}>
+                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
                   <div className={disableInput && styles.disabled}>상품 가격</div>
                 </TableCell>
-                <TableCell className={styles.table}>
+                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
                   <div className={disableInput && styles.disabled}>재고</div>
                 </TableCell>
-                <TableCell className={styles.table}>
+                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
                   <div className={disableInput && styles.disabled}>주문 가능수량(1인제한)</div>
                 </TableCell>
-                <TableCell className={styles.table}>
+                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
                   <div className={disableInput && styles.disabled}>상품 이미지</div>
                 </TableCell>
                 <TableCell className={styles.table}></TableCell>
@@ -447,7 +447,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
                     <TextField value={editItemPrice} onChange={handleEditItemPriceChange} />
                   ) : (
                     <div style={{ textAlign: 'center' }} className={disableInput && styles.disabled}>
-                      {item.amount}
+                      {item.amount.toLocaleString('ko-KR')}원
                     </div>
                   )}
                 </TableCell>
@@ -486,7 +486,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
                           marginTop: '1em',
                         }}
                       >
-                        이미지 수정하기
+                        이미지 수정
                         <VisuallyHiddenInput type="file" onChange={handleEditImageUpload} />
                       </Button>
                     </div>

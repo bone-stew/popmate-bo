@@ -131,7 +131,7 @@ function StoreReservationForm({
           </Stack>
         </div>
         <div className={disableInput && styles.disabled}>
-          <p>예약 시간대별로 받을 예약 인원은 몇 명명인가요?</p>
+          <p>예약 시간대별로 받을 예약 인원은 몇 명인가요?</p>
           <Stack direction="row" alignItems="center">
             <FormControl fullWidth>
               <TextField

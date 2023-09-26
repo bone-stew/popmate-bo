@@ -22,6 +22,7 @@ function StoreEdit() {
   useEffect(() => {
     MultipartAxios.get(`popup-stores/${storeId}/edit`)
       .then((response) => {
+        console.log('STOREEDIT START', response.data.data);
         setStoreData(response.data.data);
         setIsUsingReservation(response.data.data.reservationEnabled);
         setIsUsingSales(response.data.data.popupStoreItemResponse.length !== 0);
@@ -52,6 +53,9 @@ function StoreEdit() {
     setIsLoading(true);
     const storeInfo = StoreInfoForm.getData();
     const newStoreImages = storeInfo.storeImageFilesData;
+    const newImages = storeInfo.storeImages;
+
+    console.log('STOREINFO', storeInfo);
 
     var storeTemp = {
       popupStore: {
@@ -133,6 +137,8 @@ function StoreEdit() {
       storeTemp.popupStoreItemList = [];
     }
 
+    console.log('BEFORE IMAGES', storeTemp);
+
     MultipartAxios.post(`popup-stores/${storeId}/images`, formData)
       .then((response) => {
         const responseObj = response.data;
@@ -150,6 +156,8 @@ function StoreEdit() {
           });
           storeTemp.popupStoreItemList = itemsList;
         }
+
+        console.log('BEFORE SENDING STORE TO SERVER:', storeTemp);
 
         JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {

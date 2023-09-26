@@ -141,7 +141,7 @@ function StoreCreate() {
           console.error(error);
         });
     }
-  }, [readySend, storeImageList, storeItemImageList, storeRequest, navigate]);
+  }, [readySend, storeImageList, storeItemImageList, storeRequest]);
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
@@ -238,9 +238,8 @@ function StoreCreate() {
 
   useEffect(() => {
     const confirmExit = (e) => {
-      const confirmationMessage = '현재 페이지를 떠날시 입력한 정보가 사라집니다. 새로고침 하시겠습니까?';
-      e.returnValue = confirmationMessage;
-      return confirmationMessage;
+      e.returnValue = '';
+      return '';
     };
     window.addEventListener('beforeunload', confirmExit);
     return () => {
