@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 
 const CustomDialog = ({ open, onClose, onSave, title, id, value }) => {
-  const [inputValue, _inputValue] = useState(value);
+  const [inputValue, _inputValue] = useState();
 
-  const handleSave = async () => {
+  const handleSave = () => {
     console.log('보낸 inputValue : ' + inputValue);
     onSave(inputValue);
-    onClose();
   };
+
+  useEffect(() => {
+    _inputValue(value);
+  }, []);
 
   return (
     <Dialog open={open} onClose={onClose}>
