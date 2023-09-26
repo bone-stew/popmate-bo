@@ -13,7 +13,14 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import styles from './Sidebar.module.css';
-import { AddCircleOutline, ImageOutlined, Logout, ManageSearch, Storefront } from '@mui/icons-material';
+import {
+  AddCircleOutline,
+  ImageOutlined,
+  Logout,
+  ManageSearch,
+  ReportGmailerrorred,
+  Storefront,
+} from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../slices/userSlice';
 import { selectUser } from '../../slices/userSlice';
@@ -28,7 +35,7 @@ function Sidebar({ drawerWidth }) {
   const adminMenu = [
     { icon: <ImageOutlined />, title: '배너 관리', to: 'overview/banner' },
     { icon: <ManageSearch />, title: '팝업 스토어 관리', to: 'overview/list' },
-    // { icon: <Addchart className={styles.whiteFont} />, title: '통계' },
+    { icon: <ReportGmailerrorred />, title: '채팅 신고', to: 'overview/report' },
   ];
   const [storeList, _storeList] = useState([]);
   const [selectedStore, _selectedStore] = useState();

@@ -149,7 +149,7 @@ function StoreListTable() {
           width: '100%',
           height: 'calc(100vh - 300px)',
           '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#E0E0E0',
+            backgroundColor: 'rgb(242, 244, 246)',
           },
         }}
         onRowClick={(params) => {

@@ -24,6 +24,7 @@ function Header() {
     enter: '입장 QR 코드',
     pickup: '픽업 QR 코드',
     orders: '주문내역',
+    report: '채팅 신고',
   };
   useEffect(() => {
     if (storeId) {
@@ -37,6 +38,7 @@ function Header() {
   useEffect(() => {
     if (pathnames[pathnames.length - 1] === 'list') _title('팝업 스토어 목록');
     if (pathnames[pathnames.length - 1] === 'banner') _title('배너 등록');
+    if (pathnames[pathnames.length - 1] === 'report') _title('신고 내역');
   }, [pathnames]);
 
   return (
