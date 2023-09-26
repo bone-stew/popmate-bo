@@ -8,7 +8,7 @@
 .customLoader {
   width: 3em;
   height: 5em;
-  --c: linear-gradient(#233044 0 0);
+  --c: linear-gradient(#1874d0 0 0);
   background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
   background-size: 0.8em 60%;
   background-repeat: no-repeat;

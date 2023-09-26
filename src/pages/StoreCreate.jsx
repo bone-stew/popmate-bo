@@ -6,7 +6,10 @@ import { useState, useCallback } from 'react';
 import MultipartAxios from '../api/multipartAxios';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading.js';
-
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -22,6 +25,14 @@ function StoreCreate() {
   const [storeImageList, setStoreImageList] = useState([]);
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
+
+  const [activeStep, setActiveStep] = useState(0);
+
+  const steps = ['팝업스토어 상세정보', '예약 시스템 정보', '판매 시스템 정보'];
+
+  const isStepOptional = (step) => {
+    return step === 1 || step === 2;
+  };
 
   const navigate = useNavigate();
 
@@ -90,12 +101,6 @@ function StoreCreate() {
     setReadySend(true);
   }, [storeInfo, reservationInfo, salesInfo]);
 
-  // useEffect(() => {
-  //   console.log('STOREINFO', storeInfo);
-  //   console.log('RESERVATIONINFO', reservationInfo);
-  //   console.log('SALESINFO', salesInfo);
-  // }, [storeInfo, reservationInfo, salesInfo]);
-
   useEffect(() => {
     const formData = new FormData();
     formData.append(
@@ -129,7 +134,6 @@ function StoreCreate() {
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
-      console.log('HERE');
       createStoreDetailRequest();
     }
   }, [storeStatus, reservationStatus, salesStatus, createStoreDetailRequest]);
@@ -139,14 +143,21 @@ function StoreCreate() {
       setStoreStatus(true);
       setReservationStatus(true);
       setSalesStatus(true);
+      // if (activeStep < 2) {
+      //   setActiveStep((prevActiveStep) => prevActiveStep + 2);
+      // }
     }
     if (reservation === 'yesReservation') {
       setCurrentForm('reservation');
     } else if (reservation === 'noReservation' && sales === 'yesSales') {
       setCurrentForm('items');
+      handleStepToggle(1);
     }
   }, [reservation, sales]);
 
+  const handleStepToggle = (steps) => {
+    setActiveStep((prevActiveStep) => prevActiveStep + steps);
+  };
   const reservationFormSubmitted = () => {
     if (sales === 'yesSales') {
       setCurrentForm('items');
@@ -177,6 +188,7 @@ function StoreCreate() {
     if (reservation === 'noReservation') {
       setReservationStatus(true);
     }
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleCancelReservation = () => {
@@ -203,8 +215,34 @@ function StoreCreate() {
     return;
   };
 
+  useEffect(() => {
+    const confirmExit = (e) => {
+      e.returnValue = '';
+      return '';
+    };
+    window.addEventListener('beforeunload', confirmExit);
+    return () => {
+      window.removeEventListener('beforeunload', confirmExit);
+    };
+  }, []);
+
   return (
     <div>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = <Typography variant="caption">선택사항</Typography>;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+
       {currentForm === 'loading' && <Loading />}
       {currentForm === 'info' && (
         <StoreInfoForm
@@ -213,6 +251,7 @@ function StoreCreate() {
           addStore={addStoreInfo}
           notifyReservationChange={handleReservationChange}
           notifySalesChange={handleSalesChange}
+          stepToggle={handleStepToggle}
         />
       )}
       {currentForm === 'reservation' && (
@@ -223,6 +262,7 @@ function StoreCreate() {
           addReservation={addReservationInfo}
           cancelReservation={handleCancelReservation}
           isUsingReservation={reservationStatus}
+          stepToggle={handleStepToggle}
         />
       )}
       {currentForm === 'items' && (
@@ -231,6 +271,7 @@ function StoreCreate() {
           addSales={addSalesInfo}
           cancelSales={handleCancelSales}
           isUsingSales={salesStatus}
+          stepToggle={handleStepToggle}
         />
       )}
     </div>

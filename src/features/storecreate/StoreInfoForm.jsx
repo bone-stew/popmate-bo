@@ -29,13 +29,14 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange }) {
+function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange, stepToggle }) {
   const today = dayjs();
+  const midnight = dayjs().startOf('day');
   const [title, setStoreTitle] = useState('');
   const [openDate, setOpenDate] = useState(today);
   const [closeDate, setCloseDate] = useState(today.add(1, 'day'));
-  const [openTime, setOpenTime] = useState(today);
-  const [closeTime, setCloseTime] = useState(today.add(5, 'hour'));
+  const [openTime, setOpenTime] = useState(midnight.add(12, 'hour'));
+  const [closeTime, setCloseTime] = useState(midnight.add(1, 'day'));
   const [department, setDepartment] = useState('');
   const [priceRadio, setPriceRadio] = useState('무료');
   const [entryFee, setEntryFee] = useState('');
@@ -56,12 +57,30 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
 
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {
+      // console.log('viewInfo opentime', viewInfo.openTime);
+
+      // console.log('viewInfo openDate', viewInfo.openDate);
+      // console.log('viewInfo openDate', dayjs(viewInfo.openDate).toDate());
+      // console.log('viewInfo closeDate', viewInfo.closeDate);
+      // console.log('viewInfo openTime', viewInfo.openTime);
+      // console.log('viewInfo closeTime', viewInfo.closeTime);
       setStoreTitle(viewInfo.title);
-      setOpenDate(viewInfo.setOpenDate);
-      setCloseDate(viewInfo.setCloseDate);
-      setOpenTime(viewInfo.openTime);
+
+      setOpenDate(dayjs(viewInfo.openDate));
+      setCloseDate(dayjs(viewInfo.closeDate));
+
+      const today = dayjs();
+      const openTime = dayjs(viewInfo.openTime);
+      const closeTime = dayjs(viewInfo.closeTime);
+      const newOpenTime = today.set('hour', openTime.hour() + 9).set('minute', openTime.minute());
+      const newCloseTime = today
+        .set('hour', closeTime.hour() + 9)
+        .set('minute', closeTime.minute())
+        .add(1, 'day');
+      setOpenTime(newOpenTime);
+      setCloseTime(newCloseTime);
+
       setPlaceDetail(viewInfo.placeDetail);
-      setCloseTime(viewInfo.closeTime);
       setDepartment(viewInfo.department.departmentId);
       setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
       setEntryFee(viewInfo.setEntryFee);
@@ -91,6 +110,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   StoreInfoForm.getData = () => {
     const storeImagesData = [bannerImage, ...storeImages];
     const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
+    // const formattedOpenTime = openTime.format;
+    console.log('BEFORE SENDING TO STOREEDIT:', openTime);
     const storeData = {
       title,
       openDate,
@@ -146,6 +167,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   };
 
   const handleOpenTimeChange = (newValue) => {
+    console.log('handleOpenTimeChange', newValue);
     setOpenTime(newValue);
   };
 
@@ -257,6 +279,61 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       alert('필수 항목을 기입해주세요');
       return;
     }
+
+    const columnSizeLimits = {
+      small: 255,
+      long: 2000,
+    };
+
+    const validationErrors = {};
+
+    if (title.length > columnSizeLimits.small) {
+      validationErrors.title = '팝업스토어명이 너무 깁니다.';
+    }
+    if (placeDetail.length > columnSizeLimits.small) {
+      validationErrors.placeDetail = '상세 장소가 너무 깁니다.';
+    }
+    if (description.length > columnSizeLimits.long) {
+      validationErrors.description = '상세 설명이 너무 깁니다.';
+    }
+    if (eventDescription.length > columnSizeLimits.long) {
+      validationErrors.eventDescription = '이벤트 정보가 너무 깁니다.';
+    }
+    if (website.length > columnSizeLimits.small) {
+      validationErrors.website = '웹사이트 URL이 너무 깁니다.';
+    }
+    if (instagram.length > columnSizeLimits.small) {
+      validationErrors.instagram = '인스타그램 URL이 너무 깁니다.';
+    }
+    if (youtube.length > columnSizeLimits.small) {
+      validationErrors.youtube = '유튜브 URL이 너무 깁니다.';
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      if (validationErrors.title) {
+        alert(validationErrors.title);
+      }
+      if (validationErrors.placeDetail) {
+        alert(validationErrors.placeDetail);
+      }
+      if (validationErrors.description) {
+        alert(validationErrors.description);
+      }
+      if (validationErrors.eventDescription) {
+        alert(validationErrors.eventDescription);
+      }
+      if (validationErrors.website) {
+        alert(validationErrors.website);
+      }
+      if (validationErrors.instagram) {
+        alert(validationErrors.instagram);
+      }
+      if (validationErrors.youtube) {
+        alert(validationErrors.youtube);
+      }
+      return;
+    }
+
     onUserChoice(reservationSystem, salesSystem);
     const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
 
@@ -282,6 +359,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       salesSystem,
     };
     addStore(storeData);
+    stepToggle(1);
   };
 
   return (
@@ -326,11 +404,11 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="koKR">
                     <TimePicker value={openTime} onChange={handleOpenTimeChange} />
                   </LocalizationProvider>
                   <span style={{ margin: '0 0.3rem' }}>~</span>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="koKR">
                     <TimePicker value={closeTime} onChange={handleCloseTimeChange} />
                   </LocalizationProvider>
                 </div>

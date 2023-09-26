@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './StoreCreate.module.css';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageList from '@mui/material/ImageList';
+import { formatToLocalDate } from '../../app/dateTimeUtils';
 
 import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, Stack } from '@mui/material';
 
@@ -14,6 +15,9 @@ function StoreInfo() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { storeId } = useParams();
+  const dayjs = require('dayjs');
+  const utc = require('dayjs/plugin/utc');
+  dayjs.extend(utc);
 
   useEffect(() => {
     MultipartAxios.get(`popup-stores/${storeId}/edit`)
@@ -31,25 +35,34 @@ function StoreInfo() {
     navigate(`/popup-stores/${storeId}/edit`);
   };
 
+  const formatDateTime = (datetime) => {
+    const dateTime = dayjs(datetime);
+    const kstDateTime = dateTime.add(9, 'hour');
+    const formattedKST = kstDateTime.format('HH:mm');
+    return formattedKST;
+  };
+
   if (!isLoading) {
     return (
       <div>
         <TableContainer>
           <Table variant={'outlined'}>
             <TableRow>
-              <TableCell className={styles.table}>팝업스토어명</TableCell>
+              <TableCell className={styles.table} style={{ width: '10em' }}>
+                팝업스토어명
+              </TableCell>
               <TableCell className={styles.table}>{storeData.title}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>팝업스토어 운영기간</TableCell>
               <TableCell className={styles.table}>
-                {storeData.openDate} ~ {storeData.closeDate}
+                {formatToLocalDate(storeData.openDate)} ~ {formatToLocalDate(storeData.closeDate)}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>팝업스토어 영업시간</TableCell>
               <TableCell className={styles.table}>
-                {storeData.openTime} ~ {storeData.closeTime}
+                {formatDateTime(storeData.openTime)} ~ {formatDateTime(storeData.closeTime)}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -62,7 +75,9 @@ function StoreInfo() {
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>입장료</TableCell>
-              <TableCell className={styles.table}>{storeData.entryFee}</TableCell>
+              <TableCell className={styles.table}>
+                {storeData.entryFee === 0 ? '무료' : storeData.entryFee.toLocaleString('ko-KR')}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>주최사</TableCell>
@@ -162,7 +177,7 @@ function StoreInfo() {
               <TableCell className={styles.table}>인스타그램 URL</TableCell>
               <TableCell className={styles.table}>
                 {storeData.popupStoreSnsResponse.map((sns, index) => {
-                  if (sns.platform === 'Website') {
+                  if (sns.platform === 'Instagram') {
                     return (
                       <a href={sns.url} target="_blank" rel="noopener noreferrer" key={index}>
                         {sns.url}
@@ -193,35 +208,35 @@ function StoreInfo() {
 
         <TableContainer sx={{ marginTop: '10em', marginBottom: '10em' }}>
           <Table variant={'outlined'}>
-            <TableHead sx={{ backgroundColor: '#F8F9FA' }}>
+            <TableHead sx={{ backgroundColor: '#F2F4F6' }}>
               <TableRow>
-                <TableCell className={styles.table}>
+                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
                   <div>상품명</div>
                 </TableCell>
                 <TableCell className={styles.table}>
-                  <div>상품 가격</div>
+                  <div style={{ textAlign: 'center' }}>상품 가격</div>
                 </TableCell>
                 <TableCell className={styles.table}>
-                  <div>재고</div>
+                  <div style={{ textAlign: 'center' }}>재고</div>
                 </TableCell>
                 <TableCell className={styles.table}>
-                  <div>주문 가능수량(1인제한)</div>
+                  <div style={{ textAlign: 'center' }}>1인당 주문 가능 수량</div>
                 </TableCell>
                 <TableCell className={styles.table}>
-                  <div>상품 이미지</div>
+                  <div style={{ textAlign: 'center' }}>상품 이미지</div>
                 </TableCell>
               </TableRow>
             </TableHead>
             {storeData.popupStoreItemResponse.map((item, index) => (
-              <TableRow>
+              <TableRow key={index}>
                 <TableCell className={styles.table}>
                   <div style={{ textAlign: 'center' }}>{item.name}</div>
                 </TableCell>
                 <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>{item.stock}</div>
+                  <div style={{ textAlign: 'center' }}>{item.amount.toLocaleString('ko-KR')}원</div>
                 </TableCell>
                 <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>{item.amount}</div>
+                  <div style={{ textAlign: 'center' }}>{item.stock}</div>
                 </TableCell>
                 <TableCell className={styles.table}>
                   <div style={{ textAlign: 'center' }}>{item.orderLimit}</div>

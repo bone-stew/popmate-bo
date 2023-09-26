@@ -39,6 +39,15 @@ function formatToLocalDateTime(localDateTimeString) {
   return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
+// LocalDateTime 문자열을 YYYY-MM-dd 형식의 문자열로 변환하는 함수
+function formatToLocalDate(localDateTimeString) {
+  const date = parseLocalDateTime(localDateTimeString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 // LocalDateTime을 HH:mm 형식의 문자열로 변환하는 함수
 function formatToLocalTimeFromLocalDateTime(localDateTime) {
   const hour = getHour(localDateTime);
@@ -61,4 +70,5 @@ export {
   formatToLocalTimeFromLocalDateTime,
   getCurrentDate,
   formatToLocalDateTime,
+  formatToLocalDate,
 };
