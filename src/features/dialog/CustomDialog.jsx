@@ -11,7 +11,7 @@ const CustomDialog = ({ open, onClose, onSave, title, id, value }) => {
 
   useEffect(() => {
     _inputValue(value);
-  }, []);
+  }, [value]);
 
   return (
     <Dialog open={open} onClose={onClose}>
