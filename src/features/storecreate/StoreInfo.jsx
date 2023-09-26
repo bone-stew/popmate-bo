@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './StoreCreate.module.css';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageList from '@mui/material/ImageList';
-import { formatToLocalDate, formatToLocalTime } from '../../app/dateTimeUtils';
-import dayjs from 'dayjs';
+import { formatToLocalDate } from '../../app/dateTimeUtils';
 
 import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, Stack } from '@mui/material';
 
@@ -17,11 +16,8 @@ function StoreInfo() {
   const navigate = useNavigate();
   const { storeId } = useParams();
   const dayjs = require('dayjs');
-  const timezone = require('dayjs/plugin/timezone');
   const utc = require('dayjs/plugin/utc');
   dayjs.extend(utc);
-  // dayjs.extend(timezone);
-  // dayjs.tz.setDefault('Asia/Seoul');
 
   useEffect(() => {
     MultipartAxios.get(`popup-stores/${storeId}/edit`)
@@ -67,7 +63,6 @@ function StoreInfo() {
               <TableCell className={styles.table}>팝업스토어 영업시간</TableCell>
               <TableCell className={styles.table}>
                 {formatDateTime(storeData.openTime)} ~ {formatDateTime(storeData.closeTime)}
-                {/* {storeData.openTime.toLocaleString()} ~ {formatToLocalTime(storeData.closeTime)} */}
               </TableCell>
             </TableRow>
             <TableRow>

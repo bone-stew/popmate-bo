@@ -11,7 +11,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 
-function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
+function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepToggle }) {
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -242,6 +242,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales }) {
 
   const handleSubmit = () => {
     addSales(itemFileList);
+    stepToggle(1);
   };
 
   const handleCancelSales = () => {

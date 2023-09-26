@@ -29,14 +29,9 @@ function StoreCreate() {
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = ['팝업스토어 상세정보', '예약 시스템 정보', '판매 시스템 정보'];
-  const [skipped, setSkipped] = React.useState(new Set());
 
   const isStepOptional = (step) => {
     return step === 1 || step === 2;
-  };
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
   };
 
   const navigate = useNavigate();
@@ -106,12 +101,6 @@ function StoreCreate() {
     setReadySend(true);
   }, [storeInfo, reservationInfo, salesInfo]);
 
-  // useEffect(() => {
-  //   console.log('STOREINFO', storeInfo);
-  //   console.log('RESERVATIONINFO', reservationInfo);
-  //   console.log('SALESINFO', salesInfo);
-  // }, [storeInfo, reservationInfo, salesInfo]);
-
   useEffect(() => {
     const formData = new FormData();
     formData.append(
@@ -141,7 +130,7 @@ function StoreCreate() {
           console.error(error);
         });
     }
-  }, [readySend, storeImageList, storeItemImageList, storeRequest]);
+  }, [readySend, storeImageList, storeItemImageList, storeRequest, navigate]);
 
   useEffect(() => {
     if (storeStatus && reservationStatus && salesStatus) {
@@ -154,29 +143,21 @@ function StoreCreate() {
       setStoreStatus(true);
       setReservationStatus(true);
       setSalesStatus(true);
-      setActiveStep((prevActiveStep) => prevActiveStep + 2);
+      // if (activeStep < 2) {
+      //   setActiveStep((prevActiveStep) => prevActiveStep + 2);
+      // }
     }
     if (reservation === 'yesReservation') {
-      // let newSkipped = skipped;
-      // if (isStepSkipped(activeStep)) {
-      //   newSkipped = new Set(newSkipped.values());
-      //   newSkipped.delete(activeStep);
-      // }
-
       setCurrentForm('reservation');
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      // setSkipped(newSkipped);
     } else if (reservation === 'noReservation' && sales === 'yesSales') {
       setCurrentForm('items');
-      setSkipped((prevSkipped) => {
-        const newSkipped = new Set(prevSkipped.values());
-        newSkipped.add(activeStep + 1);
-        return newSkipped;
-      });
-      setActiveStep((prevActiveStep) => prevActiveStep + 2);
+      handleStepToggle(1);
     }
   }, [reservation, sales]);
 
+  const handleStepToggle = (steps) => {
+    setActiveStep((prevActiveStep) => prevActiveStep + steps);
+  };
   const reservationFormSubmitted = () => {
     if (sales === 'yesSales') {
       setCurrentForm('items');
@@ -198,8 +179,6 @@ function StoreCreate() {
     setReservationStatus(true);
     if (sales === 'noSales') {
       setSalesStatus(true);
-    } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
@@ -209,7 +188,7 @@ function StoreCreate() {
     if (reservation === 'noReservation') {
       setReservationStatus(true);
     }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleCancelReservation = () => {
@@ -256,9 +235,6 @@ function StoreCreate() {
           if (isStepOptional(index)) {
             labelProps.optional = <Typography variant="caption">선택사항</Typography>;
           }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -275,6 +251,7 @@ function StoreCreate() {
           addStore={addStoreInfo}
           notifyReservationChange={handleReservationChange}
           notifySalesChange={handleSalesChange}
+          stepToggle={handleStepToggle}
         />
       )}
       {currentForm === 'reservation' && (
@@ -285,6 +262,7 @@ function StoreCreate() {
           addReservation={addReservationInfo}
           cancelReservation={handleCancelReservation}
           isUsingReservation={reservationStatus}
+          stepToggle={handleStepToggle}
         />
       )}
       {currentForm === 'items' && (
@@ -293,6 +271,7 @@ function StoreCreate() {
           addSales={addSalesInfo}
           cancelSales={handleCancelSales}
           isUsingSales={salesStatus}
+          stepToggle={handleStepToggle}
         />
       )}
     </div>

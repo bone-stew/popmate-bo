@@ -12,6 +12,7 @@ function StoreReservationForm({
   addReservation,
   cancelReservation,
   isUsingReservation,
+  stepToggle,
 }) {
   const [reservationInterval, setReservationInterval] = useState(0);
   const [maxCapacity, setMaxCapacity] = useState(0);
@@ -67,6 +68,7 @@ function StoreReservationForm({
     const reservationData = { reservationInterval, maxCapacity, intervalCapacity, teamSizeLimit };
     addReservation(reservationData);
     onUserChoice();
+    stepToggle(1);
   };
 
   const handleCancelReservation = () => {

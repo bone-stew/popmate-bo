@@ -29,7 +29,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange }) {
+function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange, stepToggle }) {
   const today = dayjs();
   const midnight = dayjs().startOf('day');
   const [title, setStoreTitle] = useState('');
@@ -359,6 +359,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       salesSystem,
     };
     addStore(storeData);
+    stepToggle(1);
   };
 
   return (
