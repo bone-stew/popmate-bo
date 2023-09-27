@@ -17,7 +17,7 @@ function ReportTableDetail({ selectedUser }) {
         {selectedUser == null ? '채팅을 선택해 주세요' : `${selectedUser.writerEmail} 채팅 목록`}
       </Typography>
       <TableContainer sx={{ width: '50vh', height: 'calc(100vh - 300px)' }} component={Paper}>
-        <Table sx={{}} aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow sx={{ backgroundColor: 'rgb(242, 244, 246)' }}>
               <TableCell>메세지</TableCell>
@@ -27,7 +27,7 @@ function ReportTableDetail({ selectedUser }) {
             {chats.map((data, index) => {
               return (
                 <TableRow key={data.chatId}>
-                  <TableCell>{data.message}</TableCell>
+                  <TableCell sx={{ maxWidth: '500px', overflowWrap: 'break-word' }}>{data.message}</TableCell>
                 </TableRow>
               );
             })}
