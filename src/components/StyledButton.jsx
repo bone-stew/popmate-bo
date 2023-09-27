@@ -27,11 +27,16 @@ const colors = {
     backgroundColor: '#FEF0D2',
     color: '#FFAB00',
   },
+  /* 노란색 */
+  orange: {
+    backgroundColor: '#FFDAB9',
+    color: '#eb8621',
+  },
 };
 
 function StyledButton({ color, text, onClick }) {
   return (
-    <Button onClick={onClick} sx={{ ...colors[color] }}>
+    <Button fullWidth onClick={onClick} sx={{ ...colors[color] }}>
       {text}
     </Button>
   );
