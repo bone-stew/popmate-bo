@@ -28,6 +28,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange, stepToggle }) {
   const today = dayjs();
@@ -55,6 +57,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [bannerImage, setBannerImage] = useState(null);
   const [bannerImageFile, setBannerImageFile] = useState(null);
 
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {
       // console.log('viewInfo opentime', viewInfo.openTime);
@@ -69,16 +73,16 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setOpenDate(dayjs(viewInfo.openDate));
       setCloseDate(dayjs(viewInfo.closeDate));
 
-      const today = dayjs();
-      const openTime = dayjs(viewInfo.openTime);
-      const closeTime = dayjs(viewInfo.closeTime);
-      const newOpenTime = today.set('hour', openTime.hour() + 9).set('minute', openTime.minute());
-      const newCloseTime = today
-        .set('hour', closeTime.hour() + 9)
-        .set('minute', closeTime.minute())
-        .add(1, 'day');
-      setOpenTime(newOpenTime);
-      setCloseTime(newCloseTime);
+      // const today = dayjs();
+      // const openTime = dayjs(viewInfo.openTime);
+      // const closeTime = dayjs(viewInfo.closeTime);
+      // const newOpenTime = today.set('hour', openTime.hour() + 9).set('minute', openTime.minute());
+      // const newCloseTime = today
+      //   .set('hour', closeTime.hour() + 9)
+      //   .set('minute', closeTime.minute())
+      //   .add(1, 'day');
+      setOpenTime(dayjs(viewInfo.openTime));
+      setCloseTime(dayjs(viewInfo.closeTime));
 
       setPlaceDetail(viewInfo.placeDetail);
       setDepartment(viewInfo.department.departmentId);
@@ -167,7 +171,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   };
 
   const handleOpenTimeChange = (newValue) => {
-    console.log('handleOpenTimeChange', newValue);
+    console.log('handleOpenTimeChange', newValue.format('YYYY-MM-DDTHH:mm'));
     setOpenTime(newValue);
   };
 
@@ -404,7 +408,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="koKR">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker value={openTime} onChange={handleOpenTimeChange} />
                   </LocalizationProvider>
                   <span style={{ margin: '0 0.3rem' }}>~</span>
