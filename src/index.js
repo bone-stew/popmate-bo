@@ -19,6 +19,7 @@ import OrderQR from './pages/OrderQR';
 import DailyReservation from './pages/DailyReservation';
 import ReservationQR from './pages/ReservationQR';
 import ReservationDetail from './pages/ReservationDetail';
+import ChatReports from './pages/ChatReports';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/overview/banner',
         element: <MainBanner />,
+      },
+      {
+        path: '/overview/report',
+        element: <ChatReports />,
       },
       {
         path: '/popup-stores/:storeId/orders',
