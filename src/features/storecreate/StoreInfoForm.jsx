@@ -28,8 +28,6 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 
 function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange, stepToggle }) {
   const today = dayjs();
@@ -56,34 +54,13 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [salesSystem, setSalesSystem] = useState('yesSales');
   const [bannerImage, setBannerImage] = useState(null);
   const [bannerImageFile, setBannerImageFile] = useState(null);
-
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {
-      // console.log('viewInfo opentime', viewInfo.openTime);
-
-      // console.log('viewInfo openDate', viewInfo.openDate);
-      // console.log('viewInfo openDate', dayjs(viewInfo.openDate).toDate());
-      // console.log('viewInfo closeDate', viewInfo.closeDate);
-      // console.log('viewInfo openTime', viewInfo.openTime);
-      // console.log('viewInfo closeTime', viewInfo.closeTime);
       setStoreTitle(viewInfo.title);
-
       setOpenDate(dayjs(viewInfo.openDate));
       setCloseDate(dayjs(viewInfo.closeDate));
-
-      // const today = dayjs();
-      // const openTime = dayjs(viewInfo.openTime);
-      // const closeTime = dayjs(viewInfo.closeTime);
-      // const newOpenTime = today.set('hour', openTime.hour() + 9).set('minute', openTime.minute());
-      // const newCloseTime = today
-      //   .set('hour', closeTime.hour() + 9)
-      //   .set('minute', closeTime.minute())
-      //   .add(1, 'day');
       setOpenTime(dayjs(viewInfo.openTime));
       setCloseTime(dayjs(viewInfo.closeTime));
-
       setPlaceDetail(viewInfo.placeDetail);
       setDepartment(viewInfo.department.departmentId);
       setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
@@ -114,8 +91,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   StoreInfoForm.getData = () => {
     const storeImagesData = [bannerImage, ...storeImages];
     const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
-    // const formattedOpenTime = openTime.format;
-    console.log('BEFORE SENDING TO STOREEDIT:', openTime);
     const storeData = {
       title,
       openDate,
@@ -171,7 +146,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   };
 
   const handleOpenTimeChange = (newValue) => {
-    console.log('handleOpenTimeChange', newValue.format('YYYY-MM-DDTHH:mm'));
     setOpenTime(newValue);
   };
 

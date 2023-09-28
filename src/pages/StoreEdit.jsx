@@ -53,6 +53,8 @@ function StoreEdit() {
     const storeInfo = StoreInfoForm.getData();
     const newStoreImages = storeInfo.storeImageFilesData;
 
+    console.log('STOREINFO', storeInfo);
+
     var storeTemp = {
       popupStore: {
         department: {
@@ -142,6 +144,7 @@ function StoreEdit() {
           storeTemp.storeImageList = updatedStoreImageList;
         } else {
           storeTemp.storeImageList = storeInfo.storeImagesData;
+          // storeTemp.storeImageList = [];
         }
         if (responseObj.data.popupStoreItemImageList !== null) {
           var updatedStoreItemImageList = responseObj.data.popupStoreItemImageList;
