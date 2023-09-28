@@ -4,6 +4,7 @@ import styles from './Header.module.css';
 import { useLocation, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../slices/userSlice';
+import {  blue } from '@mui/material/colors';
 import JsonAxios from '../../api/jsonAxios';
 
 function Header() {
@@ -45,9 +46,13 @@ function Header() {
     <div className={styles.container}>
       <div className={styles.profile}>
         <p>
-          {currUser.value.name} {currUser.value.role === 'ROLE_MANAGER' ? '매니저님' : '스태프님'}
+          {currUser.value.name}님
         </p>
-        <Avatar />
+        {currUser.value.role === 'ROLE_MANAGER' ? (
+        <Avatar sx={{ bgcolor: blue[500] }}>AM</Avatar>
+      ) : (
+        <Avatar sx={{ bgcolor: blue[500] }}>ST</Avatar>
+      )}
       </div>
       <div>
         <span className={styles.title}>{title}</span>
