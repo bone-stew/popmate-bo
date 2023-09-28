@@ -47,6 +47,9 @@ function StoreCreate() {
         department: {
           departmentId: storeInfo.department,
         },
+        user: {
+          userId: storeInfo.staffId,
+        },
         title: storeInfo.title,
         organizer: storeInfo.organizer,
         placeDetail: storeInfo.placeDetail,

@@ -63,6 +63,10 @@ function StoreInfo() {
               <TableCell className={styles.table}>{storeData.department.name}</TableCell>
             </TableRow>
             <TableRow>
+              <TableCell className={styles.table}>담당 스태프</TableCell>
+              <TableCell className={styles.table}>{storeData.user.name}</TableCell>
+            </TableRow>
+            <TableRow>
               <TableCell className={styles.table}>상세 장소</TableCell>
               <TableCell className={styles.table}>{storeData.placeDetail}</TableCell>
             </TableRow>
