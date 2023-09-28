@@ -54,32 +54,13 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [salesSystem, setSalesSystem] = useState('yesSales');
   const [bannerImage, setBannerImage] = useState(null);
   const [bannerImageFile, setBannerImageFile] = useState(null);
-
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {
-      // console.log('viewInfo opentime', viewInfo.openTime);
-
-      // console.log('viewInfo openDate', viewInfo.openDate);
-      // console.log('viewInfo openDate', dayjs(viewInfo.openDate).toDate());
-      // console.log('viewInfo closeDate', viewInfo.closeDate);
-      // console.log('viewInfo openTime', viewInfo.openTime);
-      // console.log('viewInfo closeTime', viewInfo.closeTime);
       setStoreTitle(viewInfo.title);
-
       setOpenDate(dayjs(viewInfo.openDate));
       setCloseDate(dayjs(viewInfo.closeDate));
-
-      const today = dayjs();
-      const openTime = dayjs(viewInfo.openTime);
-      const closeTime = dayjs(viewInfo.closeTime);
-      const newOpenTime = today.set('hour', openTime.hour() + 9).set('minute', openTime.minute());
-      const newCloseTime = today
-        .set('hour', closeTime.hour() + 9)
-        .set('minute', closeTime.minute())
-        .add(1, 'day');
-      setOpenTime(newOpenTime);
-      setCloseTime(newCloseTime);
-
+      setOpenTime(dayjs(viewInfo.openTime));
+      setCloseTime(dayjs(viewInfo.closeTime));
       setPlaceDetail(viewInfo.placeDetail);
       setDepartment(viewInfo.department.departmentId);
       setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
@@ -110,8 +91,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   StoreInfoForm.getData = () => {
     const storeImagesData = [bannerImage, ...storeImages];
     const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
-    // const formattedOpenTime = openTime.format;
-    console.log('BEFORE SENDING TO STOREEDIT:', openTime);
     const storeData = {
       title,
       openDate,
@@ -167,7 +146,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   };
 
   const handleOpenTimeChange = (newValue) => {
-    console.log('handleOpenTimeChange', newValue);
     setOpenTime(newValue);
   };
 
@@ -404,7 +382,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="koKR">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker value={openTime} onChange={handleOpenTimeChange} />
                   </LocalizationProvider>
                   <span style={{ margin: '0 0.3rem' }}>~</span>

@@ -55,8 +55,8 @@ function StoreCreate() {
         entryFee: storeInfo.entryFee,
         openDate: storeInfo.openDate,
         closeDate: storeInfo.closeDate,
-        openTime: storeInfo.openTime,
-        closeTime: storeInfo.closeTime,
+        openTime: storeInfo.openTime.format('YYYY-MM-DDTHH:mm:ss'),
+        closeTime: storeInfo.closeTime.format('YYYY-MM-DDTHH:mm:ss'),
         views: 0,
       },
       popupStoreSnsList: [],
@@ -143,9 +143,6 @@ function StoreCreate() {
       setStoreStatus(true);
       setReservationStatus(true);
       setSalesStatus(true);
-      // if (activeStep < 2) {
-      //   setActiveStep((prevActiveStep) => prevActiveStep + 2);
-      // }
     }
     if (reservation === 'yesReservation') {
       setCurrentForm('reservation');
@@ -165,7 +162,6 @@ function StoreCreate() {
   };
 
   const addStoreInfo = (submittedStoreInfo) => {
-    console.log('SUBMITTED INFO:', submittedStoreInfo);
     setStoreInfo(submittedStoreInfo);
     setStoreStatus(true);
     if (reservation === 'noReservation' && sales === 'noSales') {
@@ -188,7 +184,6 @@ function StoreCreate() {
     if (reservation === 'noReservation') {
       setReservationStatus(true);
     }
-    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleCancelReservation = () => {

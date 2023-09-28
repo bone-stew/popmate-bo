@@ -53,6 +53,8 @@ function StoreEdit() {
     const storeInfo = StoreInfoForm.getData();
     const newStoreImages = storeInfo.storeImageFilesData;
 
+    console.log('STOREINFO', storeInfo);
+
     var storeTemp = {
       popupStore: {
         department: {
@@ -66,8 +68,8 @@ function StoreEdit() {
         entryFee: storeInfo.entryFee,
         openDate: storeInfo.openDate,
         closeDate: storeInfo.closeDate,
-        openTime: storeInfo.openTime,
-        closeTime: storeInfo.closeTime,
+        openTime: storeInfo.openTime.format('YYYY-MM-DDTHH:mm:ss'),
+        closeTime: storeInfo.closeTime.format('YYYY-MM-DDTHH:mm:ss'),
         views: storeInfo.views,
         popupStoreId: storeId,
         storeImageList: [],
@@ -142,6 +144,7 @@ function StoreEdit() {
           storeTemp.storeImageList = updatedStoreImageList;
         } else {
           storeTemp.storeImageList = storeInfo.storeImagesData;
+          // storeTemp.storeImageList = [];
         }
         if (responseObj.data.popupStoreItemImageList !== null) {
           var updatedStoreItemImageList = responseObj.data.popupStoreItemImageList;

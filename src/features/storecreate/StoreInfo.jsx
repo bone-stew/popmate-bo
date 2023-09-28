@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './StoreCreate.module.css';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageList from '@mui/material/ImageList';
-import { formatToLocalDate } from '../../app/dateTimeUtils';
+import { formatToLocalDate, formatToLocalTime } from '../../app/dateTimeUtils';
 
 import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, Stack } from '@mui/material';
 
@@ -35,13 +35,6 @@ function StoreInfo() {
     navigate(`/popup-stores/${storeId}/edit`);
   };
 
-  const formatDateTime = (datetime) => {
-    const dateTime = dayjs(datetime);
-    const kstDateTime = dateTime.add(9, 'hour');
-    const formattedKST = kstDateTime.format('HH:mm');
-    return formattedKST;
-  };
-
   if (!isLoading) {
     return (
       <div>
@@ -62,7 +55,7 @@ function StoreInfo() {
             <TableRow>
               <TableCell className={styles.table}>팝업스토어 영업시간</TableCell>
               <TableCell className={styles.table}>
-                {formatDateTime(storeData.openTime)} ~ {formatDateTime(storeData.closeTime)}
+                {formatToLocalTime(storeData.openTime)} ~ {formatToLocalTime(storeData.closeTime)}
               </TableCell>
             </TableRow>
             <TableRow>
