@@ -54,6 +54,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [salesSystem, setSalesSystem] = useState('yesSales');
   const [bannerImage, setBannerImage] = useState(null);
   const [bannerImageFile, setBannerImageFile] = useState(null);
+  const [staffId, setStaffId] = useState('');
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {
       setStoreTitle(viewInfo.title);
@@ -63,6 +64,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setCloseTime(dayjs(viewInfo.closeTime));
       setPlaceDetail(viewInfo.placeDetail);
       setDepartment(viewInfo.department.departmentId);
+      setStaffId(viewInfo.user.userId);
       setPriceRadio(viewInfo.entryFee === 0 ? '무료' : '유료');
       setEntryFee(viewInfo.setEntryFee);
       setOrganizer(viewInfo.organizer);
@@ -98,6 +100,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       openTime,
       closeTime,
       department,
+      staffId,
       priceRadio,
       entryFee,
       organizer,
@@ -155,6 +158,10 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
 
   const handleDepartmentChange = (event) => {
     setDepartment(event.target.value);
+  };
+
+  const handleStaffChange = (event) => {
+    setStaffId(event.target.value);
   };
 
   const handlePriceRadioChange = (event) => {
@@ -246,6 +253,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       openTime === '' ||
       closeTime === '' ||
       department === '' ||
+      staffId === '' ||
       priceRadio === '' ||
       (priceRadio === '유료' && entryFee === '') ||
       organizer === '' ||
@@ -322,6 +330,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       openTime,
       closeTime,
       department,
+      staffId,
       priceRadio,
       entryFee,
       organizer,
@@ -424,6 +433,28 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                     <MenuItem value={'14'}>울산점</MenuItem>
                     <MenuItem value={'15'}>울산동구점</MenuItem>
                     <MenuItem value={'16'}>충청점</MenuItem>
+                  </Select>
+                </FormControl>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className={styles.table}>
+                담당 스태프<span style={{ color: 'red' }}> (*)</span>
+              </TableCell>
+              <TableCell className={styles.table}>
+                <FormControl fullWidth>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={staffId}
+                    onChange={handleStaffChange}
+                    displayEmpty
+                  >
+                    <MenuItem value="">
+                      <em>스태프 선택 없음</em>
+                    </MenuItem>
+                    <MenuItem value={'75'}>staff_ONE</MenuItem>
+                    <MenuItem value={'999'}>staff_TWO</MenuItem>
                   </Select>
                 </FormControl>
               </TableCell>
