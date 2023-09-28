@@ -290,7 +290,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
                     <TextField
                       value={itemPrice}
                       onChange={handleItemPriceChange}
-                      placeholder="상품 가격을 입려해주세요"
+                      placeholder="상품 가격을 입력해주세요"
                       id="outlined-number"
                       type="number"
                       InputLabelProps={{
@@ -322,7 +322,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
                     <TextField
                       value={itemTotal}
                       onChange={handleTotalChange}
-                      placeholder="재고량을 입려해주세요"
+                      placeholder="재고량을 입력해주세요"
                       id="outlined-number"
                       type="number"
                       InputLabelProps={{
@@ -351,7 +351,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
                     <TextField
                       value={orderLimit}
                       onChange={handleOrderLimitChange}
-                      placeholder="주문가능 수량을 입려해주세요"
+                      placeholder="주문가능 수량을 입력해주세요"
                       id="outlined-number"
                       type="number"
                       InputLabelProps={{
