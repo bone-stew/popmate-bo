@@ -51,9 +51,7 @@ function StoreEdit() {
   const handleEditStore = async () => {
     setIsLoading(true);
     const storeInfo = StoreInfoForm.getData();
-    const newStoreImages = storeInfo.storeImageFilesData;
-
-    console.log('STOREINFO', storeInfo);
+    const storeImageObjects = storeInfo.storeImageObjectsData;
 
     var storeTemp = {
       popupStore: {
@@ -82,13 +80,6 @@ function StoreEdit() {
     };
 
     const formData = new FormData();
-    if (newStoreImages.length !== 0) {
-      newStoreImages.forEach((image, index) => {
-        formData.append('storeImageFiles', image);
-      });
-    } else {
-      storeTemp.storeImageList = storeInfo.storeImagesData;
-    }
 
     const snsPlatforms = ['website', 'youtube', 'instagram'];
     snsPlatforms.forEach((platform) => {
@@ -138,39 +129,61 @@ function StoreEdit() {
       storeTemp.popupStoreItemList = [];
     }
 
+    const bannerImageObj = storeImageObjects[0];
+    const storeImagesNotToDelete = [];
+    var updatedPopupStoreImageList = null;
+
+    var isBannerImgNew = false;
+    var isStoreImgNew = false;
+    if (bannerImageObj instanceof File) {
+      isBannerImgNew = true;
+      formData.append('storeImageFiles', bannerImageObj);
+    }
+
+    for (let index = 1; index < storeImageObjects.length; index++) {
+      const storeImageObj = storeImageObjects[index];
+      if (storeImageObj instanceof File) {
+        isStoreImgNew = true;
+        formData.append('storeImageFiles', storeImageObj);
+      } else if (storeImageObj.hasOwnProperty('popupStoreImgId')) {
+        storeImagesNotToDelete.push(storeImageObj.popupStoreImgId);
+      }
+    }
+
     MultipartAxios.post(`popup-stores/${storeId}/images`, formData)
       .then((response) => {
-        const responseObj = response.data;
-        var storeImagesWithoutLocalImages = storeInfo.storeImagesData.filter((image) => !image.startsWith('blob:'));
-        var updatedStoreImageList = storeImagesWithoutLocalImages.concat(responseObj.data.popupStoreImageList);
-        if (responseObj.data.popupStoreImageList !== null) {
-          storeTemp.storeImageList = updatedStoreImageList;
-        } else {
-          storeTemp.storeImageList = storeInfo.storeImagesData;
-          // storeTemp.storeImageList = [];
+        updatedPopupStoreImageList = response.data.data.popupStoreImageList;
+        if (isBannerImgNew) {
+          storeTemp.popupStore.bannerImgUrl = updatedPopupStoreImageList.shift();
         }
-        if (responseObj.data.popupStoreItemImageList !== null) {
-          var updatedStoreItemImageList = responseObj.data.popupStoreItemImageList;
+        if (isStoreImgNew) {
+          storeTemp.storeImageList = updatedPopupStoreImageList;
+        }
+        if (!isBannerImgNew && !isStoreImgNew) {
+          storeTemp.storeImageList = [];
+        }
+        storeTemp.storeImagesNotToDelete = storeImagesNotToDelete;
+
+        if (response.data.data.popupStoreItemImageList !== null) {
+          var updatedStoreItemImageList = response.data.data.popupStoreItemImageList;
           updatedStoreItemImageList.forEach((updatedImgUrl, index) => {
             itemsList[fileIndices[index]].imgUrl = updatedImgUrl;
           });
           storeTemp.popupStoreItemList = itemsList;
         }
-
         JsonAxios.put(`popup-stores/${storeId}`, JSON.stringify(storeTemp))
           .then((response) => {
-            console.log(response.data);
             navigate(`/popup-stores/${storeId}/detail`);
           })
           .catch((e) => {
             console.error(e);
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
       })
       .catch((e) => {
         console.error(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
