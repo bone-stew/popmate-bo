@@ -64,7 +64,6 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
   }, [isUsingSales, viewInfo]);
 
   StoreItemsForm.getData = () => {
-    console.log('Befre getData', itemsToDelete);
     return { itemsList, itemFileList, itemsToDelete };
   };
 
@@ -190,10 +189,8 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
       return;
     }
     setEditingItemIndex(index);
-    console.log('EDITING ITEEM INDEX:', itemsList[index]);
 
     if (itemsList[index].hasOwnProperty('popupStoreItemId')) {
-      console.log('EDITING ITEEM INDEX:', itemsList[index].popupStoreItemId);
       setItemId(itemsList[index].popupStoreItemId);
     }
     setEditItemName(itemsList[index].name);
@@ -226,12 +223,9 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
       orderLimit: editOrderLimit,
       imgUrl: editImageFile,
     };
-    console.log('SAVE EDIT check if ITEM ID is NULL', itemId === null);
     if (itemId !== null) {
       updatedItemsList[editingItemIndex].popupStoreItemId = itemId;
       updatedItemsFileList[editingItemIndex].popupStoreItemId = itemId;
-      console.log('INSIDE null CHECK updatedItemsList: ', updatedItemsList);
-      console.log('INSIDE null CHECK updatedItemsFileList: ', updatedItemsFileList);
     }
     setItemsList(updatedItemsList);
     setItemFileList(updatedItemsFileList);

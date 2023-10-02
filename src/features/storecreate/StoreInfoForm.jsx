@@ -55,6 +55,8 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [bannerImage, setBannerImage] = useState(null);
   const [bannerImageFile, setBannerImageFile] = useState(null);
   const [staffId, setStaffId] = useState('');
+  const [storeImageObjects, setStoreImageObjects] = useState([]);
+
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {
       setStoreTitle(viewInfo.title);
@@ -71,6 +73,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       let imgUrls = viewInfo.popupStoreImgResponse.map((item) => item.imgUrl);
       setBannerImage(viewInfo.bannerImgUrl);
       setStoreImages(imgUrls);
+      setStoreImageObjects(viewInfo.popupStoreImgResponse);
       setDescription(viewInfo.description);
       setEventDescription(viewInfo.eventDescription !== null ? viewInfo.eventDescription : '');
       setReservationEnabled(viewInfo.reservationEnabled);
@@ -93,6 +96,13 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   StoreInfoForm.getData = () => {
     const storeImagesData = [bannerImage, ...storeImages];
     const storeImageFilesData = [bannerImageFile, ...storeImageFiles];
+    var bannerImageObject = null;
+    if (bannerImageFile == null) {
+      bannerImageObject = bannerImage;
+    } else {
+      bannerImageObject = bannerImageFile;
+    }
+    const storeImageObjectsData = [bannerImageObject, ...storeImageObjects];
     const storeData = {
       title,
       openDate,
@@ -115,6 +125,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       youtube,
       salesSystem,
       storeImagesData,
+      storeImageObjectsData,
     };
     return storeData;
   };
@@ -225,6 +236,12 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
     }
   };
 
+  useEffect(() => {
+    console.log('STOREIMAGES', storeImages);
+    console.log('STOREIMAGEFILES', storeImageFiles);
+    console.log('STOREIMAGEOBJECTS', storeImageObjects);
+  }, [storeImages, storeImageFiles, storeImageObjects]);
+
   const handleImageUpload = (event) => {
     const selectedImage = event.target.files[0];
 
@@ -235,14 +252,17 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       }
       setStoreImageFiles([...storeImageFiles, selectedImage]);
       setStoreImages([...storeImages, URL.createObjectURL(selectedImage)]);
+      setStoreImageObjects([...storeImageObjects, selectedImage]);
     }
   };
 
   const handleRemoveImage = (indexToRemove) => {
     const updatedImageUrls = storeImages.filter((_, index) => index !== indexToRemove);
     const updatedImageFiles = storeImageFiles.filter((_, index) => index !== indexToRemove);
+    const updatedImageObjects = storeImageObjects.filter((_, index) => index !== indexToRemove);
     setStoreImages(updatedImageUrls);
     setStoreImageFiles(updatedImageFiles);
+    setStoreImageObjects(updatedImageObjects);
   };
 
   const handleNextButtonClick = () => {
