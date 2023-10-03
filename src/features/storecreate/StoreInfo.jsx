@@ -203,50 +203,52 @@ function StoreInfo() {
           </Table>
         </TableContainer>
 
-        <TableContainer sx={{ marginTop: '10em', marginBottom: '10em' }}>
-          <Table variant={'outlined'}>
-            <TableHead sx={{ backgroundColor: '#F2F4F6' }}>
-              <TableRow>
-                <TableCell style={{ textAlign: 'center' }} className={styles.table}>
-                  <div>상품명</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>상품 가격</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>재고</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>1인당 주문 가능 수량</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>상품 이미지</div>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            {storeData.popupStoreItemResponse.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>{item.name}</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>{item.amount.toLocaleString('ko-KR')}원</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>{item.stock}</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>{item.orderLimit}</div>
-                </TableCell>
-                <TableCell className={styles.table}>
-                  <div style={{ textAlign: 'center' }}>
-                    <img style={{ maxWidth: '8rem', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </Table>
-        </TableContainer>
+        {storeData.salesEnabled && (
+          <TableContainer sx={{ marginTop: '10em', marginBottom: '10em' }}>
+            <Table variant={'outlined'}>
+              <TableHead sx={{ backgroundColor: '#F2F4F6' }}>
+                <TableRow>
+                  <TableCell style={{ textAlign: 'center' }} className={styles.table}>
+                    <div>상품명</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>상품 가격</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>재고</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>1인당 주문 가능 수량</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>상품 이미지</div>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              {storeData.popupStoreItemResponse.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>{item.name}</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>{item.amount.toLocaleString('ko-KR')}원</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>{item.stock}</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>{item.orderLimit}</div>
+                  </TableCell>
+                  <TableCell className={styles.table}>
+                    <div style={{ textAlign: 'center' }}>
+                      <img style={{ maxWidth: '8rem', borderRadius: '10px' }} src={item.imgUrl} alt={`store item`} />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </Table>
+          </TableContainer>
+        )}
         <div style={{ textAlign: 'center', margin: '5rem 0' }}>
           <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
             팝업스토어 수정

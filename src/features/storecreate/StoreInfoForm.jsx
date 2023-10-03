@@ -78,7 +78,10 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setEventDescription(viewInfo.eventDescription !== null ? viewInfo.eventDescription : '');
       setReservationEnabled(viewInfo.reservationEnabled);
       setReservationSystem(viewInfo.reservationEnabled === true ? 'yesReservation' : 'noReservation');
-      setSalesSystem(viewInfo.popupStoreItemResponse.length === 0 ? 'noSales' : 'yesSales');
+      // setSalesSystem(viewInfo.popupStoreItemResponse.length === 0 ? 'noSales' : 'yesSales');
+      console.log('salesEnabled', viewInfo.salesEnabled === 1 ? 'yesSales' : 'noSales');
+      console.log('salesEnabled', viewInfo.salesEnabled);
+      setSalesSystem(viewInfo.salesEnabled === true ? 'yesSales' : 'noSales');
       if (viewInfo.popupStoreSnsResponse.length > 0) {
         viewInfo.popupStoreSnsResponse.forEach((item) => {
           if (item.platform === 'Website') {
@@ -235,12 +238,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setBannerImageFile(selectedImage);
     }
   };
-
-  useEffect(() => {
-    console.log('STOREIMAGES', storeImages);
-    console.log('STOREIMAGEFILES', storeImageFiles);
-    console.log('STOREIMAGEOBJECTS', storeImageObjects);
-  }, [storeImages, storeImageFiles, storeImageObjects]);
 
   const handleImageUpload = (event) => {
     const selectedImage = event.target.files[0];
@@ -690,8 +687,13 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
           </RadioGroup>
         </div>
         {Object.keys(viewInfo).length === 0 && (
-          <div style={{ textAlign: 'center', marginTop: '5rem' }}>
-            <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
+          <div style={{ textAlign: 'center', marginTop: '5rem', marginBottom: '5rem' }}>
+            <Button
+              type="button"
+              variant="contained"
+              sx={{ borderRadius: 28, padding: '0.8rem 2rem' }}
+              onClick={handleNextButtonClick}
+            >
               {salesSystem === 'yesSales' || reservationSystem === 'yesReservation' ? '다음보기' : '팝업스토어 등록'}
             </Button>
           </div>

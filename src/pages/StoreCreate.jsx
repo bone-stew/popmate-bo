@@ -61,6 +61,7 @@ function StoreCreate() {
         openTime: storeInfo.openTime.format('YYYY-MM-DDTHH:mm:ss'),
         closeTime: storeInfo.closeTime.format('YYYY-MM-DDTHH:mm:ss'),
         views: 0,
+        salesEnabled: storeInfo.salesSystem === 'yesSales' ? 1 : 0,
       },
       popupStoreSnsList: [],
       popupStoreItemList: [],
@@ -92,6 +93,7 @@ function StoreCreate() {
     }
     const itemImageList = [];
     if (storeInfo.salesSystem === 'yesSales') {
+      popupStoreRequest.salesEnabled = 'true';
       popupStoreRequest.popupStoreItemList = salesInfo.map((item) => {
         const { imgUrl, ...itemWithoutImage } = item;
         itemImageList.push(imgUrl);
@@ -195,14 +197,16 @@ function StoreCreate() {
     if (sales === 'yesSales') {
       setCurrentForm('items');
     } else {
-      navigate('/overview/list');
+      setSalesStatus(true);
+      // navigate('/overview/list');
     }
   };
 
   const handleCancelSales = () => {
     setSalesStatus(true);
     setSales('noSales');
-    navigate('/overview/list');
+    setReservationStatus(true);
+    // navigate('/overview/list');
   };
 
   const handleSalesChange = () => {
