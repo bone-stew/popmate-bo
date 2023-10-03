@@ -11,11 +11,6 @@
   color: #dddddd;
 }
 
-/* .table {
-  border: 1px solid rgba(224, 224, 224, 1);
-  margin: 5rem;
-} */
-
 .timeContainer {
   display: 'flex';
   alignitems: 'center';
@@ -34,26 +29,19 @@
   color: #dddddd;
 }
 
-/* .disabled {
-  color: #dddddd;
-} */
-
-/* Remove the following CSS rule */
 .disabled {
   color: #dddddd;
 }
 
-/* Update the table cell styles to center content */
 .table {
   border: 1px solid rgba(224, 224, 224, 1);
-  text-align: center; /* Center the content horizontally */
-  vertical-align: middle; /* Center the content vertically */
-  padding: 1rem; /* Add padding to the cells */
+  text-align: center;
+  vertical-align: middle;
+  padding: 1rem;
 }
 
-/* Add a background color for disabled table cells */
 .table.disabled {
-  background-color: #f2f2f2; /* or any other desired background color */
+  background-color: #f2f2f2;
 }
 
 .imgDeleteButton {
@@ -82,13 +70,6 @@
 }
 
 .shaded {
-  filter: grayscale(100%); /* Adjust the filter to change the image color */
+  filter: grayscale(100%);
   opacity: 0.7;
-  /* content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); */
 }
