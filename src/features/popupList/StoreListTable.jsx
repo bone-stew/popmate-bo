@@ -58,7 +58,7 @@ function StoreListTable() {
   const [flag, _flag] = useState(false);
 
   const handleItemClick = (popupStoreId) => {
-    navigate(`/store/${popupStoreId}`);
+    navigate(`/popup-stores/${popupStoreId}/detail`);
   };
 
   function updateList() {
