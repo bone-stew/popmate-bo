@@ -240,7 +240,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
   };
 
   const handleCancelSales = () => {
-    const userConfirmed = window.confirm('예약 시스템을 사용하지 않고 스토어를 등록하시겠습니까?');
+    const userConfirmed = window.confirm('판매 시스템을 사용하지 않고 스토어를 등록하시겠습니까?');
     if (userConfirmed) {
       cancelSales('noReservation');
     } else {
@@ -526,7 +526,12 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
       {Object.keys(viewInfo).length === 0 && (
         <div style={{ textAlign: 'center', margin: '5rem 0' }}>
           <div>
-            <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              variant="contained"
+              sx={{ borderRadius: 28, padding: '0.8rem 2rem' }}
+            >
               팝업스토어 등록
             </Button>
           </div>

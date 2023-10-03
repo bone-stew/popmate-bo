@@ -24,7 +24,8 @@ function StoreEdit() {
       .then((response) => {
         setStoreData(response.data.data);
         setIsUsingReservation(response.data.data.reservationEnabled);
-        setIsUsingSales(response.data.data.popupStoreItemResponse.length !== 0);
+        setIsUsingSales(response.data.data.salesEnabled);
+        // setIsUsingSales(response.data.data.popupStoreItemResponse.length !== 0);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -74,6 +75,8 @@ function StoreEdit() {
         views: storeInfo.views,
         popupStoreId: storeId,
         storeImageList: [],
+        reservationEnabled: storeInfo.reservationEnabled,
+        salesEnabled: storeInfo.salesSystem === 'yesSales' ? 1 : 0,
       },
       popupStoreSnsList: [],
       popupStoreItemList: [],

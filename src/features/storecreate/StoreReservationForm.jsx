@@ -72,7 +72,7 @@ function StoreReservationForm({
   };
 
   const handleCancelReservation = () => {
-    const userConfirmed = window.confirm('판매 시스템을 사용하지 않고 스토어를 등록하시겠습니까?');
+    const userConfirmed = window.confirm('얘약 시스템을 사용하지 않고 스토어를 등록하시겠습니까?');
     if (userConfirmed) {
       cancelReservation('noReservation');
     } else {
@@ -182,7 +182,12 @@ function StoreReservationForm({
         {Object.keys(viewInfo).length === 0 && (
           <div>
             <div style={{ textAlign: 'center', marginTop: '5rem' }}>
-              <Button type="button" variant="contained" sx={{ borderRadius: 28 }} onClick={handleNextButtonClick}>
+              <Button
+                type="button"
+                variant="contained"
+                sx={{ borderRadius: 28, padding: '0.8rem 2rem' }}
+                onClick={handleNextButtonClick}
+              >
                 {sales === 'yesSales' ? '다음보기' : '팝업스토어 등록'}
               </Button>
             </div>
