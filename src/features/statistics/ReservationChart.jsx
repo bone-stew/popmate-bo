@@ -1,7 +1,7 @@
 import { CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { formatToLocalDate, getCurrentDate } from '../../app/dateTimeUtils';
+import { formatToLocalDate } from '../../app/dateTimeUtils';
 
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 function ReservationChart({ reservationCounts }) {

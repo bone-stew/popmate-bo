@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import RevenueChart from '../features/statistics/RevenueChart';
 import ReservationChart from '../features/statistics/ReservationChart';
 import styles from '../features/statistics/Statistics.module.css';
 import JsonAxios from '../api/jsonAxios';
+import StoreRankChart from '../features/statistics/StoreRankChart';
 function Statistics() {
   const [popupStoreRanks, _popupStoreRanks] = useState([]);
   const [reservationCounts, _reservationCounts] = useState([]);
@@ -27,7 +29,9 @@ function Statistics() {
       <Paper className={styles.reservationContainer}>
         <ReservationChart reservationCounts={reservationCounts} />
       </Paper>
-      <Paper className={styles.rankContainer}></Paper>
+      <Paper className={styles.rankContainer}>
+        <StoreRankChart popupStoreRanks={popupStoreRanks} />
+      </Paper>
     </div>
   );
 }
