@@ -9,7 +9,6 @@ import Loading from '../components/Loading.js';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
-import Typography from '@mui/material/Typography';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
