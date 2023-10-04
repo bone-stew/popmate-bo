@@ -257,7 +257,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  상품명<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
+                  상품명<span className={disableInput ? styles.disabled : styles.redSpan}> *</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -275,7 +275,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  상품가격<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
+                  상품가격<span className={disableInput ? styles.disabled : styles.redSpan}> *</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -307,7 +307,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  재고<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
+                  재고<span className={disableInput ? styles.disabled : styles.redSpan}> *</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -336,7 +336,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  주문가능 수량<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
+                  주문가능 수량<span className={disableInput ? styles.disabled : styles.redSpan}> *</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
@@ -365,7 +365,7 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
             <TableRow>
               <TableCell className={styles.table}>
                 <div className={disableInput && styles.disabled}>
-                  상품 이미지<span className={disableInput ? styles.disabled : styles.redSpan}> (*)</span>
+                  상품 이미지<span className={disableInput ? styles.disabled : styles.redSpan}> *</span>
                 </div>
               </TableCell>
               <TableCell className={styles.table}>
