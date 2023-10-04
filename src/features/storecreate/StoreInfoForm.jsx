@@ -44,7 +44,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
   const [placeDetail, setPlaceDetail] = useState('');
   const [description, setDescription] = useState('');
   const [eventDescription, setEventDescription] = useState('');
-  const [reservationEnabled, setReservationEnabled] = useState(false);
+  const [reservationEnabled, setReservationEnabled] = useState(true);
   const [storeImages, setStoreImages] = useState([]);
   const [storeImageFiles, setStoreImageFiles] = useState([]);
   const [website, setWebsite] = useState('');
@@ -78,9 +78,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       setEventDescription(viewInfo.eventDescription !== null ? viewInfo.eventDescription : '');
       setReservationEnabled(viewInfo.reservationEnabled);
       setReservationSystem(viewInfo.reservationEnabled === true ? 'yesReservation' : 'noReservation');
-      // setSalesSystem(viewInfo.popupStoreItemResponse.length === 0 ? 'noSales' : 'yesSales');
-      console.log('salesEnabled', viewInfo.salesEnabled === 1 ? 'yesSales' : 'noSales');
-      console.log('salesEnabled', viewInfo.salesEnabled);
       setSalesSystem(viewInfo.salesEnabled === true ? 'yesSales' : 'noSales');
       if (viewInfo.popupStoreSnsResponse.length > 0) {
         viewInfo.popupStoreSnsResponse.forEach((item) => {
@@ -215,7 +212,6 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
     } else {
       setReservationEnabled(false);
     }
-    // notifyReservationChange(reservationSystem);
   };
 
   const checkFileSize = (fileSize) => {
@@ -374,7 +370,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
           <Table variant={'outlined'}>
             <TableRow>
               <TableCell className={styles.table}>
-                팝업스토어명<span style={{ color: 'red' }}> (*)</span>
+                팝업스토어명<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
@@ -388,7 +384,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                팝업스토어 운영기간<span style={{ color: 'red' }}> (*)</span>
+                팝업스토어 운영기간<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -404,7 +400,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                팝업스토어 영업시간<span style={{ color: 'red' }}> (*)</span>
+                팝업스토어 영업시간<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -420,7 +416,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                운영지점<span style={{ color: 'red' }}> (*)</span>
+                운영지점<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
@@ -456,7 +452,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                담당 스태프<span style={{ color: 'red' }}> (*)</span>
+                담당 스태프<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
@@ -470,15 +466,18 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
                     <MenuItem value="">
                       <em>스태프 선택 없음</em>
                     </MenuItem>
-                    <MenuItem value={'75'}>staff_ONE</MenuItem>
-                    <MenuItem value={'999'}>staff_TWO</MenuItem>
+                    <MenuItem value={'75'}>staff_김지훈</MenuItem>
+                    <MenuItem value={'999'}>staff_이지혜</MenuItem>
+                    <MenuItem value={'999'}>staff_허은지</MenuItem>
+                    <MenuItem value={'999'}>staff_성태우</MenuItem>
+                    <MenuItem value={'999'}>staff_정민준</MenuItem>
                   </Select>
                 </FormControl>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                상세 장소<span style={{ color: 'red' }}> (*)</span>
+                상세 장소<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
@@ -492,7 +491,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                입장료<span style={{ color: 'red' }}> (*)</span>
+                입장료<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -515,7 +514,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                주최사<span style={{ color: 'red' }}> (*)</span>
+                주최사<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>
@@ -529,7 +528,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                대표 이미지<span style={{ color: 'red' }}> (*)</span>
+                대표 이미지<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -558,7 +557,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell sx={{ minWidth: '10rem' }} className={styles.table}>
-                스토어 이미지<span style={{ color: 'red' }}> (*)</span>
+                스토어 이미지<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <Paper
@@ -615,7 +614,7 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
             </TableRow>
             <TableRow>
               <TableCell className={styles.table}>
-                상세 설명<span style={{ color: 'red' }}> (*)</span>
+                상세 설명<span style={{ color: 'red' }}> *</span>
               </TableCell>
               <TableCell className={styles.table}>
                 <FormControl fullWidth>

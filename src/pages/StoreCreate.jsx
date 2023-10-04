@@ -30,10 +30,6 @@ function StoreCreate() {
 
   const steps = ['팝업스토어 상세정보', '예약 시스템 정보', '판매 시스템 정보'];
 
-  const isStepOptional = (step) => {
-    return step === 1 || step === 2;
-  };
-
   const navigate = useNavigate();
 
   const handleUserChoice = (reservationText, salesText) => {
@@ -232,13 +228,9 @@ function StoreCreate() {
     <div>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
-          const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = <Typography variant="caption">선택사항</Typography>;
-          }
           return (
-            <Step key={label} {...stepProps}>
+            <Step key={label}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
