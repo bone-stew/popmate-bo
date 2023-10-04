@@ -7,7 +7,7 @@ import Header from './features/header/Header';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const drawerWidth = 260;
+  const drawerWidth = 280;
   const currUser = useSelector(selectUser);
   const [pageTitle, _pageTitle] = useState();
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUser()).then((action) => {
-      console.log(action);
+      console.log(action.payload);
       if (action.payload == null) {
         navigate('/login');
       }
