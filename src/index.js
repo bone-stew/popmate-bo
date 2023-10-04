@@ -20,6 +20,7 @@ import DailyReservation from './pages/DailyReservation';
 import ReservationQR from './pages/ReservationQR';
 import ReservationDetail from './pages/ReservationDetail';
 import ChatReports from './pages/ChatReports';
+import Statistics from './pages/Statistics';
 
 const router = createBrowserRouter([
   {
@@ -27,54 +28,19 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <Error />,
     children: [
-      {
-        path: '/overview/list',
-        element: <PopupList />,
-      },
-      {
-        path: '/overview/banner',
-        element: <MainBanner />,
-      },
-      {
-        path: '/overview/report',
-        element: <ChatReports />,
-      },
-      {
-        path: '/popup-stores/:storeId/orders',
-        element: <Order />,
-      },
-      {
-        path: '/popup-stores/:storeId',
-        element: <ReservationMain />,
-      },
-      {
-        path: '/popup-stores/write',
-        element: <StoreCreate />,
-      },
-      {
-        path: '/popup-stores/:storeId/edit',
-        element: <StoreEdit />,
-      },
-      {
-        path: '/popup-stores/:storeId/detail',
-        element: <StoreView />,
-      },
-      {
-        path: '/popup-stores/:storeId/daily-reservations',
-        element: <DailyReservation />,
-      },
-      {
-        path: '/popup-stores/:storeId/pickup',
-        element: <OrderQR />,
-      },
-      {
-        path: '/popup-stores/:storeId/enter',
-        element: <ReservationQR />,
-      },
-      {
-        path: '/reservations/:reservationId/detail',
-        element: <ReservationDetail />,
-      },
+      { path: '/', element: <Statistics /> },
+      { path: '/overview/list', element: <PopupList /> },
+      { path: '/overview/banner', element: <MainBanner /> },
+      { path: '/overview/report', element: <ChatReports /> },
+      { path: '/popup-stores/:storeId/orders', element: <Order /> },
+      { path: '/popup-stores/:storeId', element: <ReservationMain /> },
+      { path: '/popup-stores/write', element: <StoreCreate /> },
+      { path: '/popup-stores/:storeId/edit', element: <StoreEdit /> },
+      { path: '/popup-stores/:storeId/detail', element: <StoreView /> },
+      { path: '/popup-stores/:storeId/daily-reservations', element: <DailyReservation /> },
+      { path: '/popup-stores/:storeId/pickup', element: <OrderQR /> },
+      { path: '/popup-stores/:storeId/enter', element: <ReservationQR /> },
+      { path: '/reservations/:reservationId/detail', element: <ReservationDetail /> },
     ],
   },
   {
