@@ -10,6 +10,8 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -270,9 +272,17 @@ function StoreCreate() {
     setTestInfo(testData);
   };
 
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+  }));
+
   return (
     <div>
-      <Button
+      <ColorButton
         type="button"
         variant="contained"
         sx={{
@@ -281,12 +291,11 @@ function StoreCreate() {
           top: '22em',
           fontSize: 10,
           borderRadius: 28,
-          backgroundColor: 'red',
         }}
         onClick={handleTestInput}
       >
-        시연용 데이터 입력 버튼
-      </Button>
+        시연용 데이터 입력
+      </ColorButton>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const labelProps = {};
