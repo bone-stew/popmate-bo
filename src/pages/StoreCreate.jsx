@@ -9,6 +9,7 @@ import Loading from '../components/Loading.js';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
+import Button from '@mui/material/Button';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -24,6 +25,7 @@ function StoreCreate() {
   const [storeImageList, setStoreImageList] = useState([]);
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
+  const [testInfo, setTestInfo] = useState({});
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -223,8 +225,70 @@ function StoreCreate() {
     };
   }, []);
 
+  const handleTestInput = () => {
+    var testData = {
+      department: {
+        departmentId: '1',
+      },
+      user: {
+        userId: '75',
+      },
+      title: 'test',
+      organizer: 'test',
+      placeDetail: 'test',
+      description: 'test',
+      eventDescription: 'test',
+      entryFee: 0,
+      reservationInterval: 15,
+      maxCapacity: 10,
+      intervalCapacity: 10,
+      teamSizeLimit: 5,
+      openDate: '2023-12-22',
+      closeDate: '2023-12-22',
+      openTime: '2023-12-22T09:00:00',
+      closeTime: '2023-12-22T20:00:00',
+      views: '11',
+      reservationEnabled: true,
+      salesEnabled: true,
+      popupStoreSnsResponse: [
+        {
+          platform: 'Website',
+          url: 'test',
+        },
+        {
+          platform: 'Instagram',
+          url: 'test',
+        },
+        {
+          platform: 'Youtube',
+          url: 'test',
+        },
+      ],
+      testItemTitle: 'test',
+      testItemPrice: 10000,
+      testItemTotal: 500,
+      testItemOrderLimit: 3,
+    };
+    setTestInfo(testData);
+  };
+
   return (
     <div>
+      <Button
+        type="button"
+        variant="contained"
+        sx={{
+          position: 'absolute',
+          right: '10em',
+          top: '20em',
+          fontSize: 10,
+          borderRadius: 28,
+          backgroundColor: 'red',
+        }}
+        onClick={handleTestInput}
+      >
+        시연용 데이터 입력 버튼
+      </Button>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const labelProps = {};
@@ -240,6 +304,7 @@ function StoreCreate() {
       {currentForm === 'info' && (
         <StoreInfoForm
           viewInfo={{}}
+          testData={testInfo}
           onUserChoice={handleUserChoice}
           addStore={addStoreInfo}
           notifyReservationChange={handleReservationChange}
@@ -250,6 +315,7 @@ function StoreCreate() {
       {currentForm === 'reservation' && (
         <StoreReservationForm
           viewInfo={{}}
+          testData={testInfo}
           onUserChoice={reservationFormSubmitted}
           sales={sales}
           addReservation={addReservationInfo}
@@ -261,6 +327,7 @@ function StoreCreate() {
       {currentForm === 'items' && (
         <StoreItemsForm
           viewInfo={{}}
+          testData={testInfo}
           addSales={addSalesInfo}
           cancelSales={handleCancelSales}
           isUsingSales={salesStatus}
