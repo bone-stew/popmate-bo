@@ -163,17 +163,17 @@ function MainBanner() {
         <div className={styles.bottomfirst}>
           <div className={styles.bottomfirsttitle}>
             <div>팝업스토어&nbsp;</div>
-            <div className={styles.red}>(*)</div>
+            <div className={styles.red}>*</div>
           </div>
 
           <div className={styles.bottomfirstcontent}>
-            <FormControl sx={{ m: 1, minWidth: 390 }}>
+            <FormControl sx={{ m: 1, width : '100%'}}>
               <Select
                 value={popupStoreId || ''}
                 onChange={handleChange}
                 displayEmpty
                 inputProps={{ 'aria-label': 'Without label' }}
-                sx={{ height: '53px' }} // 세로 크기 조절
+                sx={{ height: '45px' }} // 세로 크기 조절
               >
                 {menuItems}
               </Select>
@@ -184,7 +184,7 @@ function MainBanner() {
         <div className={styles.bottomsecond}>
           <div className={styles.bottomsecondtitle}>
             <div>배너 이미지&nbsp;</div>
-            <div className={styles.red}>(*)</div>
+            <div className={styles.red}>*</div>
           </div>
           <div className={styles.bottomsecondImg}>
             <div className={styles.labelContainer}>
