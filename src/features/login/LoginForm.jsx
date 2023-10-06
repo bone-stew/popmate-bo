@@ -28,7 +28,7 @@ function LoginForm() {
       .then(async ({ data }) => {
         sessionStorage.setItem('accessToken', data.data.token);
         dispatch(fetchUser()).then(() => {
-          navigate('/');
+          navigate('/overview/statistic');
         });
       })
       .catch(() => {

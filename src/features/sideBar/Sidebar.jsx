@@ -15,6 +15,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Sidebar.module.css';
 import {
   AddCircleOutline,
+  BarChart,
   ImageOutlined,
   Logout,
   ManageSearch,
@@ -36,6 +37,7 @@ function Sidebar({ drawerWidth }) {
     { icon: <ImageOutlined />, title: '배너 관리', to: 'overview/banner' },
     { icon: <ManageSearch />, title: '팝업 스토어 관리', to: 'overview/list' },
     { icon: <ReportGmailerrorred />, title: '채팅 신고', to: 'overview/report' },
+    { icon: <BarChart />, title: '통계', to: '/overview/statistic' },
   ];
   const [storeList, _storeList] = useState([]);
   const [selectedStore, _selectedStore] = useState();

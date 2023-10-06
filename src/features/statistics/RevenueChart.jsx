@@ -23,7 +23,7 @@ function RevenueChart({ storeRevenues }) {
     datasets: [
       {
         label: '단위 : 원',
-        data: labels.map(() => Math.floor(Math.random() * 100000)),
+        data: storeRevenues.map((item) => item.revenue),
         backgroundColor: '#1273E4',
       },
     ],
