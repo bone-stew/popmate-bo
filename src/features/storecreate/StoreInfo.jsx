@@ -9,8 +9,11 @@ import ImageList from '@mui/material/ImageList';
 import { formatToLocalDate, formatToLocalTime } from '../../app/dateTimeUtils';
 
 import { Button, Table, TableHead, TableContainer, TableCell, TableRow, Paper, Stack } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../slices/userSlice';
 
 function StoreInfo() {
+  const currUser = useSelector(selectUser);
   const [storeData, setStoreData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -249,11 +252,13 @@ function StoreInfo() {
             </Table>
           </TableContainer>
         )}
-        <div style={{ textAlign: 'center', margin: '5rem 0' }}>
-          <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
-            팝업스토어 수정
-          </Button>
-        </div>
+        {currUser.value.role === 'ROLE_MANAGER' && (
+          <div style={{ textAlign: 'center', margin: '5rem 0' }}>
+            <Button type="submit" onClick={handleSubmit} variant="contained" sx={{ borderRadius: 28 }}>
+              팝업스토어 수정
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
