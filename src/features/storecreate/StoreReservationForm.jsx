@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 
 function StoreReservationForm({
   viewInfo,
+  testData,
   onUserChoice,
   sales,
   addReservation,
@@ -27,6 +28,15 @@ function StoreReservationForm({
       setTeamSizeLimit(viewInfo.teamSizeLimit);
     }
   }, [viewInfo]);
+
+  useEffect(() => {
+    if (Object.keys(testData).length !== 0) {
+      setReservationInterval(testData.reservationInterval);
+      setMaxCapacity(testData.maxCapacity);
+      setIntervalCapacity(testData.intervalCapacity);
+      setTeamSizeLimit(testData.teamSizeLimit);
+    }
+  }, [testData]);
 
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {

@@ -11,7 +11,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 
-function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepToggle }) {
+function StoreItemsForm({ viewInfo, testData, addSales, cancelSales, isUsingSales, stepToggle }) {
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -45,6 +45,15 @@ function StoreItemsForm({ viewInfo, addSales, cancelSales, isUsingSales, stepTog
 
   const [editingItemIndex, setEditingItemIndex] = useState(-1);
   const [disableInput, setDisableInput] = useState(isUsingSales);
+
+  useEffect(() => {
+    if (Object.keys(testData).length !== 0) {
+      setItemName(testData.testItemTitle);
+      setItemPrice(testData.testItemPrice);
+      setItemTotal(testData.testItemTotal);
+      setOrderLimit(testData.testItemOrderLimit);
+    }
+  }, [testData]);
 
   useEffect(() => {
     if (Object.keys(viewInfo).length !== 0) {

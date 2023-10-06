@@ -106,6 +106,8 @@ function StoreEdit() {
       storeTemp.popupStore.reservationInterval = reservationInfo.reservationInterval;
       storeTemp.popupStore.intervalCapacity = reservationInfo.intervalCapacity;
       storeTemp.popupStore.teamSizeLimit = reservationInfo.teamSizeLimit;
+
+      console.log('TEAM LIMIT?', reservationInfo);
     } else {
       storeTemp.popupStore.reservationEnabled = 0;
     }
@@ -198,12 +200,13 @@ function StoreEdit() {
         {storeData && (
           <StoreInfoForm
             viewInfo={storeData}
+            testData={{}}
             notifyReservationChange={handleReservationChange}
             notifySalesChange={handleSalesChange}
           />
         )}
-        <StoreReservationForm viewInfo={storeData} isUsingReservation={isUsingReservation} />
-        <StoreItemsForm viewInfo={storeData} isUsingSales={isUsingSales} />
+        <StoreReservationForm viewInfo={storeData} testData={{}} isUsingReservation={isUsingReservation} />
+        <StoreItemsForm viewInfo={storeData} testData={{}} isUsingSales={isUsingSales} />
         <div style={{ textAlign: 'center', margin: '5rem 0' }}>
           <div>
             <Button type="submit" onClick={handleEditStore} variant="contained" sx={{ borderRadius: 28 }}>
