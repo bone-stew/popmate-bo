@@ -9,6 +9,9 @@ import Loading from '../components/Loading.js';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
 
 function StoreCreate() {
   const [currentForm, setCurrentForm] = useState('info');
@@ -24,6 +27,7 @@ function StoreCreate() {
   const [storeImageList, setStoreImageList] = useState([]);
   const [storeItemImageList, setStoreItemImageList] = useState([]);
   const [readySend, setReadySend] = useState();
+  const [testInfo, setTestInfo] = useState({});
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -223,8 +227,75 @@ function StoreCreate() {
     };
   }, []);
 
+  const handleTestInput = () => {
+    var testData = {
+      department: {
+        departmentId: '1',
+      },
+      user: {
+        userId: '75',
+      },
+      title: '디아블로4 X 더현대서울 팝업스토어',
+      organizer: '대원미디어',
+      placeDetail: '서울 영등포구 여의대로 108 (파크원) 현대백화점 더현대 서울 지하 2층 아이코닉 존',
+      description:
+        '<디아블로 IV > 더 현대 서울에 팝업 오픈! 지옥은 모두에게 열려 있습니다.\n\n당신을 디아블로 IV 팝업 스토어로 초대합니다. 디아블로 IV 출시기념 팝업 스토어에서 스페셜한 전시와 함께 팝업 스토어에서만 만날 수 있는 상품들까지 다양하게 만나보세요.',
+      eventDescription:
+        '【팝업 한정 상품】\n ①리미티드 소장판 + 캐리어 박스(팝업 상품 구매 고객 대상)\n ②리미티드 티셔츠 5종',
+      entryFee: 0,
+      reservationInterval: 15,
+      maxCapacity: 10,
+      intervalCapacity: 10,
+      teamSizeLimit: 6,
+      openDate: '2023-10-05',
+      closeDate: '2023-12-22',
+      openTime: '2023-12-22T09:00:00',
+      closeTime: '2023-12-22T20:00:00',
+      views: '0',
+      reservationEnabled: true,
+      salesEnabled: true,
+      popupStoreSnsResponse: [
+        {
+          platform: 'Website',
+          url: 'https://brand.naver.com/blizzard',
+        },
+        {
+          platform: 'Instagram',
+          url: 'https://www.instagram.com/p/CtQ3fJBSES6/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA%3D%3D&img_index=1',
+        },
+      ],
+      testItemTitle: '디아블로 x 스틸시리즈',
+      testItemPrice: 10000,
+      testItemTotal: 500,
+      testItemOrderLimit: 3,
+    };
+    setTestInfo(testData);
+  };
+
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+  }));
+
   return (
     <div>
+      <ColorButton
+        type="button"
+        variant="contained"
+        sx={{
+          position: 'absolute',
+          right: '10em',
+          top: '22em',
+          fontSize: 10,
+          borderRadius: 28,
+        }}
+        onClick={handleTestInput}
+      >
+        시연용 데이터 입력
+      </ColorButton>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const labelProps = {};
@@ -240,6 +311,7 @@ function StoreCreate() {
       {currentForm === 'info' && (
         <StoreInfoForm
           viewInfo={{}}
+          testData={testInfo}
           onUserChoice={handleUserChoice}
           addStore={addStoreInfo}
           notifyReservationChange={handleReservationChange}
@@ -250,6 +322,7 @@ function StoreCreate() {
       {currentForm === 'reservation' && (
         <StoreReservationForm
           viewInfo={{}}
+          testData={testInfo}
           onUserChoice={reservationFormSubmitted}
           sales={sales}
           addReservation={addReservationInfo}
@@ -261,6 +334,7 @@ function StoreCreate() {
       {currentForm === 'items' && (
         <StoreItemsForm
           viewInfo={{}}
+          testData={testInfo}
           addSales={addSalesInfo}
           cancelSales={handleCancelSales}
           isUsingSales={salesStatus}

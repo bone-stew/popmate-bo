@@ -29,7 +29,15 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChange, notifySalesChange, stepToggle }) {
+function StoreInfoForm({
+  viewInfo,
+  testData,
+  onUserChoice,
+  addStore,
+  notifyReservationChange,
+  notifySalesChange,
+  stepToggle,
+}) {
   const today = dayjs();
   const midnight = dayjs().startOf('day');
   const [title, setStoreTitle] = useState('');
@@ -92,6 +100,38 @@ function StoreInfoForm({ viewInfo, onUserChoice, addStore, notifyReservationChan
       }
     }
   }, [viewInfo]);
+
+  useEffect(() => {
+    if (Object.keys(testData).length !== 0) {
+      setStoreTitle(testData.title);
+      setOpenDate(dayjs(testData.openDate));
+      setCloseDate(dayjs(testData.closeDate));
+      setOpenTime(dayjs(testData.openTime));
+      setCloseTime(dayjs(testData.closeTime));
+      setPlaceDetail(testData.placeDetail);
+      setDepartment(testData.department.departmentId);
+      setStaffId(testData.user.userId);
+      setPriceRadio(testData.entryFee === 0 ? '무료' : '유료');
+      setEntryFee(testData.setEntryFee);
+      setOrganizer(testData.organizer);
+      setDescription(testData.description);
+      setEventDescription(testData.eventDescription !== null ? testData.eventDescription : '');
+      setReservationEnabled(testData.reservationEnabled);
+      setReservationSystem(testData.reservationEnabled === true ? 'yesReservation' : 'noReservation');
+      setSalesSystem(testData.salesEnabled === true ? 'yesSales' : 'noSales');
+      if (testData.popupStoreSnsResponse.length > 0) {
+        testData.popupStoreSnsResponse.forEach((item) => {
+          if (item.platform === 'Website') {
+            setWebsite(item.url);
+          } else if (item.platform === 'Youtube') {
+            setYoutube(item.url);
+          } else if (item.platform === 'Instagram') {
+            setInstagram(item.url);
+          }
+        });
+      }
+    }
+  }, [testData]);
 
   StoreInfoForm.getData = () => {
     const storeImagesData = [bannerImage, ...storeImages];

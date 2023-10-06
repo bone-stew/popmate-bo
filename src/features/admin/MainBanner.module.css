@@ -17,7 +17,7 @@
 }
 
 .bottomfirst {
-  width: 45%;
+  width: 43%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -25,7 +25,7 @@
 }
 
 .bottomfirsttitle {
-  width: 23%;
+  width: 27%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -51,7 +51,7 @@
 }
 
 .bottomsecondtitle {
-  width: 25%;
+  width: 27%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -70,7 +70,7 @@
   align-items: center;
   border: 1px solid #c1bcc0;
   border-radius: 4px;
-  height: 84%;
+  height: 83%;
   width: 100%;
 }
 
@@ -125,7 +125,7 @@
   border-radius: 20px;
   margin-left: 2%;
   width: 30%;
-  height: 47%; /* 이미지 비율 유지하면서 높이 조절 */
+  height: 47%;
 }
 
 .imageContainer:hover .imgdeletebuttton {
@@ -176,6 +176,7 @@
   justify-content: center;
   align-items: center;
   object-fit: cover;
+  background-color: #ff6a6a;
 }
 
 .imagebottomfirstimage img {
