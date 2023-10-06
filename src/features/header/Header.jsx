@@ -4,8 +4,32 @@ import styles from './Header.module.css';
 import { useLocation, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../slices/userSlice';
-import {  blue } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import JsonAxios from '../../api/jsonAxios';
+
+const breadcrumbNameMap = {
+  overview: 'overview',
+  list: 'list',
+  banner: 'banner',
+  'popup-stores': 'store',
+  write: 'write',
+  reservations: 'reservations',
+  detail: '상세',
+  'daily-reservations': '일일 예약 내역',
+  enter: '입장 QR 코드',
+  pickup: '픽업 QR 코드',
+  orders: '주문내역',
+  report: '채팅 신고',
+  statistic: '통계',
+};
+
+const headerMap = {
+  list: '팝업 스토어 목록',
+  banner: '배너 등록',
+  report: '신고 내역',
+  statistic: '통계',
+  write: '팝업스토어 등록',
+};
 
 function Header() {
   const location = useLocation();
@@ -13,23 +37,10 @@ function Header() {
   const { storeId } = useParams('storeId');
   const currUser = useSelector(selectUser);
   const [title, _title] = useState();
-  const breadcrumbNameMap = {
-    overview: 'overview',
-    list: 'list',
-    banner: 'banner',
-    'popup-stores': 'store',
-    write: 'write',
-    reservations: 'reservations',
-    detail: '상세',
-    'daily-reservations': '일일 예약 내역',
-    enter: '입장 QR 코드',
-    pickup: '픽업 QR 코드',
-    orders: '주문내역',
-    report: '채팅 신고',
-  };
   useEffect(() => {
     if (storeId) {
       JsonAxios.get(`/popup-stores/${storeId}`).then((res) => {
+        console.log(res.data.data);
         _title(res.data.data.title);
         console.log('===========호출=========');
       });
@@ -37,22 +48,22 @@ function Header() {
   }, [storeId]);
 
   useEffect(() => {
-    if (pathnames[pathnames.length - 1] === 'list') _title('팝업 스토어 목록');
-    if (pathnames[pathnames.length - 1] === 'banner') _title('배너 등록');
-    if (pathnames[pathnames.length - 1] === 'report') _title('신고 내역');
+    if (!storeId) {
+      const path = pathnames[pathnames.length - 1];
+      _title(headerMap[path]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathnames]);
 
   return (
     <div className={styles.container}>
       <div className={styles.profile}>
-        <p>
-          {currUser.value.name}님
-        </p>
+        <p>{currUser.value.name}님</p>
         {currUser.value.role === 'ROLE_MANAGER' ? (
-        <Avatar sx={{ bgcolor: blue[500] }}>AM</Avatar>
-      ) : (
-        <Avatar sx={{ bgcolor: blue[500] }}>ST</Avatar>
-      )}
+          <Avatar sx={{ bgcolor: blue[500] }}>AM</Avatar>
+        ) : (
+          <Avatar sx={{ bgcolor: blue[500] }}>ST</Avatar>
+        )}
       </div>
       <div>
         <span className={styles.title}>{title}</span>
