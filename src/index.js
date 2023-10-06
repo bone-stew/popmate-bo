@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <Error />,
     children: [
-      { path: '/', element: <Statistics /> },
+      { path: '/overview/statistic', element: <Statistics /> },
       { path: '/overview/list', element: <PopupList /> },
       { path: '/overview/banner', element: <MainBanner /> },
       { path: '/overview/report', element: <ChatReports /> },
