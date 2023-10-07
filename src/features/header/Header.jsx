@@ -35,20 +35,22 @@ function Header() {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
   const { storeId } = useParams('storeId');
+  const { reservationId } = useParams('reservationId');
   const currUser = useSelector(selectUser);
   const [title, _title] = useState();
-  useEffect(() => {
-    if (storeId) {
-      JsonAxios.get(`/popup-stores/${storeId}`).then((res) => {
-        console.log(res.data.data);
-        _title(res.data.data.title);
-        console.log('===========호출=========');
-      });
-    }
-  }, [storeId]);
+
+  useEffect(() => {}, [storeId]);
 
   useEffect(() => {
-    if (!storeId) {
+    console.log(storeId);
+    console.log(reservationId);
+    if (storeId) {
+      JsonAxios.get(`/popup-stores/${storeId}`).then((res) => {
+        _title(res.data.data.title);
+      });
+    } else if (reservationId) {
+      console.log(reservationId);
+    } else {
       const path = pathnames[pathnames.length - 1];
       _title(headerMap[path]);
     }
