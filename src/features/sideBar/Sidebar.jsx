@@ -3,7 +3,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -14,8 +13,9 @@ import {
 import React, { useEffect, useState } from 'react';
 import styles from './Sidebar.module.css';
 import {
-  AddCircleOutline,
+  ArrowRight,
   BarChart,
+  EditNote,
   ImageOutlined,
   Logout,
   ManageSearch,
@@ -38,6 +38,7 @@ function Sidebar({ drawerWidth }) {
     { icon: <ManageSearch />, title: '팝업 스토어 관리', to: 'overview/list' },
     { icon: <ReportGmailerrorred />, title: '채팅 신고', to: 'overview/report' },
     { icon: <BarChart />, title: '통계', to: '/overview/statistic' },
+    { icon: <EditNote />, title: '팝업 스토어 등록', to: 'popup-stores/write' },
   ];
   const [storeList, _storeList] = useState([]);
   const [selectedStore, _selectedStore] = useState();
@@ -69,7 +70,7 @@ function Sidebar({ drawerWidth }) {
       {currUser.value.role === 'ROLE_MANAGER' && (
         <>
           <Typography sx={{ mt: '12px' }} className={`${styles.whiteFont} ${styles.padding}`}>
-            Overview
+            Admin
           </Typography>
           <List>
             {adminMenu.map((value, index) => (
@@ -96,18 +97,8 @@ function Sidebar({ drawerWidth }) {
           </List>
         </>
       )}
-      <Typography sx={{ mt: '12px' }} className={`${styles.whiteFont} ${styles.padding}`}>
+      <Typography sx={{ mt: '12px', mb: '12px' }} className={`${styles.whiteFont} ${styles.padding}`}>
         Store
-        {currUser.value.role === 'ROLE_MANAGER' && (
-          <IconButton
-            sx={{ verticalAlign: 'middle', color: 'white' }}
-            onClick={() => {
-              navigate('/popup-stores/write', { replace: true });
-            }}
-          >
-            <AddCircleOutline />
-          </IconButton>
-        )}
       </Typography>
       {storeList.map((value) => (
         <Accordion
@@ -140,7 +131,7 @@ function Sidebar({ drawerWidth }) {
                   navigate(`/popup-stores/${value.popupStoreId}/detail`);
                 }}
               >
-                <li />
+                <ArrowRight fontSize="small" />
                 <ListItemText primary="Detail" />
               </ListItemButton>
             </ListItem>
@@ -152,7 +143,7 @@ function Sidebar({ drawerWidth }) {
                       navigate(`/popup-stores/${value.popupStoreId}`);
                     }}
                   >
-                    <li />
+                    <ArrowRight fontSize="small" />
                     <ListItemText primary="Overview" />
                   </ListItemButton>
                 </ListItem>
@@ -162,18 +153,8 @@ function Sidebar({ drawerWidth }) {
                       navigate(`/popup-stores/${value.popupStoreId}/daily-reservations`);
                     }}
                   >
-                    <li />
+                    <ArrowRight fontSize="small" />
                     <ListItemText primary="일일 예약 관리" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem key={`/popup-stores/${value.popupStoreId}/enter`} disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      navigate(`/popup-stores/${value.popupStoreId}/enter`);
-                    }}
-                  >
-                    <li />
-                    <ListItemText primary="입장 QR" />
                   </ListItemButton>
                 </ListItem>
               </>
@@ -186,21 +167,35 @@ function Sidebar({ drawerWidth }) {
                       navigate(`/popup-stores/${value.popupStoreId}/orders`);
                     }}
                   >
-                    <li />
+                    <ArrowRight fontSize="small" />
                     <ListItemText primary="주문 내역" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem key={`${value.popupStoreId}/pickup`} disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      navigate(`/popup-stores/${value.popupStoreId}/pickup`);
-                    }}
-                  >
-                    <li />
-                    <ListItemText primary="픽업 QR" />
-                  </ListItemButton>
-                </ListItem>
               </>
+            )}
+            {value.reservationEnabled && (
+              <ListItem key={`/popup-stores/${value.popupStoreId}/enter`} disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    navigate(`/popup-stores/${value.popupStoreId}/enter`);
+                  }}
+                >
+                  <ArrowRight fontSize="small" />
+                  <ListItemText primary="입장 QR" />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {value.reservationEnabled && (
+              <ListItem key={`${value.popupStoreId}/pickup`} disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    navigate(`/popup-stores/${value.popupStoreId}/pickup`);
+                  }}
+                >
+                  <ArrowRight fontSize="small" />
+                  <ListItemText primary="픽업 QR" />
+                </ListItemButton>
+              </ListItem>
             )}
           </AccordionDetails>
         </Accordion>
