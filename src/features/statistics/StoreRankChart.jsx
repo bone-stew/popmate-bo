@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
 import React from 'react';
 
 function StoreRankChart({ popupStoreRanks }) {
@@ -10,9 +10,12 @@ function StoreRankChart({ popupStoreRanks }) {
         flexDirection: 'column',
       }}
     >
+      <Typography mt={2} ml={1} fontWeight={'bold'} variant="h6">
+        팝업 스토어 순위
+      </Typography>
       {popupStoreRanks.map((item, index) => {
         return (
-          <ListItem sx={{ flex: '0 0 calc(20% - 10px)', marginBottom: '10px' }} key={item.popupStoreId} disablePadding>
+          <ListItem key={item.popupStoreId}>
             <ListItemButton>
               <ListItemText primary={`${index + 1}. ${item.title}`}></ListItemText>
             </ListItemButton>
