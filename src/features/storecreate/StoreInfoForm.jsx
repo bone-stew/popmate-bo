@@ -472,7 +472,7 @@ function StoreInfoForm({
                     </MenuItem>
                     <MenuItem value={'1'}>더현대 서울</MenuItem>
                     <MenuItem value={'2'}>판교점</MenuItem>
-                    <MenuItem value={'3'}>무역센터점</MenuItem>
+                    <MenuItem value={'3'}>더현대 대구</MenuItem>
                     <MenuItem value={'4'}>천호점</MenuItem>
                     <MenuItem value={'5'}>신촌점</MenuItem>
                     <MenuItem value={'6'}>미아점</MenuItem>
@@ -482,7 +482,7 @@ function StoreInfoForm({
                     <MenuItem value={'10'}>킨텍스점</MenuItem>
                     <MenuItem value={'11'}>디큐브시티</MenuItem>
                     <MenuItem value={'12'}>부산점</MenuItem>
-                    <MenuItem value={'13'}>더현대 대구</MenuItem>
+                    <MenuItem value={'13'}>무역센터점</MenuItem>
                     <MenuItem value={'14'}>울산점</MenuItem>
                     <MenuItem value={'15'}>울산동구점</MenuItem>
                     <MenuItem value={'16'}>충청점</MenuItem>
@@ -506,11 +506,10 @@ function StoreInfoForm({
                     <MenuItem value="">
                       <em>스태프 선택 없음</em>
                     </MenuItem>
-                    <MenuItem value={'75'}>staff_김지훈</MenuItem>
-                    <MenuItem value={'999'}>staff_이지혜</MenuItem>
-                    <MenuItem value={'999'}>staff_허은지</MenuItem>
-                    <MenuItem value={'999'}>staff_성태우</MenuItem>
-                    <MenuItem value={'999'}>staff_정민준</MenuItem>
+                    <MenuItem value={'75'}>staff_김우원</MenuItem>
+                    <MenuItem value={'999'}>staff_조재룡</MenuItem>
+                    <MenuItem value={'333'}>staff_조상원</MenuItem>
+                    <MenuItem value={'555'}>staff_서명현</MenuItem>
                   </Select>
                 </FormControl>
               </TableCell>
