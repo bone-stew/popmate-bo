@@ -109,6 +109,8 @@ function ReservationDetailTable() {
                 >
                   예약 번호
                 </TableSortLabel>
+              </TableCell>
+              <TableCell>
                 <TableSortLabel
                   active={orderBy === 'userName'}
                   direction={orderBy === 'userName' ? order : 'asc'}

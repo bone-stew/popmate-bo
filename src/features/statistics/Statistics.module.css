@@ -17,4 +17,5 @@
 .rankContainer {
   height: 35vh;
   width: 35%;
+  overflow-y: scroll;
 }
