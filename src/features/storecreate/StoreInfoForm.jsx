@@ -471,14 +471,14 @@ function StoreInfoForm({
                       <em>지점 선택 없음</em>
                     </MenuItem>
                     <MenuItem value={'1'}>더현대 서울</MenuItem>
-                    <MenuItem value={'2'}>압구정본점</MenuItem>
+                    <MenuItem value={'2'}>판교점</MenuItem>
                     <MenuItem value={'3'}>무역센터점</MenuItem>
                     <MenuItem value={'4'}>천호점</MenuItem>
                     <MenuItem value={'5'}>신촌점</MenuItem>
                     <MenuItem value={'6'}>미아점</MenuItem>
                     <MenuItem value={'7'}>목동점</MenuItem>
                     <MenuItem value={'8'}>중동점</MenuItem>
-                    <MenuItem value={'9'}>판교점</MenuItem>
+                    <MenuItem value={'9'}>압구정본점</MenuItem>
                     <MenuItem value={'10'}>킨텍스점</MenuItem>
                     <MenuItem value={'11'}>디큐브시티</MenuItem>
                     <MenuItem value={'12'}>부산점</MenuItem>
