@@ -185,7 +185,7 @@ function Sidebar({ drawerWidth }) {
                 </ListItemButton>
               </ListItem>
             )}
-            {value.reservationEnabled && (
+            {value.salesEnabled && (
               <ListItem key={`${value.popupStoreId}/pickup`} disablePadding>
                 <ListItemButton
                   onClick={() => {
