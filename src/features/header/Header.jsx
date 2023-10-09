@@ -11,9 +11,9 @@ const breadcrumbNameMap = {
   overview: 'overview',
   list: 'list',
   banner: 'banner',
-  'popup-stores': 'store',
+  'popup-stores': '스토어',
   write: 'write',
-  reservations: 'reservations',
+  reservations: '예약 내역',
   detail: '상세',
   'daily-reservations': '일일 예약 내역',
   enter: '입장 QR 코드',
@@ -33,29 +33,22 @@ const headerMap = {
 
 function Header() {
   const location = useLocation();
-  const pathnames = location.pathname.split('/').filter((x) => x);
-  const { storeId } = useParams('storeId');
-  const { reservationId } = useParams('reservationId');
+  const pathnames = location.pathname.split('/').filter((x) => isNaN(x));
+  const { storeId } = useParams();
   const currUser = useSelector(selectUser);
   const [title, _title] = useState();
 
-  useEffect(() => {}, [storeId]);
-
   useEffect(() => {
-    console.log(storeId);
-    console.log(reservationId);
     if (storeId) {
       JsonAxios.get(`/popup-stores/${storeId}`).then((res) => {
         _title(res.data.data.title);
       });
-    } else if (reservationId) {
-      console.log(reservationId);
     } else {
       const path = pathnames[pathnames.length - 1];
       _title(headerMap[path]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathnames]);
+  }, [location]);
 
   return (
     <div className={styles.container}>
@@ -72,13 +65,8 @@ function Header() {
         <Breadcrumbs className={styles.breadcrumbs} aria-label="breadcrumb">
           {pathnames.map((value, index) => {
             const last = index === pathnames.length - 1;
-            const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-            return last ? (
-              <Typography color="text.primary" key={to}>
-                {isNaN(value) ? breadcrumbNameMap[value] : title}
-              </Typography>
-            ) : (
-              <Typography underline="hover" color="inherit" key={to}>
+            return (
+              <Typography underline="hover" color={last ? 'text.primary' : 'inherit'} key={index}>
                 {isNaN(value) ? breadcrumbNameMap[value] : title}
               </Typography>
             );
