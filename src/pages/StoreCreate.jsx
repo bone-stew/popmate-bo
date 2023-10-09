@@ -233,7 +233,7 @@ function StoreCreate() {
         departmentId: '1',
       },
       user: {
-        userId: '75',
+        userId: '999',
       },
       title: '디아블로4 X 더현대서울 팝업스토어',
       organizer: '대원미디어',
