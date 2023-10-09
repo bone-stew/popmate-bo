@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styles from '../features/admin/ReservationQr.module.css';
-import QrCodeReader, { QRCode } from 'react-qrcode-reader';
+import QrCodeReader from 'react-qrcode-reader';
 import JsonAxios from '../api/jsonAxios';
 import EntryConfirmationDialog from '../features/dialog/EntryConfirmationDialog';
 
@@ -25,7 +25,7 @@ function ReservationQR() {
     setDialogMessage(''); // 메시지 초기화
   };
 
-  const handleRead = (code: QRCode) => {
+  const handleRead = (code) => {
     const text = code.data;
     if (text === prevQRCode.current) {
       return; // 이미 인식한 QR 코드인 경우 처리 중지

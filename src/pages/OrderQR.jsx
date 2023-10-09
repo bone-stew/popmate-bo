@@ -1,9 +1,9 @@
-import React, { useRef, useState }  from 'react';
+import React, { useRef, useState } from 'react';
 import styles from '../features/admin/OrderQr.module.css';
-import QrCodeReader, { QRCode } from 'react-qrcode-reader';
+import QrCodeReader from 'react-qrcode-reader';
 import JsonAxios from '../api/jsonAxios';
 import { useParams } from 'react-router-dom';
-import PickupConfirmationDialog from '../features/dialog/PickupConfirmationDialog'
+import PickupConfirmationDialog from '../features/dialog/PickupConfirmationDialog';
 
 function OrderQR() {
   const prevQRCode = useRef(null);
@@ -27,7 +27,7 @@ function OrderQR() {
     setDialogMessage(''); // 메시지 초기화
   };
 
-  const handleRead = (code: QRCode) => {
+  const handleRead = (code) => {
     const text = code.data;
     if (text === prevQRCode.current) {
       return; // 이미 인식한 QR 코드인 경우 처리 중지
@@ -39,39 +39,37 @@ function OrderQR() {
       const [key, value] = pair.split(':');
       data[key] = value;
     });
-    if(data.orderId && data.userId){
+    if (data.orderId && data.userId) {
       const orderId = data.orderId;
       const userId = data.userId;
       const popupStoreId = storeId;
       const url = `orders/qrcode/${orderId}/${userId}/${popupStoreId}`;
-      JsonAxios.get(url).then((res) => {
-        if(res.data.data==='이 스토어의 QR코드가 아닙니다.'){
-          setDialogMessage(res.data.data);
+      JsonAxios.get(url)
+        .then((res) => {
+          if (res.data.data === '이 스토어의 QR코드가 아닙니다.') {
+            setDialogMessage(res.data.data);
+            handleOpenFailDialog();
+          } else {
+            handleOpenDialog();
+          }
+        })
+        .catch((error) => {
+          setDialogMessage('상품 픽업 QR코드가 아닙니다.');
           handleOpenFailDialog();
-        }else{
-          handleOpenDialog();
-        }
-        
-         
-      }).catch((error) => {
-        setDialogMessage('상품 픽업 QR코드가 아닙니다.');
-        handleOpenFailDialog();
-      });
-    }else{
+        });
+    } else {
     }
-  }
-  
+  };
+
   return (
     <>
-    <div className={styles.container}>
-      <div className={styles.title}>
-        팝업스토어 상품 픽업 QR 코드
+      <div className={styles.container}>
+        <div className={styles.title}>팝업스토어 상품 픽업 QR 코드</div>
+        <div className={styles.outer}>
+          <QrCodeReader delay={100} width={900} height={700} onRead={handleRead} />
+        </div>
       </div>
-      <div className={styles.outer}>
-        <QrCodeReader delay={100} width={900} height={700} onRead={handleRead} />
-      </div>
-    </div>
-    <PickupConfirmationDialog open={dialogOpen} onClose={handleCloseDialog} message={dialogMessage} />
+      <PickupConfirmationDialog open={dialogOpen} onClose={handleCloseDialog} message={dialogMessage} />
     </>
   );
 }

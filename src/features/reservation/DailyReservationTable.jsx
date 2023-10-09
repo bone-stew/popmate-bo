@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { formatToLocalTime, getCurrentDate } from '../../app/dateTimeUtils';
 import JsonAxios from '../../api/jsonAxios';
 import DatePickerComponent from '../../components/CustomDatePicker';
@@ -28,10 +28,9 @@ const TableCellCenter = ({ children }) => (
 );
 
 function DailyReservationTable() {
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const popupStoreId = location.pathname.split('/').filter((x) => x)[1];
+  const { storeId } = useParams('storeId');
   const [dailyReservationData, _dailyReservationData] = useState([]);
   const [state, _state] = React.useState({ includeEntered: true });
   const [selectedDate, _selectedDate] = useState(getCurrentDate());
@@ -40,7 +39,7 @@ function DailyReservationTable() {
   const [selectedItem, _selectedItem] = useState(null);
 
   useEffect(() => {
-    const apiUrl = `popup-stores/${popupStoreId}/reservations?date=${selectedDate}`;
+    const apiUrl = `popup-stores/${storeId}/reservations?date=${selectedDate}`;
     JsonAxios.get(apiUrl)
       .then((response) => {
         _dailyReservationData(response.data.data);
@@ -48,10 +47,10 @@ function DailyReservationTable() {
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
       });
-  }, [selectedDate, popupStoreId]);
+  }, [selectedDate, storeId]);
 
   const fetchDailyReservationData = () => {
-    const apiUrl = `popup-stores/${popupStoreId}/reservations?date=${selectedDate}`;
+    const apiUrl = `popup-stores/${storeId}/reservations?date=${selectedDate}`;
     JsonAxios.get(apiUrl)
       .then((response) => {
         _dailyReservationData(response.data.data);
@@ -116,7 +115,7 @@ function DailyReservationTable() {
   };
 
   const handleTableRowClick = (reservationId) => {
-    const detailPageURL = `/reservations/${reservationId}/detail`;
+    const detailPageURL = `/popup-stores/${storeId}/reservations/${reservationId}/detail`;
     navigate(detailPageURL);
   };
 

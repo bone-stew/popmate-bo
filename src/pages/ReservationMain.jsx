@@ -12,6 +12,7 @@ import {
   TableBody,
   Divider,
   IconButton,
+  CircularProgress,
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -19,7 +20,7 @@ import StatusButton from '../components/StatusButton';
 import MoreButton from '../components/MoreButton';
 import JsonAxios from '../api/jsonAxios';
 import { addMinutesToLocalDateTime, formatToLocalTime, formatToLocalTimeFromLocalDateTime } from '../app/dateTimeUtils';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 const TableCellCenter = ({ children }) => (
   <TableCell align="center" style={{ height: '30px' }}>
@@ -35,31 +36,29 @@ const cardStyle = {
 };
 
 const ReservationMain = () => {
-  const location = useLocation();
-
-  const [popupStoreId, _popupStoreId] = useState(location.pathname.split('/').filter((x) => x)[1]);
+  const { storeId } = useParams();
   const [todayReservations, _todayReservations] = useState([]);
   const [sortOrderOption, _sortOrderOption] = useState('pickupTime');
   const [todayOrders, _todayOrders] = useState([]);
   const [currentReservation, _currentReservation] = useState([]);
-
+  const [loading, _loading] = useState(true);
   const navigate = useNavigate();
-  console.log(_popupStoreId);
 
   useEffect(() => {
-    const apiUrl = `popup-stores/${popupStoreId}/reservations/today`;
+    const apiUrl = `popup-stores/${storeId}/reservations/today`;
     JsonAxios.get(apiUrl)
       .then((response) => {
         _currentReservation(response.data.data);
         _todayReservations(response.data.data.upComingReservations);
+        _loading(false);
       })
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
       });
-  }, [popupStoreId]);
+  }, [storeId]);
 
   useEffect(() => {
-    const apiUrl = `popup-stores/${popupStoreId}/orders/today?sort=${sortOrderOption}`;
+    const apiUrl = `popup-stores/${storeId}/orders/today?sort=${sortOrderOption}`;
 
     JsonAxios.get(apiUrl)
       .then((response) => {
@@ -68,34 +67,40 @@ const ReservationMain = () => {
       .catch((error) => {
         console.error('API 호출 중 오류 발생:', error);
       });
-  }, [popupStoreId, sortOrderOption]);
+  }, [storeId, sortOrderOption]);
 
   const handleSortClick = (option) => {
     _sortOrderOption(option);
   };
 
   const handleReservationMoreButtonClick = () => {
-    navigate(`/popup-stores/${popupStoreId}/daily-reservations`);
+    navigate(`/popup-stores/${storeId}/daily-reservations`);
   };
 
   const handleOrderMoreButtonClick = () => {
-    navigate(`/popup-stores/${popupStoreId}/orders`);
+    navigate(`/popup-stores/${storeId}/orders`);
   };
 
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '60px' }}>
         {/* 왼쪽 상단: "이 시각 예약 현황" */}
-        <div style={{ minWidth: '300px', marginTop: '10px' }}>
-          <Typography variant="h7">{currentReservation.isEntering ? '이 시각' : '지난'}</Typography>
-          <Typography variant="h4" style={{ marginBottom: '10px', marginTop: '10px' }}>
-            {formatToLocalTime(currentReservation.currentReservationStartTime)} ~{' '}
-            {formatToLocalTime(currentReservation.currentReservationEndTime)}
-          </Typography>
-          <Typography variant="h7" gutterBottom>
-            예약 현황이예요
-          </Typography>
-        </div>
+        {loading ? (
+          <div style={{ minWidth: '300px' }}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div style={{ minWidth: '300px', marginTop: '10px' }}>
+            <Typography variant="h7">{currentReservation.isEntering ? '이 시각' : '지난'}</Typography>
+            <Typography variant="h4" style={{ marginBottom: '10px', marginTop: '10px' }}>
+              {formatToLocalTime(currentReservation.currentReservationStartTime)} ~{' '}
+              {formatToLocalTime(currentReservation.currentReservationEndTime)}
+            </Typography>
+            <Typography variant="h7" gutterBottom>
+              예약 현황이예요
+            </Typography>
+          </div>
+        )}
         {/* 오른쪽 상단: 카드 레이아웃 */}
         <Grid container style={{ textAlign: 'center' }}>
           <Grid container justifyContent="flex-end">
