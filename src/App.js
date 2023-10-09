@@ -4,12 +4,11 @@ import { fetchUser, selectUser } from './slices/userSlice';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './features/sideBar/Sidebar';
 import Header from './features/header/Header';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 function App() {
   const drawerWidth = 280;
   const currUser = useSelector(selectUser);
-  const [pageTitle, _pageTitle] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,9 +25,9 @@ function App() {
     <div></div>
   ) : (
     <div style={{ display: 'flex' }}>
-      <Sidebar _pageTitle={_pageTitle} drawerWidth={drawerWidth} />
+      <Sidebar drawerWidth={drawerWidth} />
       <div className={styles.content}>
-        <Header pageTitle={pageTitle} />
+        <Header />
         <Outlet />
       </div>
     </div>

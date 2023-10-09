@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       { path: '/popup-stores/:storeId/daily-reservations', element: <DailyReservation /> },
       { path: '/popup-stores/:storeId/pickup', element: <OrderQR /> },
       { path: '/popup-stores/:storeId/enter', element: <ReservationQR /> },
-      { path: '/reservations/:reservationId/detail', element: <ReservationDetail /> },
+      { path: '/popup-stores/:storeId/reservations/:reservationId/detail', element: <ReservationDetail /> },
     ],
   },
   {
