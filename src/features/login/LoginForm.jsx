@@ -27,8 +27,9 @@ function LoginForm() {
     JsonAxios.post('/oauth/office', { id: inputs.id, password: inputs.password })
       .then(async ({ data }) => {
         sessionStorage.setItem('accessToken', data.data.token);
+        console.log(data);
         dispatch(fetchUser()).then(() => {
-          navigate('/overview/statistic');
+          navigate('/');
         });
       })
       .catch(() => {
