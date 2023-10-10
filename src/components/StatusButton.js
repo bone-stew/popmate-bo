@@ -43,6 +43,10 @@ const statusStyles = {
     backgroundColor: '#FFDDDD',
     color: '#FF6D6D',
   },
+  '예약 취소': {
+    backgroundColor: '#FFDDDD',
+    color: '#FF6D6D',
+  },
   /* 노란색 */
   '예약 마감': {
     backgroundColor: '#FEF0D2',
