@@ -5,13 +5,14 @@
 <img src="https://img.shields.io/github/issues/bone-stew/popmate-bo?color=inactive"/>
 </p>
 
-
+<!--
 ## Screenshots
 
 <img src="https://github.com/bone-stew/popmate-bo/assets/83275938/af7bf123-1fab-4d68-8c97-3275e94fe71e" alt="스크린샷 2023-10-10 224808" style="zoom: 33%;" />
 <img src="https://github.com/bone-stew/popmate-bo/assets/83275938/6dcd581c-558c-4b3b-baa1-49ad2a29221e" alt="스크린샷 2023-10-10 224703" style="zoom: 33%;" />
 <img src="https://github.com/bone-stew/popmate-bo/assets/83275938/d0af1970-857b-47f5-9b7a-d59fa1c52365" alt="스크린샷 2023-10-10 224719" style="zoom:33%;" />
 <img src="https://github.com/bone-stew/popmate-bo/assets/83275938/96ca34a7-b67a-4212-b51f-9891c3b05f86" alt="스크린샷 2023-10-10 224808" style="zoom:33%;" />
+-->
 
 ## Skill
 
@@ -45,10 +46,6 @@
 ## 팀 블로그
 
 [Popmate-Team-Blog](https://bone-stew.github.io/)
-
-## Service Architecture
-
-<img src="https://github.com/bone-stew/popmate-be/assets/62706048/1f3779df-c043-4820-9090-a17291fce3f1" />
 
 ## Owner
 
