@@ -169,7 +169,7 @@ function DailyReservationTable() {
                   </TableCellCenter>
                   <TableCellCenter>
                     {item.guestLimit}
-                    {item.status !== '입장 완료' && (
+                    {item.status === '예약 예정' && (
                       <IconButton onClick={() => handleEditClick(item.guestLimit, item)}>
                         <EditIcon />
                       </IconButton>
