@@ -12,13 +12,11 @@ import {
 } from '@mui/material';
 import StatusButton from '../../components/StatusButton';
 import JsonAxios from '../../api/jsonAxios';
-import { useLocation } from 'react-router';
+import { useParams } from 'react-router';
 import { formatToLocalDateTime } from '../../app/dateTimeUtils';
 
 function ReservationDetailTable() {
-  const location = useLocation();
-
-  const reservationId = location.pathname.split('/').filter((x) => x)[1];
+  const { reservationId } = useParams();
   const [order, setOrder] = useState('asc'); // 정렬 방향 (asc 또는 desc)
   const [orderBy, setOrderBy] = useState('member'); // 정렬 기준 열
   const [page, setPage] = useState(0); // 현재 페이지
