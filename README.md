@@ -8,7 +8,10 @@
 
 ## Screenshots
 
-<img src="./../img/스크린샷 2023-10-10 224808-1696945783732-5.png" alt="스크린샷 2023-10-10 224808" style="zoom: 33%;" /><img src="./../img/스크린샷 2023-10-10 224703.png" alt="스크린샷 2023-10-10 224703" style="zoom: 33%;" /><img src="./../img/스크린샷 2023-10-10 224719.png" alt="스크린샷 2023-10-10 224719" style="zoom:33%;" /><img src="./../img/스크린샷 2023-10-10 224801.png" alt="스크린샷 2023-10-10 224808" style="zoom:33%;" />
+<img src="https://github.com/bone-stew/popmate-bo/assets/83275938/af7bf123-1fab-4d68-8c97-3275e94fe71e" alt="스크린샷 2023-10-10 224808" style="zoom: 33%;" />
+<img src="https://github.com/bone-stew/popmate-bo/assets/83275938/6dcd581c-558c-4b3b-baa1-49ad2a29221e" alt="스크린샷 2023-10-10 224703" style="zoom: 33%;" />
+<img src="https://github.com/bone-stew/popmate-bo/assets/83275938/d0af1970-857b-47f5-9b7a-d59fa1c52365" alt="스크린샷 2023-10-10 224719" style="zoom:33%;" />
+<img src="https://github.com/bone-stew/popmate-bo/assets/83275938/96ca34a7-b67a-4212-b51f-9891c3b05f86" alt="스크린샷 2023-10-10 224808" style="zoom:33%;" />
 
 ## Skill
 
